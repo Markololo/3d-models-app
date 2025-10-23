@@ -18,7 +18,7 @@ class DashboardController extends BaseController
     {
         //! Process the request: we might need to interact with the model
 
-        $data = "";
+        $data = [""];
         //* Render a view (OR we can redirect the request to another view)
         return $this->render($response, 'admin/dashboardView.php', $data);
 
