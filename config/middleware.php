@@ -1,12 +1,17 @@
 <?php
-
 declare(strict_types=1);
 
 use App\Middleware\ExceptionMiddleware;
+use App\MiddleWare\SessionMiddleware;
+
 use Slim\App;
 
 return function (App $app) {
     //TODO: Add your middleware here.
+    // Create instance
+    $sessionMiddleware = new SessionMiddleware();
+    // Add to application (applies to ALL routes)
+    $app->add($sessionMiddleware);
 
     $app->addBodyParsingMiddleware();
     $app->addRoutingMiddleware();
@@ -17,4 +22,5 @@ return function (App $app) {
     // Start the session at the application level.
     //$app->add(SessionStartMiddleware::class);
     $app->add(ExceptionMiddleware::class);
+
 };

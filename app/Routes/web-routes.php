@@ -15,12 +15,15 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 return static function (Slim\App $app): void {
 
+    //* Name the routes (setName('')) to help with redirection later
     //? Admin routes group:
     //* Base URI: localhost/3d-models-app/admin
     $app->group('/admin', function($group) {
         //Add/register admin routes
-        $group->get('/dashboard', [DashboardController::class, 'default']);
-        $group->get('/products', [ProductsController::class, 'index']);
+        $group->get('/dashboard', [DashboardController::class, 'index']
+    )->setName('dashboard.index');
+        $group->get('/products', [ProductsController::class, 'index']
+    )->setName('products.index');
     });
 
 

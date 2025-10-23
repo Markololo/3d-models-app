@@ -1,6 +1,11 @@
 <?php
 
 use App\Helpers\ViewHelper;
+use App\Controllers\DashboardController;
+use App\Helpers\SessionManager;
+use App\Middleware\ExceptionMiddleware;
+use App\MiddleWare\SessionMiddleware;
+
 //TODO: set the page title dynamically based on the view being rendered in the controller.
 $page_title = 'Products list';
 
@@ -32,7 +37,7 @@ ViewHelper::loadAdminHeader($page_title);
     </div>
     <h2>Product Listing</h2>
     <div class="table-responsive small">
-        <h4>The list of products will be rendered here.</h4>
+        <h4> <?php echo SessionManager::get('username') ?> </h4>
     </div>
 </main>
 
