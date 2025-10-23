@@ -90,4 +90,16 @@ class ViewHelper
 
         return $options;
     }
+
+    //--------------------------------------- Our code addition--------------------------------------------------------
+    public static function loadAdminHeader(string $page_title): void
+    {
+        $page_title = $page_title ?? 'Default Title';
+        require_once APP_VIEWS_PATH . '/common/admin/admin_header.php';
+    }
+    public static function loadAdminFooter(): void
+    {
+        require_once APP_VIEWS_PATH . '/common/admin/admin_footer.php';
+    }
 }
+//product controller, then make the views under admin/products, then add the routs group /product

@@ -6,6 +6,7 @@ declare(strict_types=1);
  * This file contains the routes for the web application.
  */
 
+use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -13,6 +14,12 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 return static function (Slim\App $app): void {
 
+    //? Admin routes group:
+    //* Base URI: localhost/3d-models-app/admin
+    $app->group('/admin', function($group) {
+        //Add/register admin routes
+        $group->get('/dashboard', DashboardController::class, 'default');
+    });
 
     //* NOTE: Route naming pattern: [controller_name].[method_name]
     $app->get('/', [HomeController::class, 'index'])
@@ -21,10 +28,11 @@ return static function (Slim\App $app): void {
     $app->get('/home', [HomeController::class, 'index'])
         ->setName('home.index');
 
-
+    // $app->get('/dashboard', [DashboardController::class, 'default'])
+    //     ->setName('dashboard');
 
     // A route to test runtime error handling and custom exceptions.
-    $app->get('/error', function (Request $request, Response $response, $args) {
-        throw new \Slim\Exception\HttpNotFoundException($request, "Something went wrong");
-    });
+    // $app->get('/error', function (Request $request, Response $response, $args) {
+    //     throw new \Slim\Exception\HttpNotFoundException($request, "Something went wrong");
+    // });
 };
