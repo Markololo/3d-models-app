@@ -102,4 +102,4 @@ class ViewHelper
         require_once APP_VIEWS_PATH . '/common/admin/admin_footer.php';
     }
 }
-//product controller, then make the views under admin/products, then add the routs group /product
+//! product controller, then make the views under admin/products, then add the routs group /product

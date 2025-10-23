@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
+use App\Controllers\ProductsController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -19,7 +20,9 @@ return static function (Slim\App $app): void {
     $app->group('/admin', function($group) {
         //Add/register admin routes
         $group->get('/dashboard', [DashboardController::class, 'default']);
+        $group->get('/products', [ProductsController::class, 'index']);
     });
+
 
     //* NOTE: Route naming pattern: [controller_name].[method_name]
     $app->get('/', [HomeController::class, 'index'])
