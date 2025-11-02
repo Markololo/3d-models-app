@@ -26,10 +26,10 @@ class DashboardController extends BaseController
         SessionManager::set('username', "MariRab");
 
         //* Render a view (OR we can redirect the request to another view)
-        // return $this->render($response, 'admin/dashboardView.php', $data);
+        return $this->render($response, 'admin/dashboardView.php', $data);
 
         //* Server side redirection to a named route:
-        return $this->redirect($request, $response, 'products.index');
+        // return $this->redirect($request, $response, 'products.index');
     }
 
 

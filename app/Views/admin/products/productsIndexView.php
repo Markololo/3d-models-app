@@ -7,7 +7,9 @@ use App\Middleware\ExceptionMiddleware;
 use App\MiddleWare\SessionMiddleware;
 
 //TODO: set the page title dynamically based on the view being rendered in the controller.
-$page_title = 'Products list';
+// $page_title = 'Products list';
+$page_title = $data["page_title"];
+$products = $data["products"];
 
 //TODO: We need to load an admin-specific header.
 ViewHelper::loadAdminHeader($page_title);
@@ -38,6 +40,24 @@ ViewHelper::loadAdminHeader($page_title);
     <h2>Product Listing</h2>
     <div class="table-responsive small">
         <h4> <?php echo SessionManager::get('username') ?> </h4>
+        <table>
+            <thead>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </thead>
+            <tbody>
+                <?php foreach ($data["products"] as $key => $prod): ?>
+                    <tr>
+                        <td><?= $prod["name"] ?></td>
+                        <td><?= $prod["description"] ?></td>
+                        <td><?= $prod["price"] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <p>
+        </p>
     </div>
 </main>
 
