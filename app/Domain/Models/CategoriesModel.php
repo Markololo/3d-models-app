@@ -30,8 +30,16 @@ class CategoriesModel extends BaseModel
 
     public function getCategories():mixed
     {
-     $sql = "SELECT * FROM {$this->categories}";
-     $categories = $this->selectAll(sql);
+    // {$sql = "SELECT * FROM products";
+    //     $products = $this->selectAll($sql);
+
+
+    //  $sql = "SELECT * FROM {$this->categories}";
+  $sql = "SELECT * FROM categories";
+
+     $categories = $this->selectAll($sql);
+             return $categories;
+
     }
 }
 
