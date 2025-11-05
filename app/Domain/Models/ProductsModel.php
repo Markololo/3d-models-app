@@ -29,10 +29,10 @@ class ProductsModel extends BaseModel
         return $products;
     }
 
-    public function fetchShopById($id): mixed
+    public function fetchProductById(int $id): mixed
     {
-        $sql = "SELECT * FROM products WHERE id = $id";
-        $product = $this->selectOne($sql); //this = current object; this calls on this class and its parent
+        $sql = "SELECT * FROM products WHERE id = :id";
+        $product = $this->selectOne($sql, ["id" => $id]); //this = current object; this calls on this class and its parent
 
         return $product;
     }

@@ -71,6 +71,16 @@ class ProductsController extends BaseController
      */
     public function edit(Request $request, Response $response, array $args): Response
     {
+        //* 1) Get the id of the product from the query string params of the URI
+        $query_params = $request->getQueryParams();
+        // dd("Editing product: ".$product_id["id"]);
+        $id = $query_params["id"];
+
+        //* 2)  Pull the existing item identified by the received ID from the db.
+        $product = $this->products_model->fetchProductById($id);
+        dd($product);
+
+        //* 3) Pass it to the view where the update/editing form filled with the item info will be rendered
         return $response;
     }
 

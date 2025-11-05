@@ -39,7 +39,8 @@ ViewHelper::loadAdminHeader($page_title);
     </div>
     <h2>Product Listing</h2>
     <div class="table-responsive small">
-        <?php //echo SessionManager::get('username') ?>
+        <?php //echo SessionManager::get('username') 
+        ?>
         <table class="table">
             <thead>
                 <th>ID</th>
@@ -51,11 +52,14 @@ ViewHelper::loadAdminHeader($page_title);
             <tbody>
                 <?php foreach ($data["products"] as $key => $prod): ?>
                     <tr>
-                        <td><?= $prod["id"] ?></td>
-                        <td><?= $prod["name"] ?></td>
-                        <td><?= $prod["description"] ?></td>
-                        <td><?= $prod["price"] ?></td>
-                        <td><?= $prod["stock_quantity"] ?></td>
+                        <td><?= htmlspecialchars($prod["id"]) ?></td>
+                        <td><?= htmlspecialchars($prod["name"]) ?></td>
+                        <td><?= htmlspecialchars($prod["description"]) ?></td>
+                        <td><?= htmlspecialchars($prod["price"]) ?></td>
+                        <td><?= htmlspecialchars($prod["stock_quantity"]) ?></td>
+                        <td>
+                            <a href="products/edit?id=<?php echo $prod["id"] ?>" class="btn btn-success">Edit</a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
