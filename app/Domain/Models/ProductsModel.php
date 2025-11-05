@@ -6,6 +6,8 @@ use App\Helpers\Core\PDOService;
 
 class ProductsModel extends BaseModel
 {
+    // private $products_table = "products";
+
     public function __construct(PDOService $pdoService)
     {
         parent::__construct($pdoService); //pass it to the parent class
@@ -21,6 +23,7 @@ class ProductsModel extends BaseModel
 
     public function fetchProducts(): mixed
     {
+        // $sql = "SELECT * FROM {$this->$products_table}";
         $sql = "SELECT * FROM products";
         $products = $this->selectAll($sql); //this = current object; this calls on this class and its parent
         return $products;
