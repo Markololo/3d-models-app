@@ -39,7 +39,7 @@ ViewHelper::loadAdminHeader($page_title);
     </div>
     <h2>Product Listing</h2>
     <div class="table-responsive small">
-        <h4> <?php echo SessionManager::get('username') ?> </h4>
+        <?php //echo SessionManager::get('username') ?>
         <table class="table">
             <thead>
                 <th>ID</th>
