@@ -40,18 +40,22 @@ ViewHelper::loadAdminHeader($page_title);
     <h2>Product Listing</h2>
     <div class="table-responsive small">
         <h4> <?php echo SessionManager::get('username') ?> </h4>
-        <table>
+        <table class="table">
             <thead>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Stock</th>
             </thead>
             <tbody>
                 <?php foreach ($data["products"] as $key => $prod): ?>
                     <tr>
+                        <td><?= $prod["id"] ?></td>
                         <td><?= $prod["name"] ?></td>
                         <td><?= $prod["description"] ?></td>
                         <td><?= $prod["price"] ?></td>
+                        <td><?= $prod["stock_quantity"] ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
