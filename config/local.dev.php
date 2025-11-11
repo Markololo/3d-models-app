@@ -12,6 +12,14 @@ define('APP_BASE_URL', 'http://localhost/' . APP_ROOT_DIR_NAME);
 define('APP_ASSETS_DIR_URL', APP_BASE_URL  . APP_ASSETS_DIR);
 define('APP_ASSETS_DIR_PATH', realpath(APP_BASE_DIR_PATH . '/' . APP_ASSETS_DIR));
 
+
+
+//for admin
+define('APP_ADMIN_URL', APP_BASE_URL . '/admin');
+
+// echo APP_ADMIN_URL;
+// exit;
+
 // Update the cache busting token upon new deployments.
 define('CACHE_BUSTING_TOKEN', 'YV954');
 

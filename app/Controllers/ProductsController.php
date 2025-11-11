@@ -2,18 +2,21 @@
 
 namespace App\Controllers;
 
-use DI\Container;
-use LDAP\Result;
+use App\Domain\Models\CategoriesModel;
 use App\Domain\Models\ProductsModel;
+use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+
 
 class ProductsController extends BaseController
 {
     public function __construct(
         Container $container,
-        private ProductsModel $products_model
+        private ProductsModel $products_model,
+        private CategoriesModel $categories_model
     ) {
+
         parent::__construct($container); //pass the container to the parent
     }
 
@@ -72,16 +75,20 @@ class ProductsController extends BaseController
     public function edit(Request $request, Response $response, array $args): Response
     {
         //* 1) Get the id of the product from the query string params of the URI
-        $query_params = $request->getQueryParams();
-        // dd("Editing product: ".$product_id["id"]);
-        $id = $query_params["id"];
+        $product_id = $args["product_id"];
+        // dd("Editing product: " . $product_id["id"]);
 
         //* 2)  Pull the existing item identified by the received ID from the db.
-        $product = $this->products_model->fetchProductById($id);
-        dd($product);
+        $product = $this->products_model->fetchProductById($product_id);
+        // dd($product);
+        $categories = $this->categories_model->getAll();        //* 3) Pass it to the view where the update/editing form filled with the item info will be rendered
+        $data = [
+            'page_title' => 'Edit Page',
+            'product' => $product,
+            'categories' => $categories
 
-        //* 3) Pass it to the view where the update/editing form filled with the item info will be rendered
-        return $response;
+        ];
+        return $this->render($response, 'admin/products/productsEditView.php', $data);
     }
 
     /**
@@ -90,7 +97,18 @@ class ProductsController extends BaseController
      */
     public function update(Request $request, Response $response, array $args): Response
     {
-        return $response;
+        //  dd($args);
+
+        $productId = (int) $args['product_id'];
+        // $product_info = $request->getParsedBody();
+        // dd($product_info);
+        $this->products_model->updateProductArray($productId, $request->getParsedBody());
+
+        // add flash messages to be shown to the user in master list
+        // <?= App\Helpers\FlashMessage::render()
+        // return $this->redirect($request, $response, 'products.index');
+
+        return $this->redirect($request, $response, 'product.index', ['id' => $productId]);
     }
 
     /**

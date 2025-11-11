@@ -39,12 +39,13 @@ ViewHelper::loadAdminHeader($page_title);
     </div>
     <h2>Product Listing</h2>
     <div class="table-responsive small">
-        <?php //echo SessionManager::get('username') 
+        <?php //echo SessionManager::get('username')
         ?>
         <table class="table">
             <thead>
                 <th>ID</th>
                 <th>Name</th>
+
                 <th>Description</th>
                 <th>Price</th>
                 <th>Stock</th>
@@ -58,7 +59,7 @@ ViewHelper::loadAdminHeader($page_title);
                         <td><?= htmlspecialchars($prod["price"]) ?></td>
                         <td><?= htmlspecialchars($prod["stock_quantity"]) ?></td>
                         <td>
-                            <a href="products/edit?id=<?php echo $prod["id"] ?>" class="btn btn-success">Edit</a>
+                            <a href="products/edit/<?php echo $prod["id"] ?>" class="btn btn-success">Edit</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

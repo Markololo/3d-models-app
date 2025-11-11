@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace App\Domain\Models;
 use App\Helpers\Core\PDOService;
-use PDO;
 
 /**
  * Base model class for all models.
@@ -19,6 +18,7 @@ use PDO;
  */
 class CategoriesModel extends BaseModel
 {
+    private $categories_table = " categories";
    public function __construct(PDOService $pdo)
     {
         parent::__construct($pdo); //pass it to the parent class
@@ -26,21 +26,15 @@ class CategoriesModel extends BaseModel
 
 
 //fetches the list of categories
-
-
-    public function getCategories():mixed
+ public function getAll() :array
     {
-    // {$sql = "SELECT * FROM products";
-    //     $products = $this->selectAll($sql);
+         $sql = "SELECT * FROM {$this->categories_table}";
 
-
-    //  $sql = "SELECT * FROM {$this->categories}";
-  $sql = "SELECT * FROM categories";
-
-     $categories = $this->selectAll($sql);
-             return $categories;
-
+     return  $this->selectAll($sql);
+            
     }
+
+
 }
 
 

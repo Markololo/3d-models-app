@@ -29,13 +29,23 @@ return static function (Slim\App $app): void {
         $group->get(
             '/products',
             [ProductsController::class, 'index']
-        )->setName('products.index');
+        )->setName('product.index');
 
         $group->get(
-            '/products/edit',
+            '/products/edit/{product_id}',
             [ProductsController::class, 'edit']
         );
 
+
+        $group->post(
+            '/products/update/{product_id}',
+            [ProductsController::class, 'update']
+        );
+        // handle saving edit product info
+        // $group->post(
+        //     '/products/update',
+        //     [ProductsController::class, 'update']
+        // );
         $group->get(
             '/categories',
             [ProductsController::class, 'index']

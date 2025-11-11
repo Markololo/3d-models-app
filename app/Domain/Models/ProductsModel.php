@@ -36,10 +36,31 @@ class ProductsModel extends BaseModel
 
         return $product;
     }
+
+
+
+    public function updateProductArray(int $id, array $product_info): int
+    {
+        //WRITE THE UPDATE QUERY
+        return $this->execute(
+            'UPDATE products
+         SET name = :name, description = :description, price = :price, stock_quantity = :stock_quantity
+         WHERE id = :id',
+            [
+                'id' => $id,
+                'name' => $product_info['product_name'],
+                'description' => $product_info['description'],
+                'price' => $product_info['price'],
+                'stock_quantity' => $product_info['quantity'],
+                // 'category_id' => $product_info['category_id']
+
+            ]
+        );
+    }
+
     public function searchCafes($keyword, $filter): mixed
     {
         echo "searchCafes method in ProductsModel.php";
         return [];
     }
-
 }
