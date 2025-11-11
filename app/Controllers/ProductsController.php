@@ -54,7 +54,18 @@ class ProductsController extends BaseController
      */
     public function show(Request $request, Response $response, array $args): Response
     {
-        return $response;
+        $product_id = $args["product_id"];
+        // dd("Editing product: " . $product_id["id"]);
+
+        $product = $this->products_model->fetchProductById($product_id);
+        $categories = $this->categories_model->getAll();
+        $data = [
+            'page_title' => 'Edit Page',
+            'product' => $product,
+            'categories' => $categories
+
+        ];
+        return $this->render($response, 'admin/products/productsShowView.php', $data);
     }
 
     /**

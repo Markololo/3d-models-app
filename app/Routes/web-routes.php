@@ -41,6 +41,11 @@ return static function (Slim\App $app): void {
             [ProductsController::class, 'delete']
         );
 
+        $group->get(
+            '/products/show/{product_id}',
+            [ProductsController::class, 'show']
+        );
+
         $group->post(
             '/products/update/{product_id}',
             [ProductsController::class, 'update']

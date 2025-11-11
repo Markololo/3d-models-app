@@ -61,6 +61,7 @@ ViewHelper::loadAdminHeader($page_title);
                         <td>
                             <a href="products/edit/<?php echo $prod["id"] ?>" class="btn btn-success">Edit</a>
                             <a href="products/delete/<?php echo $prod["id"] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                            <a href="products/show/<?php echo $prod["id"] ?>" class="btn btn-info">View</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
