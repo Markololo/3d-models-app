@@ -1,4 +1,11 @@
 <?php
+//?     Administrators should be able to:
+//?     ▪ View lists of all existing products and categories with relevant details.
+//?     ▪ Create new products and categories, assigning each product to a category.
+//?     ▪ Edit existing items to update their information, such as product prices or descriptions, etc.
+//?     ▪ Delete products or categories that are no longer needed.
+//?     ▪ Each product must belong to a category to ensure that the store’s inventory remains organized.
+//?     ▪ Note: Manage products and categories separately, each with its own controllers, models, and views
 
 namespace App\Controllers;
 
@@ -117,7 +124,24 @@ class ProductsController extends BaseController
      */
     public function delete(Request $request, Response $response, array $args): Response
     {
-        return $response;
+        // TODO: 1. Get the product ID from $args['id']
+
+        // TODO: 2. Validate the ID (optional but recommended)
+
+        // TODO: 3. Delete the product using $this->model->delete($id)
+
+        // TODO: 4. Redirect to 'products.index' (the product list)
+
+        $productId = (int) $args['product_id'];
+        // $product_info = $request->getParsedBody();
+        // dd($product_info);
+        $this->products_model->deleteProduct($productId);
+
+        // add flash messages to be shown to the user in master list
+        // <?= App\Helpers\FlashMessage::render()
+        // return $this->redirect($request, $response, 'products.index');
+
+        return $this->redirect($request, $response, 'product.index', ['id' => $productId]);
     }
 
 

@@ -60,6 +60,7 @@ ViewHelper::loadAdminHeader($page_title);
                         <td><?= htmlspecialchars($prod["stock_quantity"]) ?></td>
                         <td>
                             <a href="products/edit/<?php echo $prod["id"] ?>" class="btn btn-success">Edit</a>
+                            <a href="products/delete/<?php echo $prod["id"] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

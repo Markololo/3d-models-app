@@ -58,6 +58,12 @@ class ProductsModel extends BaseModel
         );
     }
 
+    public function deleteProduct(int $id): int
+    {
+        $sql = "DELETE FROM products WHERE id = :id";
+        return $this->execute($sql, ['id' => $id]);
+    }
+
     public function searchCafes($keyword, $filter): mixed
     {
         echo "searchCafes method in ProductsModel.php";
