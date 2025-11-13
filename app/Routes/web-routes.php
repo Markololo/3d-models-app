@@ -32,6 +32,11 @@ return static function (Slim\App $app): void {
         )->setName('product.index');
 
         $group->get(
+            '/products/create',
+            [ProductsController::class, 'create']
+        )->setName('products.create');
+
+        $group->get(
             '/products/edit/{product_id}',
             [ProductsController::class, 'edit']
         );
@@ -49,6 +54,11 @@ return static function (Slim\App $app): void {
         $group->post(
             '/products/update/{product_id}',
             [ProductsController::class, 'update']
+        );
+
+        $group->post(
+            '/products',
+            [ProductsController::class, 'store']
         );
         // handle saving edit product info
         // $group->post(

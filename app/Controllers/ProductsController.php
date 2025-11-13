@@ -74,7 +74,12 @@ class ProductsController extends BaseController
      */
     public function create(Request $request, Response $response, array $args): Response
     {
-        return $response;
+        $categories = $this->categories_model->getAll();
+        $data = [
+            'page_title' => 'Product Creation Page',
+            'categories' => $categories
+        ];
+        return $this->render($response, 'admin/products/productsCreateView.php', $data);
     }
 
     /**
@@ -83,7 +88,15 @@ class ProductsController extends BaseController
      */
     public function store(Request $request, Response $response, array $args): Response
     {
-        return $response;
+    //? Extract the form data from the request.
+    //? Validate the required fields (e.g., name, price).
+    //? If validation fails → redirect back to the creation form.
+    //? If validation passes → save the data to database using the model.
+    //? Get the ID of the newly created item.
+    //? Redirect to the newly created item’s detail page (PRG pattern).
+        $data = $request->getParsedBody();
+        echo dd($data);
+        return $this->redirect($request, $response, 'product.index');
     }
 
     /**
@@ -115,16 +128,8 @@ class ProductsController extends BaseController
      */
     public function update(Request $request, Response $response, array $args): Response
     {
-        //  dd($args);
-
         $productId = (int) $args['product_id'];
-        // $product_info = $request->getParsedBody();
-        // dd($product_info);
         $this->products_model->updateProductArray($productId, $request->getParsedBody());
-
-        // add flash messages to be shown to the user in master list
-        // <?= App\Helpers\FlashMessage::render()
-        // return $this->redirect($request, $response, 'products.index');
 
         return $this->redirect($request, $response, 'product.index', ['id' => $productId]);
     }
@@ -135,13 +140,7 @@ class ProductsController extends BaseController
      */
     public function delete(Request $request, Response $response, array $args): Response
     {
-        // TODO: 1. Get the product ID from $args['id']
-
-        // TODO: 2. Validate the ID (optional but recommended)
-
-        // TODO: 3. Delete the product using $this->model->delete($id)
-
-        // TODO: 4. Redirect to 'products.index' (the product list)
+        // TODO: Validate the ID (optional but recommended)
 
         $productId = (int) $args['product_id'];
         // $product_info = $request->getParsedBody();

@@ -67,14 +67,12 @@ ViewHelper::loadAdminHeader($page_title);
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <p>
-        </p>
+        <a href="products/create" class="btn btn-secondary"> Add New Product </a>
     </div>
 </main>
 
 <?php
 
 ViewHelper::loadJsScripts();
-//TODO: We need to load an admin-specific footer.
 ViewHelper::loadAdminFooter();
 ?>
