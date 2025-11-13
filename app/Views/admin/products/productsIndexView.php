@@ -49,7 +49,7 @@ ViewHelper::loadAdminHeader($page_title);
                 <th>Description</th>
                 <th>Price</th>
                 <th>Stock</th>
-            </thead>
+            </thead>con
             <tbody>
                 <?php foreach ($data["products"] as $key => $prod): ?>
                     <tr>
