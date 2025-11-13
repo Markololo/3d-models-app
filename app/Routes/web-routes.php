@@ -9,11 +9,13 @@ declare(strict_types=1);
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
 use App\Controllers\ProductsController;
+use App\Controllers\UploadController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 
 return static function (Slim\App $app): void {
+
 
     //* Name the routes (setName('')) to help with redirection later
     //? Admin routes group:
@@ -69,7 +71,8 @@ return static function (Slim\App $app): void {
             '/categories',
             [ProductsController::class, 'index']
         )->setName('categories.index');
-    });
+    }
+);
 
 
     //* NOTE: Route naming pattern: [controller_name].[method_name]
@@ -87,4 +90,9 @@ return static function (Slim\App $app): void {
     $app->get('/error', function (Request $request, Response $response, $args) {
         throw new \Slim\Exception\HttpNotFoundException($request, "Something went wrong");
     });
+        //? File Uploads:
+        // File upload routes
+    $app->get('/upload', [UploadController::class, 'index'])->setName('upload.index');
+    $app->post('/upload', [UploadController::class, 'upload'])->setName('upload.process');
+
 };
