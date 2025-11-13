@@ -90,8 +90,9 @@ return static function (Slim\App $app): void {
     $app->get('/error', function (Request $request, Response $response, $args) {
         throw new \Slim\Exception\HttpNotFoundException($request, "Something went wrong");
     });
-        //? File Uploads:
-        // File upload routes
+
+    //? File Uploads:
+     // File upload routes
     $app->get('/upload', [UploadController::class, 'index'])->setName('upload.index');
     $app->post('/upload', [UploadController::class, 'upload'])->setName('upload.process');
 
