@@ -95,7 +95,13 @@ class ProductsController extends BaseController
     //? Get the ID of the newly created item.
     //? Redirect to the newly created item’s detail page (PRG pattern).
         $data = $request->getParsedBody();
-        echo dd($data);
+        $name = $data["product_name"];
+        $price = $data["product_price"];
+        $category_id = $data["category_id"];
+
+        $this->products_model->e;
+
+        // echo dd($data);
         return $this->redirect($request, $response, 'product.index');
     }
 
@@ -153,7 +159,6 @@ class ProductsController extends BaseController
 
         return $this->redirect($request, $response, 'product.index', ['id' => $productId]);
     }
-
 
     public function error(Request $request, Response $response, array $args): Response
     {

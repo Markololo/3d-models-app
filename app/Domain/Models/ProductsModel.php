@@ -55,16 +55,16 @@ class ProductsModel extends BaseModel
         );
     }
 
+    //TODO rename paras and do ID
+    public function insertProduct($a, $b, $c, $d) {
+        // $sql = "INSERT INTO products(id, name, price, description) VALUES (:a, :b, :c, :d)";
+        // return $this->execute($sql, ['id'=> $id, 'a'=>$a, 'b'=>$b, 'c'=>$c, 'd'=>$d]);
+    }
+
     public function deleteProduct(int $id): int
     {
         $sql = "DELETE FROM products WHERE id = :id";
         return $this->execute($sql, ['id' => $id]);
-    }
-
-    public function searchCafes($keyword, $filter): mixed
-    {
-        echo "searchCafes method in ProductsModel.php";
-        return [];
     }
 
     public function createAndGetId(array $data): string

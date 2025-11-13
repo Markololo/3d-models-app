@@ -26,7 +26,7 @@ ViewHelper::loadAdminHeader($page_title);
         </div>
         <div>
             <label for="inputState" class="form-label">Category:</label>
-            <select id="inputState" name="category_name" class="form-select">
+            <select id="inputState" name="category_id" class="form-select">
                 <?= $options ?>
             </select>
         </div>
