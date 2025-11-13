@@ -1,4 +1,11 @@
 <?php
+//?     Administrators should be able to:
+//?     ▪ View lists of all existing products and categories with relevant details.
+//?     ▪ Create new products and categories, assigning each product to a category.
+//?     ▪ Edit existing items to update their information, such as product prices or descriptions, etc.
+//?     ▪ Delete products or categories that are no longer needed.
+//?     ▪ Each product must belong to a category to ensure that the store’s inventory remains organized.
+//?     ▪ Note: Manage products and categories separately, each with its own controllers, models, and views
 
 namespace App\Controllers;
 
@@ -47,7 +54,18 @@ class ProductsController extends BaseController
      */
     public function show(Request $request, Response $response, array $args): Response
     {
-        return $response;
+        $product_id = $args["product_id"];
+        // dd("Editing product: " . $product_id["id"]);
+
+        $product = $this->products_model->fetchProductById($product_id);
+        $categories = $this->categories_model->getAll();
+        $data = [
+            'page_title' => 'Edit Page',
+            'product' => $product,
+            'categories' => $categories
+
+        ];
+        return $this->render($response, 'admin/products/productsShowView.php', $data);
     }
 
     /**
@@ -56,7 +74,12 @@ class ProductsController extends BaseController
      */
     public function create(Request $request, Response $response, array $args): Response
     {
-        return $response;
+        $categories = $this->categories_model->getAll();
+        $data = [
+            'page_title' => 'Product Creation Page',
+            'categories' => $categories
+        ];
+        return $this->render($response, 'admin/products/productsCreateView.php', $data);
     }
 
     /**
@@ -65,7 +88,21 @@ class ProductsController extends BaseController
      */
     public function store(Request $request, Response $response, array $args): Response
     {
-        return $response;
+    //? Extract the form data from the request.
+    //? Validate the required fields (e.g., name, price).
+    //? If validation fails → redirect back to the creation form.
+    //? If validation passes → save the data to database using the model.
+    //? Get the ID of the newly created item.
+    //? Redirect to the newly created item’s detail page (PRG pattern).
+        $data = $request->getParsedBody();
+        $name = $data["product_name"];
+        $price = $data["product_price"];
+        $category_id = $data["category_id"];
+
+        $this->products_model->e;
+
+        // echo dd($data);
+        return $this->redirect($request, $response, 'product.index');
     }
 
     /**
@@ -97,16 +134,8 @@ class ProductsController extends BaseController
      */
     public function update(Request $request, Response $response, array $args): Response
     {
-        //  dd($args);
-
         $productId = (int) $args['product_id'];
-        // $product_info = $request->getParsedBody();
-        // dd($product_info);
         $this->products_model->updateProductArray($productId, $request->getParsedBody());
-
-        // add flash messages to be shown to the user in master list
-        // <?= App\Helpers\FlashMessage::render()
-        // return $this->redirect($request, $response, 'products.index');
 
         return $this->redirect($request, $response, 'product.index', ['id' => $productId]);
     }
@@ -117,9 +146,19 @@ class ProductsController extends BaseController
      */
     public function delete(Request $request, Response $response, array $args): Response
     {
-        return $response;
-    }
+        // TODO: Validate the ID (optional but recommended)
 
+        $productId = (int) $args['product_id'];
+        // $product_info = $request->getParsedBody();
+        // dd($product_info);
+        $this->products_model->deleteProduct($productId);
+
+        // add flash messages to be shown to the user in master list
+        // <?= App\Helpers\FlashMessage::render()
+        // return $this->redirect($request, $response, 'products.index');
+
+        return $this->redirect($request, $response, 'product.index', ['id' => $productId]);
+    }
 
     public function error(Request $request, Response $response, array $args): Response
     {

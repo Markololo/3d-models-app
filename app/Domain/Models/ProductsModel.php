@@ -36,9 +36,6 @@ class ProductsModel extends BaseModel
 
         return $product;
     }
-
-
-
     public function updateProductArray(int $id, array $product_info): int
     {
         //WRITE THE UPDATE QUERY
@@ -58,9 +55,30 @@ class ProductsModel extends BaseModel
         );
     }
 
-    public function searchCafes($keyword, $filter): mixed
+    //TODO rename paras and do ID
+    public function insertProduct($a, $b, $c, $d) {
+        // $sql = "INSERT INTO products(id, name, price, description) VALUES (:a, :b, :c, :d)";
+        // return $this->execute($sql, ['id'=> $id, 'a'=>$a, 'b'=>$b, 'c'=>$c, 'd'=>$d]);
+    }
+
+    public function deleteProduct(int $id): int
     {
-        echo "searchCafes method in ProductsModel.php";
-        return [];
+        $sql = "DELETE FROM products WHERE id = :id";
+        return $this->execute($sql, ['id' => $id]);
+    }
+
+    public function createAndGetId(array $data): string
+    {
+        // TODO: 1. Execute INSERT query using $this->execute()
+        //       - Insert: name, price, description, created_at
+        //       - Use named parameters (:name, :price, etc.)
+
+        //? Use $this->execute() for INSERT queries.
+        //? Use named parameters for security: :name, :price, :description.
+        //? Use date('Y-m-d H:i:s') for the created_at timestamp.
+        //? Use $data['field_name'] ?? '' for optional fields.
+        //? Use $this->lastInsertId() to get the ID of the inserted record.
+        // TODO: 2. Return the last inserted ID using $this->lastInsertId()
+        return '111';
     }
 }

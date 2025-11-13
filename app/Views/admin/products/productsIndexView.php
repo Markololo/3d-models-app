@@ -60,19 +60,19 @@ ViewHelper::loadAdminHeader($page_title);
                         <td><?= htmlspecialchars($prod["stock_quantity"]) ?></td>
                         <td>
                             <a href="products/edit/<?php echo $prod["id"] ?>" class="btn btn-success">Edit</a>
+                            <a href="products/delete/<?php echo $prod["id"] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                            <a href="products/show/<?php echo $prod["id"] ?>" class="btn btn-info">View</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <p>
-        </p>
+        <a href="products/create" class="btn btn-secondary"> Add New Product </a>
     </div>
 </main>
 
 <?php
 
 ViewHelper::loadJsScripts();
-//TODO: We need to load an admin-specific footer.
 ViewHelper::loadAdminFooter();
 ?>
