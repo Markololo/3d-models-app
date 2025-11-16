@@ -8,8 +8,10 @@ use App\MiddleWare\SessionMiddleware;
 
 //TODO: set the page title dynamically based on the view being rendered in the controller.
 // $page_title = 'Products list';
+
+
 $page_title = $data["page_title"];
-$products = $data["categories"];
+$categories = $data["categories"];
 
 //TODO: We need to load an admin-specific header.
 ViewHelper::loadAdminHeader($page_title);
@@ -42,20 +44,19 @@ ViewHelper::loadAdminHeader($page_title);
         <h4> <?php echo SessionManager::get('username') ?> </h4>
         <table table-striped>
             <thead>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Price</th>
-                <th>Stock Qty</th>
                 <th>Created At</th>
             </thead>
             <tbody>
-                <?php foreach ($data["products"] as $key => $prod): ?>
+                <?php foreach ($data["categories"] as $key => $categorie): ?>
                     <tr>
-                        <td><?= $hs($prod['id']) ?></td>
+                        <td><?= ($categorie['id']) ?></td>
 
-                        <td><?= $prod["name"] ?></td>
-                        <td><?= $prod["description"] ?></td>
-                        <td><?= $prod["price"] ?></td>
+                        <td><?= $categorie["name"] ?></td>
+                        <td><?= $categorie["description"] ?></td>
+                        <td><?= $categorie["created_at"] ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

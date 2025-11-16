@@ -6,6 +6,7 @@ declare(strict_types=1);
  * This file contains the routes for the web application.
  */
 
+use App\Controllers\CategoriesController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
 use App\Controllers\ProductsController;
@@ -69,7 +70,7 @@ return static function (Slim\App $app): void {
         // );
         $group->get(
             '/categories',
-            [ProductsController::class, 'index']
+            [CategoriesController::class, 'index']
         )->setName('categories.index');
     }
 );

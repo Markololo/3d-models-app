@@ -19,24 +19,40 @@ class CategoriesController extends BaseController
     }
 
     // Signatures of controller methods: (callback methods)
+
+
     public function index(Request $request, Response $response, array $args): Response
     {
 
         $categories = $this->categories_model->getAll();
         $data['data'] = [
+            'page_title' => 'List of categories',
+
             'title' => 'List of Categories',
             'message' => 'Welcome to the home page',
             'categories' => $categories
         ];
-        return $this->render($response, '<admin>
-    <categories>categoriesIndexView.php', $data);
+        //     return $this->render($response, '<admin>
+        // <categories>categoriesIndexView.php', $data);
+        return $this->render($response, 'admin/categories/categoriesIndexView.php', $data);
     }
 
 
     public function show(Request $request, Response $response, array $args): Response
     {
 
-        return $response;
+        $category_id = $args["category_id"];
+        // dd("Editing product: " . $product_id["id"]);
+
+        $product = $this->categories_model->fetchCategoryById($category_id);
+        $categories = $this->categories_model->getAll();
+        $data = [
+            'page_title' => 'Edit Page',
+            'product' => $product,
+            'categories' => $categories
+
+        ];
+        return $this->render($response, 'admin/categories/categoriesIndexView.php', $data);
     }
     public function create(Request $request, Response $response, array $args): Response
     {
