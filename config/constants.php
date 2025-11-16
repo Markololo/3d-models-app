@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 // Define the path of the application's root directory.
 define('APP_BASE_DIR_PATH', realpath(dirname(__DIR__, 1)));
+
+
 define('APP_UPLOAD_BASE_DIR', APP_BASE_DIR_PATH . '/uploads');
 
 // Holds the name of the app's root directory.

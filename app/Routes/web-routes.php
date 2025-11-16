@@ -97,3 +97,4 @@ return static function (Slim\App $app): void {
     $app->post('/upload', [UploadController::class, 'upload'])->setName('upload.process');
 
 };
+
