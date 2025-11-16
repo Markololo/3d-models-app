@@ -335,7 +335,7 @@
                                 <a
                                     class="nav-link d-flex align-items-center gap-2 active"
                                     aria-current="page"
-                                    href="<?= APP_ADMIN_URL ?>/dashbpard">
+                                    href="<?= APP_ADMIN_URL ?>/dashboard">
                                     <svg class="bi" aria-hidden="true">
                                         <use xlink:href="#house-fill"></use>
                                     </svg>
