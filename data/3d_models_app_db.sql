@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 05, 2025 at 01:42 PM
+-- Generation Time: Nov 19, 2025 at 01:50 PM
 -- Server version: 11.8.3-MariaDB-log
 -- PHP Version: 8.4.10
 
@@ -33,6 +33,15 @@ CREATE TABLE `categories` (
   `description` text DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`, `description`, `created_at`) VALUES
+(1, 'Carbon Fiber', 'This is a category for the 3d models that need to be made (preferably) with carbon fiber filaments.', '2025-11-05 09:29:47'),
+(2, 'Handy kitchen tools', 'Find a variety of 3d printable kitchen tools and gadgets to make your life easier.', '2025-11-05 09:40:10'),
+(3, 'Kids gadgets', '3d printable mini toys and gadgets for kids.', '2025-11-05 09:40:10');
 
 -- --------------------------------------------------------
 
@@ -78,6 +87,15 @@ CREATE TABLE `products` (
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `price`, `stock_quantity`, `created_at`, `updated_at`) VALUES
+(1, 1, 'iPhone 10 - Gyroid cover', 'Get yourself a super powerful iPhone 10 protector', 20.25, 6, '2025-11-05 09:35:46', '2025-11-11 15:53:07'),
+(2, 2, 'Bag Closing Clip', 'A nice plastic clip to close any bag in your house.', 2.15, 23, '2025-11-05 09:41:49', '2025-11-11 15:00:06'),
+(3, 2, 'kitchen towel hanger', 'A small hanger to stick on your wall to hang your kitchen towels.', 4.99, 5, '2025-11-05 09:43:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -166,7 +184,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -184,7 +202,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `product_images`
