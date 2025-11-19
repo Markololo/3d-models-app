@@ -41,12 +41,11 @@ class UserModel extends BaseModel
      */
     public function findByEmail(string $email): ?array
     {
-        // TODO: Write a SELECT SQL query to find a user by email
-        //       Select all columns from the users table where email matches
-        //       Use named parameter :email and LIMIT 1
+        $sql = "SELECT * from users where email = :email LIMIT 1";
 
-        // TODO: Execute the query and return the result
-        return [];
+        $user = $this->selectOne($sql, ['email'=>$email]);
+
+        return $user;
     }
 
     /**
@@ -57,12 +56,11 @@ class UserModel extends BaseModel
      */
     public function findByUsername(string $username): ?array
     {
-        // TODO: Write a SELECT SQL query to find a user by username
-        //       Select all columns from the users table where username matches
-        //       Use named parameter :username and LIMIT 1
+        $sql = "SELECT * from users where username = :username LIMIT 1";
 
-        // TODO: Execute the query and return the result
-        return [];
+        $user = $this->selectOne($sql, ['username'=>$username]);
+
+        return $user;
     }
 
     /**
@@ -73,12 +71,14 @@ class UserModel extends BaseModel
      */
     public function emailExists(string $email): bool
     {
-        // TODO: Write a SELECT COUNT(*) query to count users with the given email
-        //       Alias the count as 'count'
-        //       Use named parameter :email
+        $sql = "SELECT COUNT(*) as count from users where email = :email";
 
-        // TODO: Execute the query and return true if count > 0, false otherwise
-        return false;
+        $count = $this->selectOne($sql, ['email'=>$email]);
+
+        if($count > 0)
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -89,11 +89,13 @@ class UserModel extends BaseModel
      */
     public function usernameExists(string $username): bool
     {
-        // TODO: Write a SELECT COUNT(*) query to count users with the given username
-        //       Alias the count as 'count'
-        //       Use named parameter :username
+        $sql = "SELECT COUNT(*) as count from users where username = :username";
 
-        // TODO: Execute the query and return true if count > 0, false otherwise
-        return false;
+        $count = $this->selectOne($sql, ['username'=>$username]);
+
+        if($count > 0)
+            return true;
+        else
+            return false;
     }
 }
