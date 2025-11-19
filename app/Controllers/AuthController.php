@@ -46,72 +46,67 @@ class AuthController extends BaseController
         //? 2) Start validation:
         $errors = [];
 
-        if (empty($firstName) || empty($lastName) || empty($username)|| empty($email)|| empty($password)|| empty($confirmPassword)|| empty($role))
-        {
-            errors[] = "All fields are required!";
+        if (empty($firstName) || empty($lastName) || empty($username) || empty($email) || empty($password) || empty($confirmPassword) || empty($role)) {
+            $errors[] = "All fields are required!";
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-        {
-             $errors[] = "Invalid email format.";
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Invalid email format.";
         }
 
         $emailExists =  $this->userModel->emailExists($email);
-        if($emailExists)
-        {
+        if ($emailExists) {
             $errors = ["Email already registered."];
         }
 
         $usernameExists =  $this->userModel->usernameExists($username);
-        if($usernameExists)
-        {
+        if ($usernameExists) {
             $errors = ["Username already taken."];
         }
 
-        if(strlen($password) < 8)
-        {
+        if (strlen($password) < 8) {
             $errors[] = "Password must be at least 8 characters long.";
         }
 
-        if (!preg_match('/[0-9]/', $password))
-        {
+        if (!preg_match('/[0-9]/', $password)) {
             $errors[] = "Password must contain at least one number.";
         }
 
-        if($password !== $confirmPassword)
-        {
+        if ($password !== $confirmPassword) {
             $errors[] = "Passwords do not match.";
         }
 
         // If validation errors exist, redirect back with error message
-        if(empty($errors))
-        {
-            return $this->render($response, 'auth/register.php', $errors);
+        if (!empty($errors)) {
+            //       If errors exist:
+            //         - Use FlashMessage::error() with the first error message
+            //         - Redirect back to 'auth.register' route
+
+            FlashMessage::error($errors[0]);
+            return $this->redirect($request, $response, 'auth/register.php', $errors);
+        } else {
+            try {
+                $userData = [
+                    'first_name' => $firstName,
+                    'last_name' => $lastName,
+                    'username' => $username,
+                    'email' => $email,
+                    'password' => $password,
+                    'role' => $role
+                ];
+
+                 $userId = $this->userModel->createUser($userData);
+
+                FlashMessage::success("Registration successful! Please log in.");
+
+                 return $this->redirect($request, $response, 'auth.login');
+
+
+            } catch (\Exception $e) {
+                FlashMessage::error("Registration failed. Please try again.");
+
+                 return $this->redirect($request, $response, 'auth.register', $errors);
+            }
         }
-        // TODO: Check if $errors array is not empty
-        //       If errors exist:
-        //         - Use FlashMessage::error() with the first error message
-        //         - Redirect back to 'auth.register' route
-
-        // If validation passes, create the user
-        try {
-            // TODO: Create $userData array with keys:
-            //       'first_name', 'last_name', 'username', 'email', 'password', 'role'
-
-            // TODO: Call $this->userModel->createUser($userData)
-            //       Store the returned user ID in $userId
-
-            // TODO: Display success message using FlashMessage::success()
-            //       Message: "Registration successful! Please log in."
-
-            // TODO: Redirect to 'auth.login' route
-
-        } catch (\Exception $e) {
-            // TODO: Display error message using FlashMessage::error()
-            //       Message: "Registration failed. Please try again."
-
-            // TODO: Redirect back to 'auth.register' route
-        }
-        return $response;
     }
 }
