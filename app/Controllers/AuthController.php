@@ -84,6 +84,10 @@ class AuthController extends BaseController
         }
 
         // If validation errors exist, redirect back with error message
+        if(empty($errors))
+        {
+            return $this->render($response, 'auth/register.php', $errors);
+        }
         // TODO: Check if $errors array is not empty
         //       If errors exist:
         //         - Use FlashMessage::error() with the first error message
