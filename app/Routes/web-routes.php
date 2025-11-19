@@ -99,7 +99,11 @@ return static function (Slim\App $app): void {
     $app->post('/upload', [UploadController::class, 'upload'])->setName('upload.process');
 
     // $app->group('/auth', function ($group) {
+    //     $group->get('/register', [AuthController::class, 'register'])->setName('auth.register');
+    //     $group->post('/register', [AuthController::class, 'store']);
 
+    //     // TEMPORARY route for testing
+    //     $group->post('/login', [HomeController::class, 'index'])->setName('auth.login');
     // });
 
     $app->get('/register', [AuthController::class, 'register'])->setName('auth.register');

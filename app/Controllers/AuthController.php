@@ -40,7 +40,7 @@ class AuthController extends BaseController
         $username = $formData["username"];
         $email = $formData["email"];
         $password = $formData["password"];
-        $confirmPassword = $formData["confirmPassword"];
+        $confirmPassword = $formData["confirm_password"];
         $role = $formData["role"];
 
         //? 2) Start validation:
@@ -83,7 +83,7 @@ class AuthController extends BaseController
             //         - Redirect back to 'auth.register' route
 
             FlashMessage::error($errors[0]);
-            return $this->redirect($request, $response, 'auth/register.php', $errors);
+            return $this->redirect($request, $response, 'auth.register', $errors);
         } else {
             try {
                 $userData = [
