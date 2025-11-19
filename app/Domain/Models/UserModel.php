@@ -19,18 +19,32 @@ class UserModel extends BaseModel
      */
     public function createUser(array $data): int
     {
-        // TODO: Hash the password using password_hash() with PASSWORD_BCRYPT
+ // TODO: Hash the password using password_hash() with PASSWORD_BCRYPT
         //       Store the result in $hashedPassword variable
 
-        // TODO: Write an INSERT SQL query to insert a new user into the users table
+        $password = $data['password_hash'];
+
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+  // TODO: Write an INSERT SQL query to insert a new user into the users table
         //       Insert: first_name, last_name, username, email, password_hash, role
         //       Use named parameters (e.g., :first_name, :last_name, etc.)
+        $sql = "INSERT INTO users(first_name, last_name, username, email, password_hash, role) VALUES (:first_name, :last_name,, :username, :email, :password_hash, :role)";
 
         // TODO: Execute the query with appropriate parameters
         //       Use $hashedPassword for the password_hash field
 
-        // TODO: Return the last inserted ID
-        return -1;
+         $this->execute($sql, [
+         'first_name' => $data['first_name'],
+         'last_name' => $data['last_name'],
+         'username' => $data['username'],
+         'email' => $data['email'],
+        'password_hash'=>$hashedPassword,
+         'role' => $data['role']
+        ]);
+
+        return (int)$this->lastInsertId() ;
+
     }
 
     /**
@@ -58,6 +72,7 @@ class UserModel extends BaseModel
     public function findByUsername(string $username): ?array
     {
         // TODO: Write a SELECT SQL query to find a user by username
+
         //       Select all columns from the users table where username matches
         //       Use named parameter :username and LIMIT 1
 
