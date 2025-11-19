@@ -21,10 +21,11 @@ class AuthController extends BaseController
      */
     public function register(Request $request, Response $response, array $args): Response
     {
-        // TODO: Create a $data array with 'title' => 'Register'
+        $data = [
+            'page_title' => 'Registration Page',
+        ];
 
-        // TODO: Render 'auth/register.php' view and pass $data
-        return $response;
+        return $this->render($response, 'auth/register.php', $data);
     }
 
     /**
@@ -32,38 +33,55 @@ class AuthController extends BaseController
      */
     public function store(Request $request, Response $response, array $args): Response
     {
-        // TODO: Get form data using getParsedBody()
-        //       Store in $formData variable
+        //? 1) Parse the request:
+        $formData = $request->getParsedBody();
+        $firstName = $formData["first_name"];
+        $lastName = $formData["first_name"];
+        $username = $formData["username"];
+        $email = $formData["email"];
+        $password = $formData["password"];
+        $confirmPassword = $formData["confirmPassword"];
+        $role = $formData["role"];
 
-        // TODO: Extract individual fields from $formData:
-        //       $firstName, $lastName, $username, $email, $password, $confirmPassword, $role
-
-        // Start validation
+        //? 2) Start validation:
         $errors = [];
 
-        // TODO: Validate required fields (first_name, last_name, username, email, password, confirm_password)
-        //       If any field is empty, add error: "All fields are required."
-        //       Hint: if (empty($firstName) || empty($lastName) || ...) { $errors[] = "..."; }
+        if (empty($firstName) || empty($lastName) || empty($username)|| empty($email)|| empty($password)|| empty($confirmPassword)|| empty($role))
+        {
+            errors[] = "All fields are required!";
+        }
 
-        // TODO: Validate email format using filter_var()
-        //       If invalid, add error: "Invalid email format."
-        //       Hint: if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { ... }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        {
+             $errors[] = "Invalid email format.";
+        }
 
-        // TODO: Check if email already exists using $this->userModel->emailExists($email)
-        //       If exists, add error: "Email already registered."
+        $emailExists =  $this->userModel->emailExists($email);
+        if($emailExists)
+        {
+            $errors = ["Email already registered."];
+        }
 
-        // TODO: Check if username already exists using $this->userModel->usernameExists($username)
-        //       If exists, add error: "Username already taken."
+        $usernameExists =  $this->userModel->usernameExists($username);
+        if($usernameExists)
+        {
+            $errors = ["Username already taken."];
+        }
 
-        // TODO: Validate password length (minimum 8 characters)
-        //       If too short, add error: "Password must be at least 8 characters long."
+        if(strlen($password) < 8)
+        {
+            $errors[] = "Password must be at least 8 characters long.";
+        }
 
-        // TODO: Validate password contains at least one number
-        //       If no number, add error: "Password must contain at least one number."
-        //       Hint: if (!preg_match('/[0-9]/', $password)) { ... }
+        if (!preg_match('/[0-9]/', $password))
+        {
+            $errors[] = "Password must contain at least one number.";
+        }
 
-        // TODO: Check if password matches confirm_password
-        //       If not match, add error: "Passwords do not match."
+        if($password !== $confirmPassword)
+        {
+            $errors[] = "Passwords do not match.";
+        }
 
         // If validation errors exist, redirect back with error message
         // TODO: Check if $errors array is not empty
@@ -91,6 +109,5 @@ class AuthController extends BaseController
             // TODO: Redirect back to 'auth.register' route
         }
         return $response;
-
     }
 }

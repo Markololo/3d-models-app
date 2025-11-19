@@ -6,6 +6,7 @@ declare(strict_types=1);
  * This file contains the routes for the web application.
  */
 
+use App\Controllers\AuthController;
 use App\Controllers\CategoriesController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
@@ -97,5 +98,11 @@ return static function (Slim\App $app): void {
     $app->get('/upload', [UploadController::class, 'index'])->setName('upload.index');
     $app->post('/upload', [UploadController::class, 'upload'])->setName('upload.process');
 
+    // $app->group('/auth', function ($group) {
+
+    // });
+
+    $app->get('/register', [AuthController::class, 'register'])->setName('auth.register');
+    $app->post('/register', [AuthController::class, 'store']);
 };
 
