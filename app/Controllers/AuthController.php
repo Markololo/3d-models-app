@@ -95,17 +95,19 @@ class AuthController extends BaseController
                     'role' => $role
                 ];
 
-                 $userId = $this->userModel->createUser($userData);
+                $userId = $this->userModel->createUser($userData);
+
+                $data = [
+                    'id' => $userId
+                ];
 
                 FlashMessage::success("Registration successful! Please log in.");
 
-                 return $this->redirect($request, $response, 'auth.login');
-
-
+                return $this->redirect($request, $response, 'auth.login');
             } catch (\Exception $e) {
                 FlashMessage::error("Registration failed. Please try again.");
 
-                 return $this->redirect($request, $response, 'auth.register', $errors);
+                return $this->redirect($request, $response, 'auth.register', $errors);
             }
         }
     }
