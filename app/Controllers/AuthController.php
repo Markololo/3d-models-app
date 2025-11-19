@@ -40,7 +40,7 @@ class AuthController extends BaseController
         $username = $formData["username"];
         $email = $formData["email"];
         $password = $formData["password"];
-        $confirmPassword = $formData["confirmPassword"];
+        $confirmPassword = $formData["confirm_password"];
         $role = $formData["role"];
 
         //? 2) Start validation:
@@ -83,7 +83,7 @@ class AuthController extends BaseController
             //         - Redirect back to 'auth.register' route
 
             FlashMessage::error($errors[0]);
-            return $this->redirect($request, $response, 'auth/register.php', $errors);
+            return $this->redirect($request, $response, 'auth.register', $errors);
         } else {
             try {
                 $userData = [
@@ -95,17 +95,15 @@ class AuthController extends BaseController
                     'role' => $role
                 ];
 
-                 $userId = $this->userModel->createUser($userData);
+                $userId = $this->userModel->createUser($userData);
 
                 FlashMessage::success("Registration successful! Please log in.");
 
-                 return $this->redirect($request, $response, 'auth.login');
-
-
+                return $this->redirect($request, $response, 'auth.login', ['id' => $userId]);
             } catch (\Exception $e) {
                 FlashMessage::error("Registration failed. Please try again.");
 
-                 return $this->redirect($request, $response, 'auth.register', $errors);
+                return $this->redirect($request, $response, 'auth.register', $errors);
             }
         }
     }
