@@ -114,18 +114,16 @@ return static function (Slim\App $app): void {
     $app->get('/register', [AuthController::class, 'register'])->setName('auth.register');
     $app->post('/register', [AuthController::class, 'store'])->setName('auth.store');
 
-    //! TEMPORARY route for testing
-    // $app->post('/login', [HomeController::class, 'index'])->setName('auth.login');
-    $app->get('/login', [HomeController::class, 'index'])->setName('auth.login');
-
-    // Public routes (no authentication required)
-    // TODO: Create a GET route for '/login' that maps to AuthController::class 'login' method
-    //       Set the route name to 'auth.login'
+    $app->get('/login', [AuthController::class, 'login'])->setName('auth.login');
+    $app->post('/login', [AuthController::class, 'authenticate']);
+    $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
 
     // TODO: Create a POST route for '/login' that maps to AuthController::class 'authenticate' method
 
     // TODO: Create a GET route for '/logout' that maps to AuthController::class 'logout' method
-    //       Set the route name to 'auth.logout'
+    $app->get('/dashboard', [AuthController::class, 'dashboard'])
+    ->setName('user.dashboard')
+    ->add(AuthMiddleware::class);
     /*
     GET /login → Displays the login form
     POST /login → Processes the login form submission
