@@ -47,7 +47,7 @@ class UserModel extends BaseModel
      * @param string $email The email address to search for
      * @return array|null User data array or null if not found
      */
-    public function findByEmail(string $email): ?array
+    public function findByEmail(string $email)
     {
         $sql = "SELECT * from users where email = :email LIMIT 1";
 
@@ -62,7 +62,7 @@ class UserModel extends BaseModel
      * @param string $username The username to search for
      * @return array|null User data array or null if not found
      */
-    public function findByUsername(string $username): ?array
+    public function findByUsername(string $username)
     {
         $sql = "SELECT * from users where username = :username LIMIT 1";
 
@@ -121,12 +121,12 @@ class UserModel extends BaseModel
               $user = $this->findByEmail($identifier);
 
         //? If user not found by email, try finding by username
-              if (!$user) {
+              if (!$user || $user == null) {
                   $user = $this->findByUsername($identifier);
               }
 
         //? If user still not found, return null (invalid credentials)
-              if(!$user) {
+              if(!$user || $user == null) {
                 return null;
               }
 
