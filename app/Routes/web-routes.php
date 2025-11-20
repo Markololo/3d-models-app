@@ -107,7 +107,7 @@ return static function (Slim\App $app): void {
     // });
 
     $app->get('/register', [AuthController::class, 'register'])->setName('auth.register');
-    $app->post('/register', [AuthController::class, 'store']);
+    $app->post('/register', [AuthController::class, 'store'])->setName('auth.store');
 
     //! TEMPORARY route for testing
     $app->post('/login', [HomeController::class, 'index'])->setName('auth.login');

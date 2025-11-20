@@ -36,7 +36,7 @@ class AuthController extends BaseController
         //? 1) Parse the request:
         $formData = $request->getParsedBody();
         $firstName = $formData["first_name"];
-        $lastName = $formData["first_name"];
+        $lastName = $formData["last_name"];
         $username = $formData["username"];
         $email = $formData["email"];
         $password = $formData["password"];
@@ -54,14 +54,14 @@ class AuthController extends BaseController
             $errors[] = "Invalid email format.";
         }
 
-        $emailExists =  $this->userModel->emailExists($email);
-        if ($emailExists) {
-            $errors = ["Email already registered."];
+        // $emailExists =  $this->userModel->emailExists($email);
+        if ($email && $this->userModel->emailExists($email)) {
+            $errors[] = "Email already registered.";
         }
 
         $usernameExists =  $this->userModel->usernameExists($username);
         if ($usernameExists) {
-            $errors = ["Username already taken."];
+            $errors[] = "Username already taken.";
         }
 
         if (strlen($password) < 8) {
@@ -83,7 +83,7 @@ class AuthController extends BaseController
             //         - Redirect back to 'auth.register' route
 
             FlashMessage::error($errors[0]);
-            return $this->redirect($request, $response, 'auth.register', $errors);
+            return $this->redirect($request, $response, 'auth.register');
         } else {
             try {
                 $userData = [
@@ -97,9 +97,7 @@ class AuthController extends BaseController
 
                 $userId = $this->userModel->createUser($userData);
 
-                $data = [
-                    'id' => $userId
-                ];
+
 
                 FlashMessage::success("Registration successful! Please log in.");
 
@@ -107,7 +105,7 @@ class AuthController extends BaseController
             } catch (\Exception $e) {
                 FlashMessage::error("Registration failed. Please try again.");
 
-                return $this->redirect($request, $response, 'auth.register', $errors);
+                return $this->redirect($request, $response, 'auth.register');
             }
         }
     }

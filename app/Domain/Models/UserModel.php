@@ -19,32 +19,31 @@ class UserModel extends BaseModel
      */
     public function createUser(array $data): int
     {
- // TODO: Hash the password using password_hash() with PASSWORD_BCRYPT
+        // TODO: Hash the password using password_hash() with PASSWORD_BCRYPT
         //       Store the result in $hashedPassword variable
 
-        $password = $data['password_hash'];
+        $password = $data['password'];
 
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-  // TODO: Write an INSERT SQL query to insert a new user into the users table
+        // TODO: Write an INSERT SQL query to insert a new user into the users table
         //       Insert: first_name, last_name, username, email, password_hash, role
         //       Use named parameters (e.g., :first_name, :last_name, etc.)
-        $sql = "INSERT INTO users(first_name, last_name, username, email, password_hash, role) VALUES (:first_name, :last_name,, :username, :email, :password_hash, :role)";
+        $sql = "INSERT INTO users(first_name, last_name, username, email, password_hash, role) VALUES (:first_name, :last_name, :username, :email, :password_hash, :role)";
 
         // TODO: Execute the query with appropriate parameters
         //       Use $hashedPassword for the password_hash field
 
-         $this->execute($sql, [
-         'first_name' => $data['first_name'],
-         'last_name' => $data['last_name'],
-         'username' => $data['username'],
-         'email' => $data['email'],
-        'password_hash'=>$hashedPassword,
-         'role' => $data['role']
+        $this->execute($sql, [
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'password_hash' => $hashedPassword,
+            'role' => $data['role']
         ]);
 
-        return (int)$this->lastInsertId() ;
-
+        return (int)$this->lastInsertId();
     }
 
     /**
@@ -57,7 +56,7 @@ class UserModel extends BaseModel
     {
         $sql = "SELECT * from users where email = :email LIMIT 1";
 
-        $user = $this->selectOne($sql, ['email'=>$email]);
+        $user = $this->selectOne($sql, ['email' => $email]);
 
         return $user;
     }
@@ -72,7 +71,7 @@ class UserModel extends BaseModel
     {
         $sql = "SELECT * from users where username = :username LIMIT 1";
 
-        $user = $this->selectOne($sql, ['username'=>$username]);
+        $user = $this->selectOne($sql, ['username' => $username]);
 
         return $user;
     }
@@ -87,14 +86,15 @@ class UserModel extends BaseModel
     {
         $sql = "SELECT COUNT(*) as count from users where email = :email";
 
-        $count = $this->selectOne($sql, ['email'=>$email]);
+        $result = $this->selectOne($sql, ['email' => $email]);
 
-        if($count > 0)
+        // TODO: Execute the query and return true if count > 0, false otherwise
+        if (isset($result['count']) && (int)$result['count'] > 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
-
     /**
      * Check if a username already exists in the database.
      *
@@ -105,11 +105,12 @@ class UserModel extends BaseModel
     {
         $sql = "SELECT COUNT(*) as count from users where username = :username";
 
-        $count = $this->selectOne($sql, ['username'=>$username]);
+        $result = $this->selectOne($sql, ['username' => $username]);
 
-        if($count > 0)
+          if (isset($result['count']) && (int)$result['count'] > 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 }
