@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Routing\RouteContext;
-use Slim\Psr7\Response as SlimPsr7Response;
+// use Slim\Psr7\Response as SlimPsr7Response;
 // use Slim\Psr7\Response;
 class AuthMiddleware implements MiddlewareInterface
 {
@@ -29,9 +29,8 @@ class AuthMiddleware implements MiddlewareInterface
             $routeParser = RouteContext::fromRequest($request)->getRouteParser();
             $loginUrl = $routeParser->urlFor('auth.login');
             // $psr17Factory = new Psr17Factory();
-            // $response = new SlimPsr7Response();
-            $response = new \Slim\Psr7\Response();
-            // $response = new Response();
+            $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+            $response = $psr17Factory->createResponse(302);
 
             return $response->withHeader('Location', $loginUrl)->withStatus(302);
         }

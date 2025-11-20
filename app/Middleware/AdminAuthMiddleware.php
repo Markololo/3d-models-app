@@ -22,18 +22,31 @@ class AdminAuthMiddleware implements MiddlewareInterface
         $role = SessionManager::get('user_role');
 
         //? Check authentication:
-        if(!$isAuthenticated) {
+        if (!$isAuthenticated) {
             //? show error:
             FlashMessage::error("Please log in to access the admin panel.");
 
             //? redirect to 'auth.login':
+            $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+            $loginUrl = $routeParser->urlFor('auth.login');
+            // $psr17Factory = new Psr17Factory();
+            $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+            $response = $psr17Factory->createResponse(302);
 
+            return $response->withHeader('Location', $loginUrl)->withStatus(302);
         } else {
-            if($role != 'admin') {
+            if ($role != 'admin') {
                 //? show error:
                 FlashMessage::error("Access denied. Admin privileges required.");
 
-                 //? redirect to 'user.dashboard' route:
+                //? redirect to 'user.dashboard' route:
+                $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+                $loginUrl = $routeParser->urlFor('user.dashboard');
+                // $psr17Factory = new Psr17Factory();
+                $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+                $response = $psr17Factory->createResponse(302);
+
+                return $response->withHeader('Location', $loginUrl)->withStatus(302);
 
             } else {
                 return $handler->handle($request);
