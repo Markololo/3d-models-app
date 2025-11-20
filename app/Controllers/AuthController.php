@@ -116,8 +116,14 @@ class AuthController extends BaseController
     public function login(Request $request, Response $response, array $args): Response
     {
         // TODO: Create a $data array with 'title' => 'Login'
+        $data =
+            [
+                'page_title' => 'Login'
+            ];
+
 
         // TODO: Render 'auth/login.php' view and pass $data
+        return $this->render($response, 'auth/login.php', $data);
     }
 
     /**
@@ -126,44 +132,59 @@ class AuthController extends BaseController
     public function authenticate(Request $request, Response $response, array $args): Response
     {
         // TODO: Get form data using getParsedBody()
+        $formData = $request->getParsedBody();
+        $identifier = $formData["id"];
+        $password = $formData["password"];
 
-        // TODO: Extract 'identifier' and 'password' from form data
 
-        // Start validation
+        //? 2) Start validation:
         $errors = [];
 
-        // TODO: Validate required fields (identifier and password)
-        //       If either is empty, add error: "Email/username and password are required."
+        if (empty($identifier) || empty($password)) {
+            $errors[] = "Email/username and password are required.";
+        }
 
-        // If validation errors exist, redirect back
-        // TODO: Check if $errors array is not empty
-        //       If errors exist, use FlashMessage::error() and redirect to 'auth.login'
 
-        // Attempt to verify user credentials
-        // TODO: Call $this->userModel->verifyCredentials($identifier, $password)
-        //       Store the result in $user variable
+        if (!empty($errors)) {
+            FlashMessage::error("Validation Errors");
+
+            return $this->redirect($request, $response, 'auth.login');
+        }
+
+        $user = $this->userModel->verifyCredentials($identifier, $password);
 
         // Check if authentication was successful
         // TODO: If $user is null (authentication failed):
-        //       - Display error message: "Invalid credentials. Please try again."
-        //       - Redirect back to 'auth.login'
+
+        if ($user == null) {
+            $errors[] = "Invalid credentials. Please try again.";
+            return $this->redirect($request, $response, 'auth.login');
+        }
 
         // Authentication successful - create session
+        // pass?
         // TODO: Store user data in session using SessionManager:
-        //       SessionManager::set('user_id', $user['id']);
-        //       SessionManager::set('user_email', $user['email']);
-        //       SessionManager::set('user_name', $user['first_name'] . ' ' . $user['last_name']);
-        //       SessionManager::set('user_role', $user['role']);
-        //       SessionManager::set('is_authenticated', true);
+        SessionManager::set('user_id', $user['id']);
+        SessionManager::set('user_email', $user['email']);
+        SessionManager::set('user_name', $user['first_name'] . ' ' . $user['last_name']);
+        SessionManager::set('user_role', $user['role']);
+        SessionManager::set('is_authenticated', true);
 
         // TODO: Display success message using FlashMessage::success()
-        //       Message: "Welcome back, {$user['first_name']}!"
-
+        FlashMessage::success("Welcome back, {$user['first_name']}!");
         // TODO: Redirect based on role:
         //       If role is 'admin', redirect to 'admin.dashboard'
         //       If role is 'customer', redirect to 'user.dashboard'
-        //       Hint: if ($user['role'] === 'admin') { ... } else { ... }
+        if ($user['role'] === 'admin') {
+            return $this->redirect($request, $response, 'admin.dashboard');
+        } else {
+
+            return $this->redirect($request, $response, 'user.dashboard');
+        }
     }
+
+
+
 
     /**
      * Logout the current user (GET request).
@@ -171,10 +192,12 @@ class AuthController extends BaseController
     public function logout(Request $request, Response $response, array $args): Response
     {
         // TODO: Destroy the session using SessionManager::destroy()
-
+        SessionManager::destroy();
         // TODO: Display success message: "You have been logged out successfully."
+        FlashMessage::success("You have been logged out successfully.");
 
         // TODO: Redirect to 'auth.login' route
+        return $this->redirect($request, $response, 'auth.login');
     }
 
     /**
@@ -183,7 +206,12 @@ class AuthController extends BaseController
     public function dashboard(Request $request, Response $response, array $args): Response
     {
         // TODO: Create a $data array with 'title' => 'Dashboard'
+        $data =
+            [
+                'page_title' => 'Dashboard'
+            ];
 
         // TODO: Render 'user/dashboard.php' view and pass $data
+        return $this->render($response, 'user/dashboard.php', $data);
     }
 }
