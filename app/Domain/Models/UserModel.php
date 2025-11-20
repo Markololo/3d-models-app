@@ -26,13 +26,8 @@ class UserModel extends BaseModel
 
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        // TODO: Write an INSERT SQL query to insert a new user into the users table
-        //       Insert: first_name, last_name, username, email, password_hash, role
-        //       Use named parameters (e.g., :first_name, :last_name, etc.)
+        //? Insert a new user into the users table
         $sql = "INSERT INTO users(first_name, last_name, username, email, password_hash, role) VALUES (:first_name, :last_name, :username, :email, :password_hash, :role)";
-
-        // TODO: Execute the query with appropriate parameters
-        //       Use $hashedPassword for the password_hash field
 
         $this->execute($sql, [
             'first_name' => $data['first_name'],
@@ -88,7 +83,6 @@ class UserModel extends BaseModel
 
         $result = $this->selectOne($sql, ['email' => $email]);
 
-        // TODO: Execute the query and return true if count > 0, false otherwise
         if (isset($result['count']) && (int)$result['count'] > 0) {
             return true;
         } else {
@@ -123,24 +117,23 @@ class UserModel extends BaseModel
      */
     public function verifyCredentials(string $identifier, string $password): ?array
     {
-        // TODO: Try to find user by email first
-        //       $user = $this->findByEmail($identifier);
+        //? Try to find user by email first
+              $user = $this->findByEmail($identifier);
 
-        // TODO: If user not found by email, try finding by username
-        //       if (!$user) {
-        //           $user = $this->findByUsername($identifier);
-        //       }
+        //? If user not found by email, try finding by username
+              if (!$user) {
+                  $user = $this->findByUsername($identifier);
+              }
 
-        // TODO: If user still not found, return null (invalid credentials)
+        //? If user still not found, return null (invalid credentials)
+              if(!$user) {
+                return null;
+              }
 
-        // TODO: Verify the password using password_verify($password, $user['password_hash'])
-        //       If password is valid, return $user
-        //       If password is invalid, return null
-
-        // Hint: Structure should be:
-        // if (password_verify($password, $user['password_hash'])) {
-        //     return $user;
-        // }
-        // return null;
+        //? Verify the password using password_verify($password, $user['password_hash'])
+        if (password_verify($password, $user['password_hash'])) {
+            return $user;
+        }
+        return null;
     }
 }

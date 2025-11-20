@@ -9,7 +9,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Routing\RouteContext;
-
+use Slim\Psr7\Response as SlimPsr7Response;
+// use Slim\Psr7\Response;
 class AuthMiddleware implements MiddlewareInterface
 {
     /**
@@ -17,18 +18,22 @@ class AuthMiddleware implements MiddlewareInterface
      */
     public function process(Request $request, RequestHandler $handler): Response
     {
-        // TODO: Check if user is authenticated using SessionManager::get('is_authenticated')
-        //       Store the result in $isAuthenticated variable
+        //? Check if user is authenticated using SessionManager
+        $isAuthenticated = SessionManager::get('is_authenticated');
 
-        // TODO: If NOT authenticated:
-        //       - Use FlashMessage::error() with message: "Please log in to access this page."
-        //       - Get RouteParser: $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-        //       - Generate login URL: $loginUrl = $routeParser->urlFor('auth.login');
-        //       - Create redirect response:
-        //         $response = new \Slim\Psr7\Response();
-        //         return $response->withHeader('Location', $loginUrl)->withStatus(302);
+        if($isAuthenticated)
+        {
+            return $handler->handle($request);;
+        } else {
+            FlashMessage::error("Please log in to access this page.");
+            $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+            $loginUrl = $routeParser->urlFor('auth.login');
+            // $psr17Factory = new Psr17Factory();
+            // $response = new SlimPsr7Response();
+            $response = new \Slim\Psr7\Response();
+            // $response = new Response();
 
-        // If authenticated, continue to the next middleware/route handler
-        // TODO: Return $handler->handle($request);
+            return $response->withHeader('Location', $loginUrl)->withStatus(302);
+        }
     }
 }
