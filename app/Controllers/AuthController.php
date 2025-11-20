@@ -176,7 +176,8 @@ class AuthController extends BaseController
         //       If role is 'admin', redirect to 'admin.dashboard'
         //       If role is 'customer', redirect to 'user.dashboard'
         if ($user['role'] === 'admin') {
-            return $this->redirect($request, $response, 'admin.dashboard');
+            // return $this->redirect($request, $response, 'admin.dashboard');
+            return $this->redirect($request, $response, 'dashboard.index');
         } else {
 
             return $this->redirect($request, $response, 'user.dashboard');
