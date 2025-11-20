@@ -125,7 +125,7 @@ return static function (Slim\App $app): void {
     ->setName('user.dashboard')
     ->add(AuthMiddleware::class);
 
-    
+
     /*
     GET /login → Displays the login form
     POST /login → Processes the login form submission
