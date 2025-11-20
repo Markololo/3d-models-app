@@ -133,7 +133,7 @@ class AuthController extends BaseController
     {
         // TODO: Get form data using getParsedBody()
         $formData = $request->getParsedBody();
-        $identifier = $formData["id"];
+        $identifier = $formData["identifier"]; //or email
         $password = $formData["password"];
 
 
@@ -141,13 +141,12 @@ class AuthController extends BaseController
         $errors = [];
 
         if (empty($identifier) || empty($password)) {
-            $errors[] = "Email/username and password are required.";
+            $errors[] = "All fields are required.";
         }
 
 
         if (!empty($errors)) {
-            FlashMessage::error("Validation Errors");
-
+            FlashMessage::error("Please enter the correct login info!");
             return $this->redirect($request, $response, 'auth.login');
         }
 
@@ -157,7 +156,8 @@ class AuthController extends BaseController
         // TODO: If $user is null (authentication failed):
 
         if ($user == null) {
-            $errors[] = "Invalid credentials. Please try again.";
+            // $errors[] = "Invalid credentials. Please try again.";
+            FlashMessage::error("Invalid credentials. Please try again.");
             return $this->redirect($request, $response, 'auth.login');
         }
 
