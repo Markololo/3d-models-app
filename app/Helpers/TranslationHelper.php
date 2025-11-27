@@ -39,7 +39,8 @@ class TranslationHelper
         // Hint: You have 4 properties to initialize (langPath, defaultLocale, currentLocale, availableLocales)
         // Note: currentLocale should start as the same value as defaultLocale
         $this->currentLocale = $defaultLocale;
-        $this->langPath = DIRECTORY_SEPARATOR."lang".DIRECTORY_SEPARATOR."$this->currentLocale".DIRECTORY_SEPARATOR."messages.json";
+        // $this->langPath = DIRECTORY_SEPARATOR."lang".DIRECTORY_SEPARATOR."$this->currentLocale".DIRECTORY_SEPARATOR."messages.json";
+        $this->langPath = APP_LANG_PATH;
 
         $this->availableLocales = $availableLocales;
         $this->defaultLocale = $defaultLocale;
@@ -72,9 +73,13 @@ class TranslationHelper
     {
         // TODO: Loop through each locale in availableLocales array
 
-        $languagePaths = [];
+        // $languagePaths = [];
         foreach ($this->availableLocales as $key => $locale) {
-            $languagePaths[] = DIRECTORY_SEPARATOR."lang".DIRECTORY_SEPARATOR.$this->currentLocale.DIRECTORY_SEPARATOR."messages.json";
+            $languagePath = $this->langPath.DIRECTORY_SEPARATOR.$locale.DIRECTORY_SEPARATOR."messages.json";
+
+            if(file_exists($languagePath)) {
+                $this->translator->addResource('json', $languagePath, $locale, 'messages');
+            }
         }
 
         // TODO: For each locale, build the file path to messages.json
