@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use App\Middleware\ExceptionMiddleware;
 use App\MiddleWare\SessionMiddleware;
-
+use App\Middleware\LocaleMiddleware;
 use Slim\App;
 
 return function (App $app) {
@@ -21,6 +21,8 @@ return function (App $app) {
     // Add your middleware here.
     // Start the session at the application level.
     //$app->add(SessionStartMiddleware::class);
+    // Detect and set the application locale
+    $app->add(LocaleMiddleware::class);
     $app->add(ExceptionMiddleware::class);
 
 };
