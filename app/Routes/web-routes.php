@@ -122,8 +122,8 @@ return static function (Slim\App $app): void {
 
     // TODO: Create a GET route for '/logout' that maps to AuthController::class 'logout' method
     $app->get('/dashboard', [AuthController::class, 'dashboard'])
-    ->setName('user.dashboard')
-    ->add(AuthMiddleware::class);
+        ->setName('user.dashboard')
+        ->add(AuthMiddleware::class);
 
 
     /*
@@ -136,4 +136,7 @@ return static function (Slim\App $app): void {
     ->setName('user.dashboard')
     ->add(AuthMiddleware::class);
     / */
+
+    $app->get('/api/products/search', [ProductsController::class, 'search'])
+        ->setName('api.products.search');
 };

@@ -56,7 +56,8 @@ class ProductsModel extends BaseModel
     }
 
     //TODO rename paras and do ID
-    public function insertProduct($a, $b, $c, $d) {
+    public function insertProduct($a, $b, $c, $d)
+    {
         // $sql = "INSERT INTO products(id, name, price, description) VALUES (:a, :b, :c, :d)";
         // return $this->execute($sql, ['id'=> $id, 'a'=>$a, 'b'=>$b, 'c'=>$c, 'd'=>$d]);
     }
@@ -80,5 +81,61 @@ class ProductsModel extends BaseModel
         //? Use $this->lastInsertId() to get the ID of the inserted record.
         // TODO: 2. Return the last inserted ID using $this->lastInsertId()
         return '111';
+    }
+
+
+    public function searchProducts(string $searchTerm = '', ?int $categoryId = null): array
+    {
+        // TODO: Create base SQL query with LEFT JOINs
+        // - Join products (p) with categories (c) on category_id
+        // - Join with product_images (pi) where is_primary = 1
+        // - Select: p.id, p.name, p.description, p.price, p.stock_quantity,
+        //          c.name AS category_name, c.id AS category_id, pi.file_path AS image_path
+        // - Start with WHERE 1=1 to make adding conditions easier
+        // $sql = "SELECT p.id,p.name, p.description,p.price,p.stock_quantity,c.name AS category_name, c.id AS category_id, pi.file_path AS image_path FROM products p LEFT JOIN categories c ON p.category_id = c.id
+        // LEFT JOIN product_images pi ON p.id = pi.product_id
+        // WHERE is_primary = 1";
+
+        $sql = "SELECT p.id,p.name, p.description,p.price,p.stock_quantity,
+        c.name AS category_name, c.id AS category_id, pi.file_path AS image_path FROM products p LEFT JOIN categories c ON p.category_id = c.id
+    LEFT JOIN product_images pi ON p.id = pi.product_id
+    WHERE 1 = 1
+    ";
+
+        // TODO: Initialize empty params array
+        $params = [];
+
+        // TODO: If searchTerm is not empty:
+        // - Add condition: (p.name LIKE :search OR p.description LIKE :search)
+        // - Add to params: 'search' => '%' . $searchTerm . '%'
+
+        if (!empty($searchTerm)) {
+            $sql .= " AND (p.name LIKE :searchName OR p.description LIKE :searchDesc)";
+
+            // $params = array('search' => '%' . $searchTerm . '%');
+
+            // $sql .= " AND (p.name LIKE CONCAT ('%', :search,'%')
+            //            OR p.description LIKE CONCAT ('%', :search,'%'))";
+
+            $params['searchName'] = "%$searchTerm%";
+            $params['searchDesc'] = "%$searchTerm%";
+        }
+
+        // TODO: If categoryId is provided and > 0:
+        // - Add condition: p.category_id = :category_id
+        // - Add to params: 'category_id' => $categoryId
+
+        if (!empty($categoryId) && $categoryId > 0) {
+            $sql .= " AND p.category_id = :category_id ";
+
+            $params['category_id'] = $categoryId;
+        }
+
+        // TODO: Add GROUP BY p.id and ORDER BY p.name ASC
+        $sql .= " GROUP BY p.id ORDER BY p.name ASC";
+
+        // TODO: Return results using $this->selectAll($sql, $params)
+
+        return $this->selectAll($sql, $params);
     }
 }

@@ -67,7 +67,6 @@ class ProductsController extends BaseController
         ];
         return $this->render($response, 'admin/products/productsShowView.php', $data);
     }
-
     /**
      *  Display a form to create a new item.
      * @return void
@@ -88,18 +87,18 @@ class ProductsController extends BaseController
      */
     public function store(Request $request, Response $response, array $args): Response
     {
-    //? Extract the form data from the request.
-    //? Validate the required fields (e.g., name, price).
-    //? If validation fails → redirect back to the creation form.
-    //? If validation passes → save the data to database using the model.
-    //? Get the ID of the newly created item.
-    //? Redirect to the newly created item’s detail page (PRG pattern).
+        //? Extract the form data from the request.
+        //? Validate the required fields (e.g., name, price).
+        //? If validation fails → redirect back to the creation form.
+        //? If validation passes → save the data to database using the model.
+        //? Get the ID of the newly created item.
+        //? Redirect to the newly created item’s detail page (PRG pattern).
         $data = $request->getParsedBody();
         $name = $data["product_name"];
         $price = $data["product_price"];
         $category_id = $data["category_id"];
 
-        $this->products_model->e;
+        $this->products_model->createAndGetId($name, $price, $category_id);
 
         // echo dd($data);
         return $this->redirect($request, $response, 'product.index');
@@ -163,5 +162,62 @@ class ProductsController extends BaseController
     public function error(Request $request, Response $response, array $args): Response
     {
         return $this->render($response, 'errorView.php');
+    }
+
+
+    public function search(Request $request, Response $response, array $args): Response
+    {
+        // TODO: Extract query parameters using $request->getQueryParams()
+        // - Get 'q' parameter, trim it, default to empty string if not set
+        // - Get 'category' parameter, convert to int if set, otherwise null
+
+
+        $queryParams = $request->getQueryParams();
+
+        $searchTerm = trim($queryParams['q'] ?? '');
+
+        $categoryId =  isset($queryParams['category']) ? (int)$queryParams['category'] : null;
+
+
+        if (strlen($searchTerm) > 100) {
+            $searchTerm = substr($searchTerm, 0, 100);
+        }
+
+        // TODO: Call $this->model->searchProducts() with search term and category ID
+        $products =  $this->products_model->searchProducts($searchTerm, $categoryId);
+
+        // TODO: Create response data array with these keys:
+        // - 'success' => true
+        // - 'count' => count of products
+        // - 'query' => the search term
+        // - 'category_id' => the category ID
+        // - 'products' => the products array
+
+        $responseData = [
+            'success' =>  true,
+            'count' => count($products),
+            'query' => $searchTerm,
+            'category_id' => $categoryId,
+            'products' => $products
+        ];
+
+        // TODO: Convert response data to JSON and write to response body
+        // @see: https://www.slimframework.com/docs/v4/objects/response.html#returning-json
+        // - Use json_encode()
+        // - Use $response->getBody()->write()
+
+        $payload = json_encode($responseData);
+
+        $response->getBody()->write($payload);
+
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(200);
+
+        // TODO: Return response with proper headers
+        // - Set Content-Type: application/json
+        // - Set status code 200
+
+
     }
 }
