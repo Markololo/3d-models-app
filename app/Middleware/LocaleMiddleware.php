@@ -42,10 +42,6 @@ class LocaleMiddleware implements MiddlewareInterface
     public function process(Request $request, RequestHandler $handler): ResponseInterface
     {
 
-
-
-        $searchTerm = trim($queryParams['q'] ?? '');
-
         $categoryId =  isset($queryParams['category']) ? (int)$queryParams['category'] : null;
 
 
@@ -54,17 +50,26 @@ class LocaleMiddleware implements MiddlewareInterface
          $queryParams= $request->getQueryParams();
         // TODO: Extract the 'lang' parameter from query params
         // Hint: Use null coalescing operator (??) to default to null if not present
-        $searchTerm =$queryParams['lang'] ?? '';
+        $langParam =$queryParams['lang'] ?? '';
+
 
         // TODO: If a locale was provided and it's valid, set it in the translator
         // Hint: Check both that locale exists AND that it's available before setting
+                $this->products_model->searchProducts($searchTerm, $categoryId);
 
-        
+         TranslationHelper.isLocaleAvailable();
+        if($queryParams['locale'])
+          {
+            $queryParams['locale'] = $translator;
+          }
+
         // TODO: Store the current locale in the request as an attribute named 'locale'
         // Hint: Use $request->withAttribute() to add the attribute
         // Remember: withAttribute() returns a new request object, so reassign it
-
+         $request->withAttribute();
         // TODO: Pass the request to the next middleware/handler and return the response
+        return $handler->handle($request);
+
     }
 
 }
