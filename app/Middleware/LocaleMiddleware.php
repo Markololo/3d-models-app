@@ -31,7 +31,7 @@ class LocaleMiddleware implements MiddlewareInterface
     public function __construct(TranslationHelper $translator)
     {
         // TODO: Store the translator parameter in the class property
-         $this->$translator = $translator;
+        $this->$translator = $translator;
     }
 
     /**
@@ -42,34 +42,29 @@ class LocaleMiddleware implements MiddlewareInterface
     public function process(Request $request, RequestHandler $handler): ResponseInterface
     {
 
-        $categoryId =  isset($queryParams['category']) ? (int)$queryParams['category'] : null;
+        // $categoryId =  isset($queryParams['category']) ? (int)$queryParams['category'] : null;
 
 
         // TODO: Get the query parameters from the request
         // Hint: Use $request->getQueryParams()
-         $queryParams= $request->getQueryParams();
+        $queryParams = $request->getQueryParams();
         // TODO: Extract the 'lang' parameter from query params
         // Hint: Use null coalescing operator (??) to default to null if not present
-        $langParam =$queryParams['lang'] ?? '';
+        $langParam = $queryParams['lang'] ?? '';
 
 
         // TODO: If a locale was provided and it's valid, set it in the translator
         // Hint: Check both that locale exists AND that it's available before setting
-                $this->products_model->searchProducts($searchTerm, $categoryId);
+        if ($this->translator->isLocaleAvailable($langParam)) {
+            $this->translator->setLocale($langParam);
+        }
 
-         TranslationHelper.isLocaleAvailable();
-        if($queryParams['locale'])
-          {
-            $queryParams['locale'] = $translator;
-          }
 
         // TODO: Store the current locale in the request as an attribute named 'locale'
         // Hint: Use $request->withAttribute() to add the attribute
         // Remember: withAttribute() returns a new request object, so reassign it
-         $request->withAttribute();
+        $request->withAttribute('locale', $langParam);
         // TODO: Pass the request to the next middleware/handler and return the response
         return $handler->handle($request);
-
     }
-
 }
