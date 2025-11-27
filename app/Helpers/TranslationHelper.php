@@ -105,7 +105,7 @@ class TranslationHelper
         // TODO: Use the translator's trans() method to translate the key
         // Parameters: key, parameters, domain ('messages'), locale
         // Hint: Return the result
-        $result = $this->translator->trans($key, $parameters,'messages', $locale) ?? "";
+        return  $this->translator->trans($key, $parameters,'messages', $locale) ?? "";
     }
 
     /**

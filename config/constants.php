@@ -14,6 +14,9 @@ define('APP_ROOT_DIR_NAME', basename(dirname(__FILE__, 2)));
 // Define the path of the application's views directory.
 define('APP_VIEWS_PATH', realpath(APP_BASE_DIR_PATH . '/app/Views'));
 
+// Define a constant for the language files directory path.
+const APP_LANG_PATH = APP_BASE_DIR_PATH . '/lang';
+
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
 const HTTP_NO_CONTENT = 204;
