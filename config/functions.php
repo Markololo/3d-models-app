@@ -174,3 +174,41 @@ function getErrorName(int $error_no): string
 
     return $error_types[$error_no] ?? "UNKNOWN_ERROR";
 }
+
+if (!function_exists('trans')) {
+    /**
+     * Translate a message using the application's translation helper.
+     *
+     * This function provides a convenient way to translate strings in views and controllers.
+     * It uses the global TranslationHelper instance to perform translations with support
+     * for nested keys (dot notation) and parameter substitution.
+     *
+     * @param string $key Translation key (supports dot notation: 'home.welcome')
+     * @param array $parameters Parameters to replace in translation (e.g., ['name' => 'John'])
+     * @param string|null $locale Override current locale for this translation
+     * @return string Translated message or the key itself if translation not found
+     *
+     * @example
+     * echo trans('home.welcome');
+     * // Outputs: "Welcome to our e-commerce store" (in current locale)
+     *
+     * @example
+     * echo trans('common.hello', ['name' => 'Alice']);
+     * // Outputs: "Hello, Alice" (with parameter substitution)
+     *
+     * @example
+     * echo trans('nav.home', [], 'fr');
+     * // Outputs: "Accueil" (forced French translation)
+     */
+    function trans(string $key, array $parameters = [], ?string $locale = null): string
+    {
+        global $translator;
+
+        if (!isset($translator)) {
+            // Fallback: return the key if translator is not initialized
+            return $key;
+        }
+
+        return $translator->trans($key, $parameters, $locale);
+    }
+}
