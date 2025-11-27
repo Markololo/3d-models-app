@@ -20,5 +20,9 @@ $definitions = require realpath(__DIR__ . '/container.php');
 $container = (new ContainerBuilder())
     ->addDefinitions($definitions)
     ->build();
+// Set up global translator for use in trans() helper function
+global $translator;
+$translator = $container->get(\App\Helpers\TranslationHelper::class);
+
 // Create App instance
 return $container->get(App::class);
