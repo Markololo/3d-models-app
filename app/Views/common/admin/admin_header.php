@@ -23,6 +23,9 @@
 
      <meta name="theme-color" content="#712cf9" />
      <link href="<?= APP_ASSETS_DIR_URL ?>/css/dashboard.css" rel="stylesheet" />
+     <link href="<?= APP_ASSETS_DIR_URL ?>/css/localization.css" rel="stylesheet" />
+
+
      <style>
          .bd-placeholder-img {
              font-size: 1.125rem;
@@ -110,6 +113,26 @@
  </head>
 
  <body>
+     <div class="language-switcher">
+         <?php
+            // Get current locale from global translator
+            global $translator;
+            $currentLocale = $translator->getLocale();
+            $availableLocales = $translator->getAvailableLocales();
+            ?>
+
+         <?php foreach ($availableLocales as $locale): ?>
+             <?php if ($locale !== $currentLocale): ?>
+                 <a href="?lang=<?= hs($locale) ?>" class="lang-link">
+                     <?= $locale === 'en' ? 'English' : 'Français' ?>
+                 </a>
+             <?php endif; ?>
+         <?php endforeach; ?>
+
+         <span class="current-lang">
+             <?= $currentLocale === 'en' ? '🇬🇧 English' : '🇫🇷 Français' ?>
+         </span>
+     </div>
      <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
          <symbol id="check2" viewBox="0 0 16 16">
              <path

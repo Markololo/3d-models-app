@@ -15,7 +15,7 @@ $options = ViewHelper::renderSelectOptions($categories, (string)$product["catego
 ViewHelper::loadAdminHeader($page_title);
 ?>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <h2>Edit Products:</h2>
+    <h2><?= hs(trans('products.editing'))  ?></h2>
 
 
     <form method="POST" action="<?= APP_ADMIN_URL ?>/products/update/<?= $product["id"] ?>">

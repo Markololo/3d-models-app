@@ -37,7 +37,8 @@ ViewHelper::loadAdminHeader($page_title);
             </button>
         </div>
     </div>
-    <h2>Product Listing</h2>
+
+    <h2><?= hs(trans('products.listing'))  ?></h2>
     <div class="table-responsive small">
         <?php //echo SessionManager::get('username')
         ?>
@@ -49,7 +50,7 @@ ViewHelper::loadAdminHeader($page_title);
                 <th>Description</th>
                 <th>Price</th>
                 <th>Stock</th>
-            </thead>con
+            </thead>
             <tbody>
                 <?php foreach ($data["products"] as $key => $prod): ?>
                     <tr>

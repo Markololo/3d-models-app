@@ -1,22 +1,28 @@
 {
-  "nav": {
-    "home": "Home",
-    "products": "Products",
-    "cart": "Cart"
-  },
-  "home": {
-    "welcome": "Welcome to our e-commerce store",
-    "featured_products": "Featured Products"
-  },
-  "common": {
-    "save": "Save",
-    "cancel": "Cancel",
-    "delete": "Delete"
-  },
-  "errors": {
-    "404": {
-      "title": "404 - Page Not Found",
-      "message": "Oops! The page you are looking for does not exist."
+    "nav": {
+        "home": "Home",
+        "products": "Products",
+        "cart": "Cart"
+    },
+    "home": {
+        "welcome": "Welcome to our e-commerce store",
+        "featured_products": "Featured Products",
+        "description": "Description"
+
+    },
+    "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete"
+    },
+    "errors": {
+        "404": {
+            "title": "404 - Page Not Found",
+            "message": "Oops! The page you are looking for does not exist."
+        }
+    },
+    "products": {
+        "listing": "Product Listing",
+        "editing": "Edit Product"
     }
-  }
 }

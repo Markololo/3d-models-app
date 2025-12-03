@@ -2,12 +2,16 @@
 
 use App\Helpers\ViewHelper;
 //TODO: set the page title dynamically based on the view being rendered in the controller.
-$page_title = 'Home';
+$page_title = trans('home.title');
 ViewHelper::loadHeader($page_title);
+
 ?>
+<link href="<?= APP_ASSETS_DIR_URL ?>/css/localization.css" rel="stylesheet" />
+
 <nav>
+
     <a href="/"><?= hs(trans('nav.home')) ?></a>
-    <a href="/products"><?= hs(trans('nav.products')) ?></a>
+    <a href="/3d-models-app/admin/products"><?= hs(trans('nav.products')) ?></a>
     <a href="/cart"><?= hs(trans('nav.cart')) ?></a>
 </nav>
 
@@ -20,6 +24,7 @@ ViewHelper::loadHeader($page_title);
 <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. </p>
 <button type="submit"><?= hs(trans('common.save')) ?></button>
 <button type="button"><?= hs(trans('common.cancel')) ?></button>
+
 
 <?php
 

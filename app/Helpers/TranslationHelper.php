@@ -39,8 +39,8 @@ class TranslationHelper
         // Hint: You have 4 properties to initialize (langPath, defaultLocale, currentLocale, availableLocales)
         // Note: currentLocale should start as the same value as defaultLocale
         $this->currentLocale = $defaultLocale;
-        // $this->langPath = DIRECTORY_SEPARATOR."lang".DIRECTORY_SEPARATOR."$this->currentLocale".DIRECTORY_SEPARATOR."messages.json";
-        $this->langPath = APP_LANG_PATH;
+        //  $this->langPath = DIRECTORY_SEPARATOR."lang".DIRECTORY_SEPARATOR."$this->currentLocale".DIRECTORY_SEPARATOR."messages.json";
+        $this->langPath = $langPath;
 
         $this->availableLocales = $availableLocales;
         $this->defaultLocale = $defaultLocale;
@@ -49,12 +49,13 @@ class TranslationHelper
         // TODO: Create a new Translator instance and store it in $this->translator
         // Hint: Pass the current locale to the Translator constructor
         // $translator = $this->translator;
+        // $this->translator = new Translator($this->currentLocale);
         $this->translator = new Translator($this->currentLocale);
 
         // TODO: Configure the translator to fall back to the default locale if a translation is missing
         // Hint: Use the setFallbackLocales() method with an array containing the default locale
         // if() {
-            $this->translator->setFallbackLocales([$this->getDefaultLocale()]);
+        $this->translator->setFallbackLocales([$defaultLocale]);
         // }
 
         // TODO: Register the JSON file loader with the translator
@@ -74,11 +75,11 @@ class TranslationHelper
         // TODO: Loop through each locale in availableLocales array
 
         // $languagePaths = [];
-        foreach ($this->availableLocales as $key => $locale) {
-            $languagePath = $this->langPath.DIRECTORY_SEPARATOR.$locale.DIRECTORY_SEPARATOR."messages.json";
+        foreach ($this->availableLocales as $locale) {
+            $path = $this->langPath . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . "messages.json";
 
-            if(file_exists($languagePath)) {
-                $this->translator->addResource('json', $languagePath, $locale, 'messages');
+            if (file_exists($path)) {
+                $this->translator->addResource('json', $path, $locale, 'messages');
             }
         }
 
@@ -110,7 +111,7 @@ class TranslationHelper
         // TODO: Use the translator's trans() method to translate the key
         // Parameters: key, parameters, domain ('messages'), locale
         // Hint: Return the result
-        return  $this->translator->trans($key, $parameters,'messages', $locale) ?? "";
+        return  $this->translator->trans($key, $parameters, 'messages', $transLocale);
     }
 
     /**
@@ -124,7 +125,7 @@ class TranslationHelper
         // TODO: Validate that the requested locale is available
         // Hint: Check if $locale exists in $this->availableLocales array
         // If not available, throw an InvalidArgumentException with a descriptive message
-        if(!$this->isLocaleAvailable($locale)) {
+        if (!$this->isLocaleAvailable($locale)) {
             throw new InvalidArgumentException("Unavailable Locale Selected.", 1);
         }
 
@@ -133,7 +134,7 @@ class TranslationHelper
 
         // TODO: Also update the translator's locale
         // Hint: The translator has its own setLocale() method
-        $this->translator.setlocale(LC_ALL, $locale);
+        $this->translator->setlocale($locale);
     }
 
     /**
@@ -179,8 +180,6 @@ class TranslationHelper
     {
         // TODO: Check if the given locale exists in the availableLocales array
         // Hint: Use in_array() function
-        if(in_array($locale, $this->availableLocales))
-            return true;
-        return false;
+        return in_array($locale, $this->availableLocales, true);
     }
 }
