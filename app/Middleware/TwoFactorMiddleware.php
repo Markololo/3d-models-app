@@ -45,7 +45,7 @@ class TwoFactorMiddleware implements MiddlewareInterface
         // TODO: Check if user has 2FA enabled
         // HINT: Use TwoFactorAuth model's isEnabled() method
         $twoFactorModel = $this->container->get(TwoFactorAuth::class);
-        $has2FAEnabled = false; // Replace with: $twoFactorModel->isEnabled($userId);
+        $has2FAEnabled = $twoFactorModel->isEnabled($userId);
 
         // If 2FA is not enabled, proceed normally
         if (!$has2FAEnabled) {
@@ -54,7 +54,7 @@ class TwoFactorMiddleware implements MiddlewareInterface
 
         // TODO: Check if 2FA has already been verified in this session
         // HINT: Check SessionManager::get('two_factor_verified')
-        $isVerified = false; // Replace with: SessionManager::get('two_factor_verified')
+        $isVerified = SessionManager::get('two_factor_verified'); // Replace with: SessionManager::get('two_factor_verified')
 
         if ($isVerified) {
             // 2FA already verified, proceed
