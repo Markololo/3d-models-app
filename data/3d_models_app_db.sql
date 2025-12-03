@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 19, 2025 at 01:50 PM
+-- Generation Time: Dec 03, 2025 at 02:02 PM
 -- Server version: 11.8.3-MariaDB-log
 -- PHP Version: 8.4.10
 
@@ -42,6 +42,20 @@ INSERT INTO `categories` (`id`, `name`, `description`, `created_at`) VALUES
 (1, 'Carbon Fiber', 'This is a category for the 3d models that need to be made (preferably) with carbon fiber filaments.', '2025-11-05 09:29:47'),
 (2, 'Handy kitchen tools', 'Find a variety of 3d printable kitchen tools and gadgets to make your life easier.', '2025-11-05 09:40:10'),
 (3, 'Kids gadgets', '3d printable mini toys and gadgets for kids.', '2025-11-05 09:40:10');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `login_attempts`
+--
+
+CREATE TABLE `login_attempts` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `attempted_at` timestamp NULL DEFAULT current_timestamp(),
+  `successful` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -113,6 +127,40 @@ CREATE TABLE `product_images` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `trusted_devices`
+--
+
+CREATE TABLE `trusted_devices` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `device_token` varchar(255) NOT NULL,
+  `device_name` varchar(100) DEFAULT NULL,
+  `user_agent` varchar(255) DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT current_timestamp(),
+  `expires_at` timestamp NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `two_factor_auth`
+--
+
+CREATE TABLE `two_factor_auth` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `secret` varchar(255) NOT NULL,
+  `enabled` tinyint(1) DEFAULT 0,
+  `enabled_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -129,6 +177,14 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `email`, `password_hash`, `role`, `created_at`, `updated_at`) VALUES
+(6, 'Meerab', 'Khan', 'meerablk@outlook.com', 'enfernapcoder@gmail.com', '$2y$12$FiLGR9pihkrSvEdK0E7.uuijfqJOoM9KcfLjvptiabDf/osagYOV6', 'customer', '2025-11-19 19:56:06', NULL),
+(7, 'Mariam', 'Salim', 'markololo', 'markololo@gmail.com', '$2y$12$KmFxRsAJ8eOTdCP2O26YvufRDDpdvBd8ZR17wHCHzsoINYiDKqFUy', 'admin', '2025-11-20 10:31:17', '2025-11-20 10:32:16');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -138,6 +194,14 @@ CREATE TABLE `users` (
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indexes for table `login_attempts`
+--
+ALTER TABLE `login_attempts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_email_ip` (`email`,`ip_address`),
+  ADD KEY `idx_attempted_at` (`attempted_at`);
 
 --
 -- Indexes for table `orders`
@@ -169,6 +233,22 @@ ALTER TABLE `product_images`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indexes for table `trusted_devices`
+--
+ALTER TABLE `trusted_devices`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `device_token` (`device_token`),
+  ADD KEY `idx_device_token` (`device_token`),
+  ADD KEY `idx_user_id` (`user_id`);
+
+--
+-- Indexes for table `two_factor_auth`
+--
+ALTER TABLE `two_factor_auth`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_user` (`user_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -185,6 +265,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `login_attempts`
+--
+ALTER TABLE `login_attempts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -211,10 +297,22 @@ ALTER TABLE `product_images`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `trusted_devices`
+--
+ALTER TABLE `trusted_devices`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `two_factor_auth`
+--
+ALTER TABLE `two_factor_auth`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique user ID';
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique user ID', AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
@@ -244,6 +342,18 @@ ALTER TABLE `products`
 --
 ALTER TABLE `product_images`
   ADD CONSTRAINT `product_images_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `trusted_devices`
+--
+ALTER TABLE `trusted_devices`
+  ADD CONSTRAINT `trusted_devices_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `two_factor_auth`
+--
+ALTER TABLE `two_factor_auth`
+  ADD CONSTRAINT `two_factor_auth_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
