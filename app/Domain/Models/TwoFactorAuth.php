@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Models;
 
+use App\Helpers\Core\PDOService;
+use RobThree\Auth\Providers\Qr\BaconQrCodeProvider;
+
 /**
  * Model for managing Two-Factor Authentication data.
  */
@@ -15,6 +18,10 @@ class TwoFactorAuth extends BaseModel
      * @param int $userId The user's ID
      * @return array|null 2FA data or null if not found
      */
+
+
+
+
     public function findByUserId(int $userId): ?array
     {
         // TODO: Query the two_factor_auth table to find record by user_id
@@ -85,7 +92,7 @@ class TwoFactorAuth extends BaseModel
         $sql = "SELECT enabled FROM two_factor_auth WHERE user_id = :userId";
         $row = $this->selectOne($sql, ["userId" => $userId]);
 
-        if($row <= 0)
+        if ($row <= 0)
             return false;
 
         return $row['enabled'] == 1;
@@ -105,4 +112,8 @@ class TwoFactorAuth extends BaseModel
 
         return $user['secret'] ?? null;
     }
+
+
+
+
 }

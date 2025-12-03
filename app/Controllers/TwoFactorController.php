@@ -24,10 +24,7 @@ class TwoFactorController extends BaseController
      * Display the 2FA setup page with QR code.
      */
 
-    public function __construct(Container $container, BaconQrCodeProvider $qrCode, string $appName)
-    {
-        parent::__construct($container, $qrCode, $appName);
-    }
+
 
 
     public function showSetup(Request $request, Response $response): Response
@@ -52,11 +49,11 @@ class TwoFactorController extends BaseController
 
         // TODO: Create a TFA (TwoFactorAuth) instance
         // HINT: Pass the QR provider and your app name (e.g., 'YourAppName') to the constructor
-         $tfa = new TwoFactorAuth($qr, '3d-models-app/');
+         $tfa = new TFA($qr, '3d-models-app');
 
         // TODO: Generate a new TOTP secret
         // HINT: Use the TFA instance's createSecret() method
-        $secret = ''; // Replace with your implementation
+        $secret = $tfa->createSecret(); // Replace with your implementation
 
         // Store secret in session temporarily (not in database yet)
         SessionManager::set('2fa_setup_secret', $secret);
@@ -64,7 +61,9 @@ class TwoFactorController extends BaseController
         // TODO: Generate QR code as a data URI for display in an <img> tag
         // HINT: Use $tfa->getQRCodeImageAsDataUri($userEmail, $secret)
         // This returns a string like "data:image/svg+xml;base64,..." ready for img src
-        $qrCodeDataUri = ''; // Replace with your implementation
+
+       $qrCodeDataUri= $tfa->getQRCodeImageAsDataUri($userEmail, $secret);
+
 
         return $this->render($response, 'auth/2fa-setup.php', [
             'title' => 'Enable 2FA',
@@ -88,21 +87,35 @@ class TwoFactorController extends BaseController
         $secret = SessionManager::get('2fa_setup_secret');
 
         if (!$secret) {
-            SessionManager::setFlash('error', 'Setup session expired. Please try again.');
+
+            // SessionManager::setFlash('error', 'Setup session expired. Please try again.');
+            FlashMessage::error('Setup session expired. Please try again.');
             return $this->redirect($request, $response, '2fa.setup');
         }
 
         // TODO: Create a QR code provider and TFA instance (same as showSetup)
         // HINT: Use BaconQrCodeProvider and TFA classes
+            $qr = new BaconQrCodeProvider(4, '#ffffff', '#000000', 'svg');
+
+        // TODO: Create a TFA (TwoFactorAuth) instance
+        // HINT: Pass the QR provider and your app name (e.g., 'YourAppName') to the constructor
+         $tfa = new TFA($qr, '3d-models-app');
+
+        // TODO: Generate a new TOTP secret
+        // HINT: Use the TFA instance's createSecret() method
+        $secret = $tfa->createSecret();
+
+
 
         // TODO: Verify the user's code against the secret
         // HINT: Use $tfa->verifyCode($secret, $code) - returns true if valid
-        $valid = false; // Replace with your implementation
+        $valid = $tfa->verifyCode($secret, $code); // Replace with your implementation
+
 
         if (!$valid) {
             // TODO: Regenerate QR code for retry (user entered wrong code)
             // HINT: Use $tfa->getQRCodeImageAsDataUri($userEmail, $secret)
-            $qrCodeDataUri = ''; // Replace with your implementation
+            $qrCodeDataUri = $tfa->getQRCodeImageAsDataUri($userEmail, $secret);
 
             return $this->render($response, 'auth/2fa-setup.php', [
                 'title' => 'Enable 2FA',
@@ -117,6 +130,9 @@ class TwoFactorController extends BaseController
         // Step 2: Create a new 2FA record: $twoFactorModel->create($userId, $secret)
         // Step 3: Enable 2FA for the user: $twoFactorModel->enable($userId)
 
+        $twoFactorModel =  ;
+       $twoFactorModel->create($userId, $secret);
+       $twoFactorModel->enable($userId);
         // Clear the setup secret from session
         SessionManager::remove('2fa_setup_secret');
 
@@ -150,6 +166,8 @@ class TwoFactorController extends BaseController
 
         // TODO: Create a QR code provider and TFA instance
 
+
+
         // TODO: Verify the user's code against their stored secret
         // HINT: Use $tfa->verifyCode($secret, $code)
         $valid = false; // Replace with your implementation
@@ -176,7 +194,12 @@ class TwoFactorController extends BaseController
         SessionManager::remove('2fa_attempts');
 
         // Regenerate session ID for security
-        SessionManager::regenerate();
+        if($trustedDevice)
+        {
+         $this-saveTrustedDevice($request,$userId);
+        }
+
+        session_regenerate_id(true);
 
         // Redirect to dashboard
         return $this->redirect($request, $response, 'dashboard');
