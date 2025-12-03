@@ -8,6 +8,7 @@ use App\Helpers\SessionManager;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use RobThree\Auth\TwoFactorAuth;
 
 class AuthController extends BaseController
 {
@@ -115,12 +116,27 @@ class AuthController extends BaseController
      */
     public function login(Request $request, Response $response, array $args): Response
     {
+
+        //------------- Start FROM 2FA -----------------------
+        // Check if user has 2FA enabled
+        // $twoFactorModel = $this->container->get(TwoFactorAuth::class);
+        // $has2FA = $twoFactorModel->isEnabled($user['id']);
+        // // Set session data using SessionManager (same pattern as Auth Part 2)
+        // SessionManager::set('user_id', $user['id']);
+        // SessionManager::set('user_email', $user['email']);
+        // SessionManager::set('user_first_name', $user['first_name']);
+        // SessionManager::set('user_last_name', $user['last_name']);
+        // SessionManager::set('is_authenticated', true);
+        // SessionManager::set('requires_2fa', $has2FA);
+        // SessionManager::set('two_factor_verified', !$has2FA);
+        // Auto-verified if no 2FA
+        //------------- End FROM 2FA -------------------------
+
         // TODO: Create a $data array with 'title' => 'Login'
         $data =
             [
                 'page_title' => 'Login'
             ];
-
 
         // TODO: Render 'auth/login.php' view and pass $data
         return $this->render($response, 'auth/login.php', $data);
@@ -170,6 +186,21 @@ class AuthController extends BaseController
         SessionManager::set('user_role', $user['role']);
         SessionManager::set('is_authenticated', true);
 
+        //------------- Start FROM 2FA -----------------------
+        // Check if user has 2FA enabled
+        $twoFactorModel = $this->container->get(TwoFactorAuth::class);
+        $has2FA = $twoFactorModel->isEnabled($user['id']);
+        // Set session data using SessionManager (same pattern as Auth Part 2)
+        SessionManager::set('user_id', $user['id']);
+        SessionManager::set('user_email', $user['email']);
+        SessionManager::set('user_first_name', $user['first_name']);
+        SessionManager::set('user_last_name', $user['last_name']);
+        SessionManager::set('is_authenticated', true);
+        SessionManager::set('requires_2fa', $has2FA);
+        SessionManager::set('two_factor_verified', !$has2FA);
+        // Auto-verified if no 2FA
+        //------------- End FROM 2FA -------------------------
+
         // TODO: Display success message using FlashMessage::success()
         FlashMessage::success("Welcome back, {$user['first_name']}!");
         // TODO: Redirect based on role:
@@ -206,13 +237,23 @@ class AuthController extends BaseController
      */
     public function dashboard(Request $request, Response $response, array $args): Response
     {
-        // TODO: Create a $data array with 'title' => 'Dashboard'
-        $data =
-            [
-                'page_title' => 'Dashboard'
-            ];
+        // // TODO: Create a $data array with 'title' => 'Dashboard'
+        // $data =
+        //     [
+        //         'page_title' => 'Dashboard'
+        //     ];
 
-        // TODO: Render 'user/dashboard.php' view and pass $data
-        return $this->render($response, 'user/dashboard.php', $data);
+        // // TODO: Render 'user/dashboard.php' view and pass $data
+        // return $this->render($response, 'user/dashboard.php', $data);
+
+        $user = $request->getAttribute('user');
+        $twoFactorModel = $this->container->get(TwoFactorAuth::class);
+        $has2FA = $twoFactorModel->isEnabled($user['id']);
+
+        return $this->render($response, 'user/dashboard.php', [
+            'page_title' => 'Dashboard',
+            'user' => $user,
+            'has2FA' => $has2FA
+        ]);
     }
 }
