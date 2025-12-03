@@ -18,11 +18,12 @@ class TwoFactorAuth extends BaseModel
     public function findByUserId(int $userId): ?array
     {
         // TODO: Query the two_factor_auth table to find record by user_id
+        $sql = "SELECT * FROM two_factor_auth WHERE user_id = :userId";
+        $user = $this->selectOne($sql, ["userId" => $userId]);
+        return $user ?? null;
         // HINT: Use $this->selectOne() method from BaseModel
         // SQL: SELECT * FROM two_factor_auth WHERE user_id = ?
         // Return the result, or null if false
-
-        return null; // Replace with your implementation
     }
 
     /**
@@ -34,12 +35,9 @@ class TwoFactorAuth extends BaseModel
      */
     public function create(int $userId, string $secret): int
     {
-        // TODO: Insert a new record into two_factor_auth table
-        // HINT: Use $this->execute() for INSERT
-        // Fields: user_id, secret, enabled (default false)
-        // Return $this->lastInsertId()
-
-        return 0; // Replace with your implementation
+        $sql = "INSERT INTO two_factor_auth (user_id, secret, enabled) VALUES (:userId, :secret, 0)";
+        $this->execute($sql, ["userId" => $userId, "secret" => $secret]);
+        return (int)$this->lastInsertId() ?? 0;
     }
 
     /**
@@ -52,8 +50,10 @@ class TwoFactorAuth extends BaseModel
     {
         // TODO: Update the record to set enabled = true and enabled_at = NOW()
         // HINT: Use $this->execute() and check rowCount() > 0
+        $sql = "UPDATE two_factor_auth SET enabled = 1, enabled_at = NOW() WHERE user_id = :userId";
+        $update = $this->execute($sql, ["userId" => $userId]);
 
-        return false; // Replace with your implementation
+        return $update > 0;
     }
 
     /**
@@ -66,8 +66,10 @@ class TwoFactorAuth extends BaseModel
     {
         // TODO: Update the record to set enabled = false
         // HINT: Use $this->execute() and check rowCount() > 0
+        $sql = "UPDATE two_factor_auth SET enabled = 0 WHERE user_id = :userId";
+        $update = $this->execute($sql, ["userId" => $userId]);
 
-        return false; // Replace with your implementation
+        return $update > 0;
     }
 
     /**
@@ -80,8 +82,13 @@ class TwoFactorAuth extends BaseModel
     {
         // TODO: Query to check if user has enabled = true
         // HINT: Use $this->selectOne() and check the 'enabled' field
+        $sql = "SELECT enabled FROM two_factor_auth WHERE user_id = :userId";
+        $row = $this->selectOne($sql, ["userId" => $userId]);
 
-        return false; // Replace with your implementation
+        if($row <= 0)
+            return false;
+
+        return $row['enabled'] == 1;
     }
 
     /**
@@ -94,7 +101,8 @@ class TwoFactorAuth extends BaseModel
     {
         // TODO: Get the secret field for the user
         // HINT: Use findByUserId() and return the 'secret' field
+        $user = $this->findByUserId($userId);
 
-        return null; // Replace with your implementation
+        return $user['secret'] ?? null;
     }
 }
