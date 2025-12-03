@@ -6,7 +6,10 @@ namespace App\Controllers;
 
 use App\Domain\Models\TwoFactorAuth;
 use App\Domain\Models\User;
+use App\Helpers\FlashMessage;
 use App\Helpers\SessionManager;
+use DI\Container;
+use PDOException;
 use RobThree\Auth\TwoFactorAuth as TFA;
 use RobThree\Auth\Providers\Qr\BaconQrCodeProvider;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -20,6 +23,13 @@ class TwoFactorController extends BaseController
     /**
      * Display the 2FA setup page with QR code.
      */
+
+    public function __construct(Container $container, BaconQrCodeProvider $qrCode, string $appName)
+    {
+        parent::__construct($container, $qrCode, $appName);
+    }
+
+
     public function showSetup(Request $request, Response $response): Response
     {
         $user = $request->getAttribute('user');
@@ -29,16 +39,20 @@ class TwoFactorController extends BaseController
         // Check if user already has 2FA enabled
         $twoFactorModel = $this->container->get(TwoFactorAuth::class);
         if ($twoFactorModel->isEnabled($userId)) {
-            SessionManager::setFlash('error', '2FA is already enabled.');
+            // setFlash
+            // SessionManager::setFlash('error', '2FA is already enabled.');
+            FlashMessage::error("2FA is already enabled.");
             return $this->redirect($request, $response, 'dashboard');
         }
 
         // TODO: Create a QR code provider instance
         // HINT: Use BaconQrCodeProvider with parameters: (4, '#ffffff', '#000000', 'svg')
         // The parameters are: size, background color, foreground color, image format
+        $qr = new BaconQrCodeProvider(4, '#ffffff', '#000000', 'svg');
 
         // TODO: Create a TFA (TwoFactorAuth) instance
         // HINT: Pass the QR provider and your app name (e.g., 'YourAppName') to the constructor
+         $tfa = new TwoFactorAuth($qr, '3d-models-app/');
 
         // TODO: Generate a new TOTP secret
         // HINT: Use the TFA instance's createSecret() method
