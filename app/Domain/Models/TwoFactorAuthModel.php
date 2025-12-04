@@ -10,7 +10,7 @@ use RobThree\Auth\Providers\Qr\BaconQrCodeProvider;
 /**
  * Model for managing Two-Factor Authentication data.
  */
-class TwoFactorAuth extends BaseModel
+class TwoFactorAuthModel extends BaseModel
 {
     /**
      * Find 2FA record by user ID.
