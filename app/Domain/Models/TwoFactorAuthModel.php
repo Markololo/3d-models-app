@@ -18,10 +18,6 @@ class TwoFactorAuthModel extends BaseModel
      * @param int $userId The user's ID
      * @return array|null 2FA data or null if not found
      */
-
-
-
-
     public function findByUserId(int $userId): ?array
     {
         // TODO: Query the two_factor_auth table to find record by user_id

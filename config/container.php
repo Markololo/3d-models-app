@@ -17,7 +17,7 @@ use Slim\App;
 use Slim\Views\PhpRenderer;
 use App\Helpers\TranslationHelper;
 use App\Middleware\LocaleMiddleware;
-use App\Domain\Models\TwoFactorAuth;
+use App\Domain\Models\TwoFactorAuthModel;
 use App\Middleware\TwoFactorMiddleware;
 
 $definitions = [
@@ -64,8 +64,8 @@ $definitions = [
     UriFactoryInterface::class => function (ContainerInterface $container) {
         return $container->get(Psr17Factory::class);
     },
-    TwoFactorAuth::class => function (ContainerInterface $c) {
-        return new TwoFactorAuth($c->get(PDOService::class));
+    TwoFactorAuthModel::class => function (ContainerInterface $c) {
+        return new TwoFactorAuthModel($c->get(PDOService::class));
     },
 
     // Add TwoFactorMiddleware

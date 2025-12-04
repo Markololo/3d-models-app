@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Domain\Models\TwoFactorAuth;
+use App\Domain\Models\TwoFactorAuthModel;
 use App\Helpers\SessionManager;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -44,7 +44,7 @@ class TwoFactorMiddleware implements MiddlewareInterface
 
         // TODO: Check if user has 2FA enabled
         // HINT: Use TwoFactorAuth model's isEnabled() method
-        $twoFactorModel = $this->container->get(TwoFactorAuth::class);
+        $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
         $has2FAEnabled = $twoFactorModel->isEnabled($userId);
 
         // If 2FA is not enabled, proceed normally

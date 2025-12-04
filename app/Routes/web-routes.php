@@ -172,4 +172,5 @@ $app->post('/2fa/disable', [TwoFactorController::class, 'disable'])
     ->setName('2fa.disable')
     ->add(TwoFactorMiddleware::class)
     ->add(AuthMiddleware::class);
+
 };
