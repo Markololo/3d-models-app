@@ -33,8 +33,8 @@ return static function (Slim\App $app): void {
                 '/dashboard',
                 [DashboardController::class, 'index']
             )->setName('dashboard.index')
-            ->add(TwoFactorMiddleware::class)
-            ->add(AuthMiddleware::class);
+                ->add(TwoFactorMiddleware::class)
+                ->add(AuthMiddleware::class);
 
 
             $group->get(
@@ -124,10 +124,13 @@ return static function (Slim\App $app): void {
     // TODO: Create a POST route for '/login' that maps to AuthController::class 'authenticate' method
 
     // TODO: Create a GET route for '/logout' that maps to AuthController::class 'logout' method
+    // $app->get('/dashboard', [AuthController::class, 'dashboard'])
+    //     ->setName('user.dashboard')
+    //     ->add(AuthMiddleware::class);
     $app->get('/dashboard', [AuthController::class, 'dashboard'])
-        ->setName('user.dashboard')
+        ->setName('dashboard')
+        ->add(TwoFactorMiddleware::class)  // Add this line
         ->add(AuthMiddleware::class);
-
 
     /*
     GET /login → Displays the login form
@@ -145,32 +148,59 @@ return static function (Slim\App $app): void {
 
     //---------------------------------------------------------------------------------------
     // 2FA Setup routes (requires auth, but not 2FA verification)
-$app->get('/2fa/setup', [TwoFactorController::class, 'showSetup'])
-    ->setName('2fa.setup')
-    ->add(AuthMiddleware::class);
+    // $app->get('/2fa/setup', [TwoFactorController::class, 'showSetup'])
+    //     ->setName('2fa.setup')
+    //     ->add(AuthMiddleware::class);
 
-$app->post('/2fa/verify-and-enable', [TwoFactorController::class, 'verifyAndEnable'])
-    ->setName('2fa.enable')
-    ->add(AuthMiddleware::class);
+    // $app->post('/2fa/verify-and-enable', [TwoFactorController::class, 'verifyAndEnable'])
+    //     ->setName('2fa.enable')
+    //     ->add(AuthMiddleware::class);
 
-// 2FA Verification during login
-$app->get('/2fa/verify', [TwoFactorController::class, 'showVerify'])
-    ->setName('2fa.verify')
-    ->add(AuthMiddleware::class);
+    // // 2FA Verification during login
+    // $app->get('/2fa/verify', [TwoFactorController::class, 'showVerify'])
+    //     ->setName('2fa.verify')
+    //     ->add(AuthMiddleware::class);
 
-$app->post('/2fa/verify', [TwoFactorController::class, 'verify'])
-    ->setName('2fa.verify.post')
-    ->add(AuthMiddleware::class);
+    // $app->post('/2fa/verify', [TwoFactorController::class, 'verify'])
+    //     ->setName('2fa.verify.post')
+    //     ->add(AuthMiddleware::class);
 
-// 2FA Disable (requires full auth including 2FA)
-$app->get('/2fa/disable', [TwoFactorController::class, 'showDisable'])
-    ->setName('2fa.disable.show')
-    ->add(TwoFactorMiddleware::class)
-    ->add(AuthMiddleware::class);
+    // // 2FA Disable (requires full auth including 2FA)
+    // $app->get('/2fa/disable', [TwoFactorController::class, 'showDisable'])
+    //     ->setName('2fa.disable.show')
+    //     ->add(TwoFactorMiddleware::class)
+    //     ->add(AuthMiddleware::class);
 
-$app->post('/2fa/disable', [TwoFactorController::class, 'disable'])
-    ->setName('2fa.disable')
-    ->add(TwoFactorMiddleware::class)
-    ->add(AuthMiddleware::class);
+    // $app->post('/2fa/disable', [TwoFactorController::class, 'disable'])
+    //     ->setName('2fa.disable')
+    //     ->add(TwoFactorMiddleware::class)
+    //     ->add(AuthMiddleware::class);
+    // 2FA Setup routes (requires auth, but not 2FA verification)
+    $app->get('/2fa/setup', [TwoFactorController::class, 'showSetup'])
+        ->setName('2fa.setup')
+        ->add(AuthMiddleware::class);
 
+    $app->post('/2fa/verify-and-enable', [TwoFactorController::class, 'verifyAndEnable'])
+        ->setName('2fa.enable')
+        ->add(AuthMiddleware::class);
+
+    // 2FA Verification during login
+    $app->get('/2fa/verify', [TwoFactorController::class, 'showVerify'])
+        ->setName('2fa.verify')
+        ->add(AuthMiddleware::class);
+
+    $app->post('/2fa/verify', [TwoFactorController::class, 'verify'])
+        ->setName('2fa.verify.post')
+        ->add(AuthMiddleware::class);
+
+    // 2FA Disable (requires full auth including 2FA)
+    $app->get('/2fa/disable', [TwoFactorController::class, 'showDisable'])
+        ->setName('2fa.disable.show')
+        ->add(TwoFactorMiddleware::class)
+        ->add(AuthMiddleware::class);
+
+    $app->post('/2fa/disable', [TwoFactorController::class, 'disable'])
+        ->setName('2fa.disable')
+        ->add(TwoFactorMiddleware::class)
+        ->add(AuthMiddleware::class);
 };
