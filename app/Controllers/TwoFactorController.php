@@ -122,6 +122,7 @@ class TwoFactorController extends BaseController
         // HINT: Use the TFA instance's createSecret() method
         $secret = $tfa->createSecret();
 
+        print("ID: ".$userId." Email: ".$userEmail." Code: ".$code);
 
 
         // TODO: Verify the user's code against the secret
@@ -133,6 +134,7 @@ class TwoFactorController extends BaseController
             // TODO: Regenerate QR code for retry (user entered wrong code)
             // HINT: Use $tfa->getQRCodeImageAsDataUri($userEmail, $secret)
             $qrCodeDataUri = $tfa->getQRCodeImageAsDataUri($userEmail, $secret);
+        print("WRONGGGG");
 
             return $this->render($response, 'auth/2fa-setup.php', [
                 'title' => 'Enable 2FA',

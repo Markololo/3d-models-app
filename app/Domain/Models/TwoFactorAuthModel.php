@@ -53,7 +53,8 @@ class TwoFactorAuthModel extends BaseModel
     {
         // TODO: Update the record to set enabled = true and enabled_at = NOW()
         // HINT: Use $this->execute() and check rowCount() > 0
-        $sql = "UPDATE two_factor_auth SET enabled = 1, enabled_at = NOW() WHERE user_id = :userId";
+        $sql = "UPDATE two_factor_auth SET enabled = 1, enabled_at = NOW() WHERE user_id = :user
+        Id";
 
 
         //         $affectedRows = $sql->rowCount();
@@ -67,6 +68,8 @@ class TwoFactorAuthModel extends BaseModel
         } else {
             return false;
         }
+print("EnABLEDDDDD");
+        return $update > 0;
     }
 
     /**
