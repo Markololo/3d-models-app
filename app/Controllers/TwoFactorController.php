@@ -38,7 +38,6 @@ class TwoFactorController extends BaseController
         // $user = $request->getAttribute('user');
         $userId = SessionManager::get('user_id');
         $userEmail = SessionManager::get('user_email');
-        print("ID: " . $userId . " Email:" . $userEmail);
         // $userId = $user['id'];
         // $userEmail = $user['email'];F
 

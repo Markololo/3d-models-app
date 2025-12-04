@@ -247,13 +247,12 @@ class AuthController extends BaseController
         // // TODO: Render 'user/dashboard.php' view and pass $data
         // return $this->render($response, 'user/dashboard.php', $data);
 
-        $user = $request->getAttribute('user');
-        $twoFactorModel = $this->container->get(TwoFactorAuth::class);
-        $has2FA = $twoFactorModel->isEnabled($user['id']);
+        $userId = SessionManager::get('user_id');
+        $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
+        $has2FA = $twoFactorModel->isEnabled($userId);
 
-        return $this->render($response, 'user/dashboard.php', [
+        return $this->render($response, 'dashboard.php', [
             'page_title' => 'Dashboard',
-            'user' => $user,
             'has2FA' => $has2FA
         ]);
     }
