@@ -25,7 +25,7 @@ class TwoFactorController extends BaseController
     /**
      * Display the 2FA setup page with QR code.
      */
-        public function __construct(
+    public function __construct(
         ContainerInterface $container,
         private TwoFactorAuthModel $twoFactorModel,
         private UserModel $userModel
@@ -38,12 +38,12 @@ class TwoFactorController extends BaseController
         // $user = $request->getAttribute('user');
         $userId = SessionManager::get('user_id');
         $userEmail = SessionManager::get('user_email');
-        print("ID: ".$userId." Email:".$userEmail);
+        print("ID: " . $userId . " Email:" . $userEmail);
         // $userId = $user['id'];
-        // $userEmail = $user['email'];
+        // $userEmail = $user['email'];F
 
         // Check if user already has 2FA enabled
-                // Check if user already has 2FA enabled
+        // Check if user already has 2FA enabled
         if ($this->twoFactorModel->isEnabled($userId)) {
             FlashMessage::error('2FA is already enabled.');
             return $this->redirect($request, $response, 'dashboard');
@@ -78,7 +78,7 @@ class TwoFactorController extends BaseController
         // This returns a string like "data:image/svg+xml;base64,..." ready for img src
 
         $qrCodeDataUri = $tfa->getQRCodeImageAsDataUri($userEmail, $secret);
-        print(" Secret: ".$secret);
+        print(" Secret: " . $secret);
 
 
         return $this->render($response, 'auth/2fa-setup.php', [
@@ -188,7 +188,7 @@ class TwoFactorController extends BaseController
 
         // TODO: Create a QR code provider and TFA instance (same as showSetup)
         // HINT: Use BaconQrCodeProvider and TFA classes
-         $qr = new BaconQrCodeProvider(4, '#ffffff', '#000000', 'svg');
+        $qr = new BaconQrCodeProvider(4, '#ffffff', '#000000', 'svg');
 
         $tfa = new TFA($qr, '3d-models-app');
 
@@ -235,15 +235,13 @@ class TwoFactorController extends BaseController
      */
     public function disable(Request $request, Response $response): Response
     {
-        $user = $request->getAttribute('user');
-        $userId = $user['id'];
+        $userId = SessionManager::get('user_id');
+        $userEmail = SessionManager::get('user_email');
         $data = $request->getParsedBody();
         $password = $data['password'] ?? '';
 
         // Verify password before disabling 2FA
-        $userModel = $this->container->get(UserModel::class);
-        $validUser = $userModel->verifyPassword($user['email'], $password);
-
+        $validUser = $this->userModel->verifyCredentials($userEmail, $password);
         if (!$validUser) {
             return $this->render($response, 'auth/2fa-disable.php', [
                 'title' => 'Disable 2FA',
@@ -254,13 +252,7 @@ class TwoFactorController extends BaseController
         // TODO: Disable 2FA in the database
         // Step 1: Get the TwoFactorAuth model from the container
         // Step 2: Call the disable($userId) method to disable 2FA
-
-        $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
-
-        $twoFactorModel->disable($userId);
-
-        FlashMessage::success("2FA has been disabled.");
-
+        FlashMessage::success('2FA has been disabled.');
         return $this->redirect($request, $response, 'dashboard');
     }
 
