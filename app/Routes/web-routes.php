@@ -119,7 +119,7 @@ return static function (Slim\App $app): void {
 
     $app->get('/login', [AuthController::class, 'login'])->setName('auth.login');
     $app->post('/login', [AuthController::class, 'authenticate']);
-    $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
+    $app->post('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
 
     // TODO: Create a POST route for '/login' that maps to AuthController::class 'authenticate' method
 

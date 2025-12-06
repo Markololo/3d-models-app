@@ -19,6 +19,7 @@ use App\Helpers\TranslationHelper;
 use App\Middleware\LocaleMiddleware;
 use App\Domain\Models\TwoFactorAuthModel;
 use App\Middleware\TwoFactorMiddleware;
+use App\Domain\Models\TrustedDeviceModel;
 
 $definitions = [
     AppSettings::class => function () {
@@ -70,8 +71,15 @@ $definitions = [
 
     // Add TwoFactorMiddleware
     TwoFactorMiddleware::class => function (ContainerInterface $c) {
-        return new TwoFactorMiddleware($c);
+        return new TwoFactorMiddleware(
+            $c->get(TwoFactorAuthModel::class),
+            $c->get(TrustedDeviceModel::class)
+        );
     },
+    TrustedDeviceModel::class => function (ContainerInterface $c) {
+        return new TrustedDeviceModel($c->get(PDOService::class));
+    },
+
 
     // LoggerInterface::class => function (ContainerInterface $container) {
     //     $settings = $container->get('settings')['logger'];

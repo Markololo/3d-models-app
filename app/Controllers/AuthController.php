@@ -8,12 +8,11 @@ use App\Helpers\SessionManager;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use RobThree\Auth\TwoFactorAuth;
 use App\Domain\Models\TwoFactorAuthModel;
 
 class AuthController extends BaseController
 {
-    public function __construct(Container $container, private UserModel $userModel)
+    public function __construct(Container $container, private UserModel $userModel, private TwoFactorAuthModel $twoFactorAuthModel)
     {
         parent::__construct($container);
     }
@@ -155,24 +154,28 @@ class AuthController extends BaseController
 
 
         //? 2) Start validation:
-        $errors = [];
+        // $errors = [];
 
         if (empty($identifier) || empty($password)) {
-            $errors[] = "All fields are required.";
-        }
-
-
-        if (!empty($errors)) {
-            FlashMessage::error("Please enter the correct login info!");
+            FlashMessage::error("All fields are required.");
             return $this->redirect($request, $response, 'auth.login');
+
+            // $errors[] = "All fields are required.";
         }
+
+
+        // if (!empty($errors)) {
+        //     FlashMessage::error("Please enter the correct login info!");
+        //     return $this->redirect($request, $response, 'auth.login');
+        // }
+
 
         $user = $this->userModel->verifyCredentials($identifier, $password);
 
         // Check if authentication was successful
         // TODO: If $user is null (authentication failed):
 
-        if ($user == null) {
+        if (!$user) {
             // $errors[] = "Invalid credentials. Please try again.";
             FlashMessage::error("Invalid credentials. Please try again.");
             return $this->redirect($request, $response, 'auth.login');
@@ -189,14 +192,14 @@ class AuthController extends BaseController
 
         //------------- Start FROM 2FA -----------------------
         // Check if user has 2FA enabled
-        $twoFactorModel = $this->container->get(TwoFactorAuth::class);
-        $has2FA = $twoFactorModel->isEnabled($user['id']);
+        // $twoFactorModel = $this->container->get(TwoFactorAuth::class);
+        $has2FA = $this->twoFactorAuthModel->isEnabled($user['id']);
         // Set session data using SessionManager (same pattern as Auth Part 2)
-        SessionManager::set('user_id', $user['id']);
-        SessionManager::set('user_email', $user['email']);
-        SessionManager::set('user_first_name', $user['first_name']);
-        SessionManager::set('user_last_name', $user['last_name']);
-        SessionManager::set('is_authenticated', true);
+        // SessionManager::set('user_id', $user['id']);
+        // SessionManager::set('user_email', $user['email']);
+        // SessionManager::set('user_first_name', $user['first_name']);
+        // SessionManager::set('user_last_name', $user['last_name']);
+        // SessionManager::set('is_authenticated', true);
         SessionManager::set('requires_2fa', $has2FA);
         SessionManager::set('two_factor_verified', !$has2FA);
         // Auto-verified if no 2FA
@@ -212,7 +215,7 @@ class AuthController extends BaseController
             return $this->redirect($request, $response, 'dashboard.index');
         } else {
 
-            return $this->redirect($request, $response, 'user.dashboard');
+            return $this->redirect($request, $response, 'dashboard');
         }
     }
 
@@ -248,8 +251,10 @@ class AuthController extends BaseController
         // return $this->render($response, 'user/dashboard.php', $data);
 
         $userId = SessionManager::get('user_id');
-        $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
-        $has2FA = $twoFactorModel->isEnabled($userId);
+        // $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
+
+        // $twoFactorModel = new TwoFactorAuthModel();
+        $has2FA = $this->twoFactorAuthModel->isEnabled($userId);
 
         return $this->render($response, 'dashboard.php', [
             'page_title' => 'Dashboard',

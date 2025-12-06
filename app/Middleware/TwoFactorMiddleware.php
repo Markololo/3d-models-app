@@ -12,6 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Slim\Routing\RouteContext;
+use App\Domain\Models\TrustedDeviceModel;
 
 /**
  * Middleware to check if user needs to verify 2FA.
@@ -25,13 +26,16 @@ use Slim\Routing\RouteContext;
  */
 class TwoFactorMiddleware implements MiddlewareInterface
 {
-    private ContainerInterface $container;
+    //     private ContainerInterface $container;
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
+    //     public function __construct(ContainerInterface $container)
+    //     {
+    //         $this->container = $container;
+    //     }
+    public function __construct(
+        private TwoFactorAuthModel $twoFactorModel,
+        private TrustedDeviceModel $trustedDeviceModel
+    ) {}
     public function process(Request $request, RequestHandler $handler): ResponseInterface
     {
         // Check if user is authenticated
@@ -40,26 +44,61 @@ class TwoFactorMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
+
         $userId = SessionManager::get('user_id');
 
         // TODO: Check if user has 2FA enabled
         // HINT: Use TwoFactorAuth model's isEnabled() method
-        $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
-        $has2FAEnabled = $twoFactorModel->isEnabled($userId);
+        // $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
+        // $has2FAEnabled = $twoFactorModel->isEnabled($userId);
 
         // If 2FA is not enabled, proceed normally
-        if (!$has2FAEnabled) {
+        // if (!$has2FAEnabled) {
+        //     return $handler->handle($request);
+        // }
+        if (!$this->twoFactorModel->isEnabled($userId)) {
             return $handler->handle($request);
         }
+
+
 
         // TODO: Check if 2FA has already been verified in this session
         // HINT: Check SessionManager::get('two_factor_verified')
-        $isVerified = SessionManager::get('two_factor_verified'); // Replace with: SessionManager::get('two_factor_verified')
 
-        if ($isVerified) {
-            // 2FA already verified, proceed
+        if (SessionManager::get('two_factor_verified')) {
+            // Not authenticated, let AuthMiddleware handle it
             return $handler->handle($request);
         }
+        // if (!SessionManager::get('is_authenticated')) {
+        //     // Not authenticated, let AuthMiddleware handle it
+        //     return $handler->handle($request);
+        // }
+
+        // Check for trusted device cookie
+        $cookies = $request->getCookieParams();
+        $deviceToken = $cookies['trusted_device'] ?? null;
+
+        if ($deviceToken) {
+            if ($this->trustedDeviceModel->isValid($deviceToken, $userId)) {
+                // Device is trusted - mark 2FA as verified
+                SessionManager::set('two_factor_verified', true);
+                $this->trustedDeviceModel->updateLastUsed($deviceToken);
+
+                return $handler->handle($request);
+            } else {
+                // Token invalid/expired - delete cookie
+                setcookie('trusted_device', '', time() - 3600, '/' . APP_ROOT_DIR_NAME);
+            }
+        }
+
+        // Continue to redirect to 2FA verification...
+
+        // $isVerified = SessionManager::get('two_factor_verified'); // Replace with: SessionManager::get('two_factor_verified')
+
+        // if ($isVerified) {
+        //     // 2FA already verified, proceed
+        //     return $handler->handle($request);
+        // }
 
         // 2FA required but not verified - redirect to verification page
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();

@@ -16,6 +16,7 @@ use RobThree\Auth\TwoFactorAuth as TFA;
 use RobThree\Auth\Providers\Qr\BaconQrCodeProvider;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Domain\Models\TrustedDeviceModel;
 
 /**
  * Controller for Two-Factor Authentication operations.
@@ -28,7 +29,8 @@ class TwoFactorController extends BaseController
     public function __construct(
         ContainerInterface $container,
         private TwoFactorAuthModel $twoFactorModel,
-        private UserModel $userModel
+        private UserModel $userModel,
+        private TrustedDeviceModel $trustedDeviceModel
     ) {
         parent::__construct($container);
     }
@@ -59,6 +61,19 @@ class TwoFactorController extends BaseController
         // TODO: Create a QR code provider instance
         // HINT: Use BaconQrCodeProvider with parameters: (4, '#ffffff', '#000000', 'svg')
         // The parameters are: size, background color, foreground color, image format
+
+        // TODO: Create a TwoFactorAuth instance
+        // HINT: Pass the QR provider and your app name (e.g., 'YourAppName') to the constructor
+
+        // TODO: Generate a new TOTP secret
+        // HINT: Use the TFA instance's createSecret() method
+        // $secret = ''; // Replace with your implementation
+
+        // Store secret in session temporarily (not in database yet)
+
+        // TODO: Create a QR code provider instance
+        // HINT: Use BaconQrCodeProvider with parameters: (4, '#ffffff', '#000000', 'svg')
+        // The parameters are: size, background color, foreground color, image format
         $qr = new BaconQrCodeProvider(4, '#ffffff', '#000000', 'svg');
 
         // TODO: Create a TFA (TwoFactorAuth) instance
@@ -67,9 +82,9 @@ class TwoFactorController extends BaseController
 
         // TODO: Generate a new TOTP secret
         // HINT: Use the TFA instance's createSecret() method
-        $secret = $tfa->createSecret(); // Replace with your implementation
+        //  // Replace with your implementation
 
-        // Store secret in session temporarily (not in database yet)
+        $secret = $tfa->createSecret();        // Store secret in session temporarily (not in database yet)
         SessionManager::set('2fa_setup_secret', $secret);
 
         // TODO: Generate QR code as a data URI for display in an <img> tag
@@ -77,7 +92,6 @@ class TwoFactorController extends BaseController
         // This returns a string like "data:image/svg+xml;base64,..." ready for img src
 
         $qrCodeDataUri = $tfa->getQRCodeImageAsDataUri($userEmail, $secret);
-        print(" Secret: " . $secret);
 
 
         return $this->render($response, 'auth/2fa-setup.php', [
@@ -120,21 +134,21 @@ class TwoFactorController extends BaseController
 
         // TODO: Generate a new TOTP secret
         // HINT: Use the TFA instance's createSecret() method
-        $secret = $tfa->createSecret();
+        // $secret = $tfa->createSecret();
 
-        print("ID: ".$userId." Email: ".$userEmail." Code: ".$code);
+        // print("ID: ".$userId." Email: ".$userEmail." Code: ".$code);
 
+        // $secret = SessionManager::get('2fa_setup_secret');
 
         // TODO: Verify the user's code against the secret
         // HINT: Use $tfa->verifyCode($secret, $code) - returns true if valid
-        $valid = $tfa->verifyCode($secret, $code); // Replace with your implementation
+        // $valid = $tfa->verifyCode($secret, $code); // Replace with your implementation
 
 
-        if (!$valid) {
+        if (!$tfa->verifyCode($secret, $code)) {
             // TODO: Regenerate QR code for retry (user entered wrong code)
             // HINT: Use $tfa->getQRCodeImageAsDataUri($userEmail, $secret)
             $qrCodeDataUri = $tfa->getQRCodeImageAsDataUri($userEmail, $secret);
-        print("WRONGGGG");
 
             return $this->render($response, 'auth/2fa-setup.php', [
                 'title' => 'Enable 2FA',
@@ -149,9 +163,11 @@ class TwoFactorController extends BaseController
         // Step 2: Create a new 2FA record: $twoFactorModel->create($userId, $secret)
         // Step 3: Enable 2FA for the user: $twoFactorModel->enable($userId)
 
-        $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
-        $twoFactorModel->create($userId, $secret);
-        $twoFactorModel->enable($userId);
+
+        // $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
+        $this->twoFactorModel->create($userId, $secret);
+
+        $this->twoFactorModel->enable($userId);
         // Clear the setup secret from session
         SessionManager::remove('2fa_setup_secret');
 
@@ -217,6 +233,57 @@ class TwoFactorController extends BaseController
 
         // Success! Mark 2FA as verified in session
         SessionManager::set('two_factor_verified', true);
+
+        // Check if user wants to trust this device
+        $trustDevice = $data['trust_device'] ?? false;
+
+        if ($trustDevice) {
+            // TODO: Generate a unique device token (64-character hex string)
+            // HINT: Use bin2hex(random_bytes(32)) to generate a secure random token
+            $deviceToken = bin2hex(random_bytes(32)); // Replace with your implementation
+
+            // TODO: Calculate the expiration date (30 days from now)
+            // HINT: Use DateTime class: (new \DateTime())->modify('+30 days')->format('Y-m-d H:i:s')
+            $expiresAt = (new \DateTime())->modify('+30 days')->format('Y-m-d H:i:s'); // Replace with your implementation
+
+            // TODO: Build the device information array with the following keys:
+            // - 'device_name': Use $this->getDeviceName($request) helper method
+            // - 'user_agent': Use $request->getHeaderLine('User-Agent')
+            // - 'ip_address': Use $this->getClientIp($request) helper method
+            // - 'expires_at': Use the expiration date calculated above
+            $deviceInfo = [
+                'device_name' => $this->getDeviceName($request),
+                'user_agent' =>  $request->getHeaderLine('User-Agent'),
+                'ip_address' => $this->getClientIp($request),
+                'expires_at' => $expiresAt
+
+            ]; // Replace with your implementation
+
+            // TODO: Save the trusted device to the database
+            // HINT: Call $this->trustedDeviceModel->create($userId, $deviceToken, $deviceInfo)
+            $this->trustedDeviceModel->create($userId, $deviceToken, $deviceInfo);
+            // TODO: Set a secure cookie to remember this device
+            // HINT: Use setcookie() with an options array containing:
+            // - 'expires': strtotime('+30 days')
+            // - 'path': '/' . APP_ROOT_DIR_NAME
+            // - 'secure': false (set to true in production with HTTPS)
+            // - 'httponly': true (prevents JavaScript access)
+            // - 'samesite': 'Lax' (CSRF protection)
+
+
+
+            setcookie(
+                'trusted_device',
+                $deviceToken,
+                [
+                    'expires' => strtotime('+30 days'),
+                    'path' => '/' . APP_ROOT_DIR_NAME,
+                    'secure' => false,
+                    'httponly' => true,
+                    'samesite' => 'Lax',
+                ]
+            );
+        }
         SessionManager::remove('2fa_attempts');
 
         // Regenerate session ID for security
@@ -252,7 +319,12 @@ class TwoFactorController extends BaseController
 
         // TODO: Disable 2FA in the database
         // Step 1: Get the TwoFactorAuth model from the container
+
         // Step 2: Call the disable($userId) method to disable 2FA
+        $this->twoFactorModel->disable($userId);
+        SessionManager::set('two_factor_verified', false);
+
+
         FlashMessage::success('2FA has been disabled.');
         return $this->redirect($request, $response, 'dashboard');
     }
@@ -265,5 +337,35 @@ class TwoFactorController extends BaseController
         return $this->render($response, 'auth/2fa-disable.php', [
             'title' => 'Disable 2FA'
         ]);
+    }
+
+
+
+
+
+    // HELPERS
+    private function getDeviceName(Request $request): string
+    {
+        $userAgent = $request->getHeaderLine('User-Agent');
+
+        if (stripos($userAgent, 'Windows') !== false) return 'Windows PC';
+        if (stripos($userAgent, 'Mac') !== false) return 'Mac';
+        if (stripos($userAgent, 'iPhone') !== false) return 'iPhone';
+        if (stripos($userAgent, 'Android') !== false) return 'Android';
+        if (stripos($userAgent, 'Linux') !== false) return 'Linux PC';
+
+        return 'Unknown Device';
+    }
+
+    private function getClientIp(Request $request): string
+    {
+        $serverParams = $request->getServerParams();
+
+        if (!empty($serverParams['HTTP_X_FORWARDED_FOR'])) {
+            $ipList = explode(',', $serverParams['HTTP_X_FORWARDED_FOR']);
+            return trim($ipList[0]);
+        }
+
+        return $serverParams['REMOTE_ADDR'] ?? '0.0.0.0';
     }
 }

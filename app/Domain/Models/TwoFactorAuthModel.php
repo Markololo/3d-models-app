@@ -23,7 +23,7 @@ class TwoFactorAuthModel extends BaseModel
         // TODO: Query the two_factor_auth table to find record by user_id
         $sql = "SELECT * FROM two_factor_auth WHERE user_id = :userId";
         $user = $this->selectOne($sql, ["userId" => $userId]);
-        return $user ?? null;
+        return $user ?: null;
         // HINT: Use $this->selectOne() method from BaseModel
         // SQL: SELECT * FROM two_factor_auth WHERE user_id = ?
         // Return the result, or null if false
@@ -38,9 +38,26 @@ class TwoFactorAuthModel extends BaseModel
      */
     public function create(int $userId, string $secret): int
     {
-        $sql = "INSERT INTO two_factor_auth (user_id, secret, enabled) VALUES (:userId, :secret, 0)";
-        $this->execute($sql, ["userId" => $userId, "secret" => $secret]);
-        return (int)$this->lastInsertId() ?? 0;
+        $existing = $this->findByUserId($userId);
+
+        if ($existing) {
+            $sql = "UPDATE two_factor_auth SET secret = :secret WHERE user_id = :userId";
+            $this->execute($sql, ["userId" => $userId, "secret" => $secret]);
+            return (int)$existing['id'];
+        } else {
+
+
+            $sql = "INSERT INTO two_factor_auth (user_id, secret, enabled) VALUES (:userId, :secret, 0)";
+            $this->execute($sql, ["userId" => $userId, "secret" => $secret]);
+
+            //     //only create entry when unique
+            return (int)($this->lastInsertId() ?? 0);
+        }
+        // $sql = "INSERT INTO two_factor_auth (user_id, secret, enabled) VALUES (:userId, :secret, 0)";
+        // $this->execute($sql, ["userId" => $userId, "secret" => $secret]);
+
+        //only create entry when unique
+        // return (int)($this->lastInsertId() ?? 0);
     }
 
     /**
@@ -53,8 +70,7 @@ class TwoFactorAuthModel extends BaseModel
     {
         // TODO: Update the record to set enabled = true and enabled_at = NOW()
         // HINT: Use $this->execute() and check rowCount() > 0
-        $sql = "UPDATE two_factor_auth SET enabled = 1, enabled_at = NOW() WHERE user_id = :user
-        Id";
+        $sql = "UPDATE two_factor_auth SET enabled = 1, enabled_at = NOW() WHERE user_id = :userId";
 
 
         //         $affectedRows = $sql->rowCount();
@@ -62,14 +78,16 @@ class TwoFactorAuthModel extends BaseModel
         //     echo "User updated successfully";
         // }
 
-        $update = $this->execute($sql, ["userId" => $userId]);
-        if ($update > 0) {
-            return true;
-        } else {
-            return false;
-        }
-print("EnABLEDDDDD");
-        return $update > 0;
+        // $update = $this->execute($sql, ["userId" => $userId]);
+        // if ($update > 0) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        // print("EnABLEDDDDD");
+        // return $update > 0;
+
+        return $this->execute($sql, ["userId" => $userId]) > 0;
     }
 
     /**
@@ -83,9 +101,10 @@ print("EnABLEDDDDD");
         // TODO: Update the record to set enabled = false
         // HINT: Use $this->execute() and check rowCount() > 0
         $sql = "UPDATE two_factor_auth SET enabled = 0 WHERE user_id = :userId";
-        $update = $this->execute($sql, ["userId" => $userId]);
+        // $update = $this->execute($sql, ["userId" => $userId]);
 
-        return $update > 0;
+        // return $update > 0;
+        return $this->execute($sql, ["userId" => $userId]) > 0;
     }
 
     /**
@@ -101,10 +120,18 @@ print("EnABLEDDDDD");
         $sql = "SELECT enabled FROM two_factor_auth WHERE user_id = :userId";
         $row = $this->selectOne($sql, ["userId" => $userId]);
 
-        if ($row <= 0)
-            return false;
+        // this always return false so
+        // if ($row <= 0)
+        //     return false;
 
-        return $row['enabled'] == 1;
+        // return $row['enabled'] == 1;
+
+
+        // if ($row <= 0)
+        //     return false;
+        // //else
+        // return (int)$row['enabled'] === 1;
+        return isset($row['enabled']) && (int)$row['enabled'] === 1;
     }
 
     /**
