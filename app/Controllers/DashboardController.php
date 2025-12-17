@@ -23,7 +23,6 @@ class DashboardController extends BaseController
         $data = [""];
 
         //* Write a key-value
-        SessionManager::set('username', "MariRab");
 
         //* Render a view (OR we can redirect the request to another view)
         return $this->render($response, 'admin/dashboardView.php', $data);

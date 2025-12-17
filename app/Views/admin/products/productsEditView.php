@@ -42,13 +42,13 @@ ViewHelper::loadAdminHeader($page_title);
 
             <div>
                 <label for="inputPrice" class="form-label">Price</label>
-                <input type="text" name="price" class="form-control" id="inputPrice"
+                <input type="number" name="price" class="form-control" id="inputPrice"
                     value="<?= $product["price"] ?>">
             </div>
         </div>
         <div>
             <label for="inputQuantity" class="form-label">Quantity</label>
-            <input type="text" name="quantity" class="form-control" id="InputQuantity"
+            <input type="number" name="quantity" class="form-control" id="InputQuantity"
                 value="<?= $product["stock_quantity"] ?>">
         </div>
 

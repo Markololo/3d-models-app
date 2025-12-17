@@ -73,14 +73,24 @@ class ProductsModel extends BaseModel
         // TODO: 1. Execute INSERT query using $this->execute()
         //       - Insert: name, price, description, created_at
         //       - Use named parameters (:name, :price, etc.)
+        $name = $data['product_name'];
+        $category_id = $data['category_id'];
+        $description = $data['product_description'] ?? "";
+        $price = $data['product_price'];
+        $stock_quantity = $data['stock_quantity'] ?? 0;
 
-        //? Use $this->execute() for INSERT queries.
-        //? Use named parameters for security: :name, :price, :description.
-        //? Use date('Y-m-d H:i:s') for the created_at timestamp.
-        //? Use $data['field_name'] ?? '' for optional fields.
-        //? Use $this->lastInsertId() to get the ID of the inserted record.
-        // TODO: 2. Return the last inserted ID using $this->lastInsertId()
-        return '111';
+        $sql = "INSERT INTO `products` (category_id, name, description, price, stock_quantity, created_at)
+         VALUES (:category_id, :name, :description, :price, :stock_quantity, current_timestamp())";
+
+        $insert = $this->execute($sql, [
+            "category_id"=>$category_id,
+            "name"=>$name,
+            "description"=>$description,
+             "price"=>$price,
+             "stock_quantity"=>$stock_quantity
+            ]);
+        //? 2. Return the last inserted ID using $this->lastInsertId()
+        return $this->lastInsertId();
     }
 
 

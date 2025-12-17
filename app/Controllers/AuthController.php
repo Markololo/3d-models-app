@@ -116,22 +116,6 @@ class AuthController extends BaseController
      */
     public function login(Request $request, Response $response, array $args): Response
     {
-
-        //------------- Start FROM 2FA -----------------------
-        // Check if user has 2FA enabled
-        // $twoFactorModel = $this->container->get(TwoFactorAuth::class);
-        // $has2FA = $twoFactorModel->isEnabled($user['id']);
-        // // Set session data using SessionManager (same pattern as Auth Part 2)
-        // SessionManager::set('user_id', $user['id']);
-        // SessionManager::set('user_email', $user['email']);
-        // SessionManager::set('user_first_name', $user['first_name']);
-        // SessionManager::set('user_last_name', $user['last_name']);
-        // SessionManager::set('is_authenticated', true);
-        // SessionManager::set('requires_2fa', $has2FA);
-        // SessionManager::set('two_factor_verified', !$has2FA);
-        // Auto-verified if no 2FA
-        //------------- End FROM 2FA -------------------------
-
         // TODO: Create a $data array with 'title' => 'Login'
         $data =
             [
@@ -212,9 +196,12 @@ class AuthController extends BaseController
         //       If role is 'customer', redirect to 'user.dashboard'
         if ($user['role'] === 'admin') {
             // return $this->redirect($request, $response, 'admin.dashboard');
-            return $this->redirect($request, $response, 'dashboard.index');
+            // return $this->redirect($request, $response, 'dashboard.index');
+            $data = [
+                
+            ];
+            return $this->render($response, 'admin/dashboardView.php', $data);
         } else {
-
             return $this->redirect($request, $response, 'dashboard');
         }
     }

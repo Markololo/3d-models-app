@@ -60,7 +60,7 @@ return static function (Slim\App $app): void {
             $group->get(
                 '/products/show/{product_id}',
                 [ProductsController::class, 'show']
-            );
+            )->setName('products.show');
 
             $group->post(
                 '/products/update/{product_id}',
@@ -85,11 +85,11 @@ return static function (Slim\App $app): void {
 
 
     //* NOTE: Route naming pattern: [controller_name].[method_name]
-    $app->get('/', [HomeController::class, 'index'])
-        ->setName('home.index');
+        $app->get('/', [AuthController::class, 'login'])->setName('auth.login');
 
-    $app->get('/home', [HomeController::class, 'index'])
-        ->setName('home.index');
+
+    // $app->get('/home', [HomeController::class, 'index'])
+    //     ->setName('home.index');
 
     // $app->get('/dashboard', [DashboardController::class, 'index'])
     //     ->setName('dashboard.index');

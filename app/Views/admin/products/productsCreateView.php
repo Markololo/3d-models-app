@@ -18,7 +18,7 @@ ViewHelper::loadAdminHeader($page_title);
         </div>
         <div>
             <label for="inputPrice" class="form-label">*Price:</label>
-            <input type="text" name="product_price" class="form-control" id="inputPrice">
+            <input type="number" name="product_price" class="form-control" id="inputPrice" step="0.01" min="0">
         </div>
         <div>
             <label for="inputDescription" class="form-label">Description:</label>
@@ -30,6 +30,11 @@ ViewHelper::loadAdminHeader($page_title);
                 <?= $options ?>
             </select>
         </div>
+        <div>
+            <label for="stock_quantity" class="form-label">Quantity:</label>
+            <input type="number" name="stock_quantity" class="form-control" id="stock_quantity">
+        </div>
+
 
         <br>
         <button type="submit" class="btn btn-success">Save</button>

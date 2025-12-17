@@ -25,6 +25,8 @@ ViewHelper::loadAdminHeader($page_title);
 <p><dt>Product Description:</dt> <?= $product["description"] ?></p>
 </dl>
 
+
+<a href="<?= APP_ADMIN_URL ?>/products" class="btn btn-primary">Back to products view</a>
 </main>
 
 <?php

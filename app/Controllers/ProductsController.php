@@ -11,6 +11,7 @@ namespace App\Controllers;
 
 use App\Domain\Models\CategoriesModel;
 use App\Domain\Models\ProductsModel;
+use App\Helpers\FlashMessage;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -67,6 +68,7 @@ class ProductsController extends BaseController
         ];
         return $this->render($response, 'admin/products/productsShowView.php', $data);
     }
+
     /**
      *  Display a form to create a new item.
      * @return void
@@ -94,14 +96,43 @@ class ProductsController extends BaseController
         //? Get the ID of the newly created item.
         //? Redirect to the newly created item’s detail page (PRG pattern).
         $data = $request->getParsedBody();
+        $errors = [];
+
         $name = $data["product_name"];
         $price = $data["product_price"];
         $category_id = $data["category_id"];
+        $stock_quantity = $data["stock_quantity"];
+        $product_description = $data['product_description'];
 
-        $this->products_model->createAndGetId($name, $price, $category_id);
+        if(empty($name)){
+            $errors[] = "Please enter the product name.";
+        }
 
+        if(empty($price)){
+            $errors[] = "Please enter the product price.";
+        }
+        if(empty($category_id)){
+            $errors[] = "Please enter the product category.";
+        }
+        if(empty($product_description)){
+            $errors[] = "Please enter the product description.";
+        }
+        if(!isset($stock_quantity) || $stock_quantity === '' || $stock_quantity < 0){
+            $errors[] = "Please enter the product's stock quantity.";
+        }
+
+        if(empty($errors)) {
+            $product_id = $this->products_model->createAndGetId($data);
+            FlashMessage::success("Product Created Successfully!");
+            // return $this->redirect($request, $response, 'products/show'.$product_id);
+        return $this->redirect($request, $response, 'products.show', ['product_id' => $product_id]);
+
+        } else {
+            FlashMessage::error($errors[0]);
+            return $this->redirect($request, $response, 'products.create');
+        }
         // echo dd($data);
-        return $this->redirect($request, $response, 'product.index');
+
     }
 
     /**
