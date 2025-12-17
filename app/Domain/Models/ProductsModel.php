@@ -138,4 +138,32 @@ class ProductsModel extends BaseModel
 
         return $this->selectAll($sql, $params);
     }
+
+
+    public function getAllCategories(): array
+    {
+        // TODO: Select id and name from categories table
+        $sql = "SELECT id, name FROM categories ORDER BY name ASC";
+
+        // - Order by name ASC
+
+
+        // - Use $this->selectAll() with SQL query
+
+        return $this->selectAll($sql);
+    }
+
+
+    public function getAllProducts(): array
+    {
+        // TODO: Select id and name from categories table
+        $sql = "SELECT id, name FROM products ORDER BY name ASC";
+
+        // - Order by name ASC
+
+
+        // - Use $this->selectAll() with SQL query
+
+        return $this->selectAll($sql);
+    }
 }

@@ -8,69 +8,111 @@ use App\MiddleWare\SessionMiddleware;
 
 //TODO: set the page title dynamically based on the view being rendered in the controller.
 // $page_title = 'Products list';
-$page_title = $data["page_title"];
+$page_title = 'Products';
 $products = $data["products"];
 
 //TODO: We need to load an admin-specific header.
 ViewHelper::loadAdminHeader($page_title);
 ?>
+
+
+
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <div
-        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group me-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary">
-                    Share
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">
-                    Export
-                </button>
+
+
+    <h1><?= hs(trans('products.listing'))  ?></h1>
+
+
+    <!-- Search Container -->
+    <div class="container my-4">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h2>Browse Products</h2>
             </div>
-            <button
-                type="button"
-                class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
-                <svg class="bi" aria-hidden="true">
-                    <use xlink:href="#calendar3"></use>
-                </svg>
-                This week
-            </button>
         </div>
-    </div>
 
-    <h2><?= hs(trans('products.listing'))  ?></h2>
-    <div class="table-responsive small">
-        <?php //echo SessionManager::get('username')
-        ?>
-        <table class="table">
-            <thead>
-                <th>ID</th>
-                <th>Name</th>
+        <!-- Search and Filter Section -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i> <!-- Bootstrap Icons -->
+                    </span>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="searchInput"
+                        placeholder="Search products by name or description..."
+                        aria-label="Search products">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="categoryFilter" aria-label="Filter by category">
+                    <option value="">All Categories</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= hs($category['id']) ?>">
+                            <?= hs($category['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="spinner-border text-primary" role="status" style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <!-- Search Results Container -->
+        <div id="searchResults" class="row">
+            <!-- Results will be dynamically inserted here by JavaScript -->
+        </div>
 
-                <th>Description</th>
-                <th>Price</th>
-                <th>Stock</th>
-            </thead>
-            <tbody>
-                <?php foreach ($data["products"] as $key => $prod): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($prod["id"]) ?></td>
-                        <td><?= htmlspecialchars($prod["name"]) ?></td>
-                        <td><?= htmlspecialchars($prod["description"]) ?></td>
-                        <td><?= htmlspecialchars($prod["price"]) ?></td>
-                        <td><?= htmlspecialchars($prod["stock_quantity"]) ?></td>
-                        <td>
-                            <a href="products/edit/<?php echo $prod["id"] ?>" class="btn btn-success">Edit</a>
-                            <a href="products/delete/<?php echo $prod["id"] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
-                            <a href="products/show/<?php echo $prod["id"] ?>" class="btn btn-info">View</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <a href="products/create" class="btn btn-secondary"> Add New Product </a>
-    </div>
+
+        <!-- Default Products Display (shown when no search active) -->
+
+
+
+        <div id="defaultProducts" class="table-responsive small">
+            <?php //echo SessionManager::get('username')
+            ?>
+            <table class="table">
+                <thead>
+                    <th>ID</th>
+                    <th>Name</th>
+
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                </thead>
+                <tbody>
+                    <?php foreach ($data["products"] as $key => $prod): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($prod["id"]) ?></td>
+                            <td><?= htmlspecialchars($prod["name"]) ?></td>
+                            <td><?= htmlspecialchars($prod["description"]) ?></td>
+                            <td><?= htmlspecialchars($prod["price"]) ?></td>
+                            <td><?= htmlspecialchars($prod["stock_quantity"]) ?></td>
+                            <td>
+                                <a href="products/edit/<?php echo $prod["id"] ?>" class="btn btn-success">Edit</a>
+                                <a href="products/delete/<?php echo $prod["id"] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                                <a href="products/show/<?php echo $prod["id"] ?>" class="btn btn-info">View</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <a href="products/create" class="btn btn-secondary"> Add New Product </a>
+        </div>
 </main>
+<!-- Pass base URL to JavaScript -->
+<script>
+    // Make APP_BASE_URL available to JavaScript
+    window.APP_BASE_URL = '<?= APP_BASE_URL ?>';
+</script>
+
+<!-- Load JavaScript for live search -->
+<script src="<?= APP_ASSETS_DIR_URL ?>/js/product-search.js"></script>
 
 <?php
 

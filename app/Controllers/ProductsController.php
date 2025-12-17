@@ -220,4 +220,24 @@ class ProductsController extends BaseController
 
 
     }
+
+    public function userIndex(Request $request, Response $response, array $args): Response
+    {
+        // TODO: Get all products using $this->model->getAllProducts()
+
+        $products = $this->products_model->getAllProducts();
+        // TODO: Get all categories using $this->model->getAllCategories()
+        $categories = $this->products_model->getAllCategories();
+        // TODO: Render the view 'products/userProductIndexView.php'
+        // - Pass products, categories, and page_title in the data array
+
+        $data = [
+            'products' => $products,
+            'page_title' => 'Products',
+            'categories' => $categories
+        ];
+
+                return $this->render($response, 'products/userProductIndexView.php', $data);
+
+    }
 }
