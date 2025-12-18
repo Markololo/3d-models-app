@@ -69,7 +69,7 @@ class OrdersController extends BaseController
         $this->orders_model->updateOrderTotal($orderId);
 
         return $response
-            ->withHeader('Location', APP_BASE_URL . '/user/products')
+            ->withHeader('Location', APP_BASE_URL . '/user/products' . '/' . $productId)
             ->withStatus(302);
     }
 }
