@@ -6,7 +6,7 @@ $page_title = 'Admin Dashboard';
 
 //TODO: We need to load an admin-specific header.
 ViewHelper::loadAdminHeader($page_title);
-
+$customers = $data['customers'];
 
 ?>
 
@@ -38,7 +38,7 @@ ViewHelper::loadAdminHeader($page_title);
         id="myChart"
         width="900"
         height="380"></canvas>
-    <h2>Section title</h2>
+    <h2>New Customers Orders</h2>
     <div class="table-responsive small">
         <table class="table table-striped table-sm">
             <thead>

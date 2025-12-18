@@ -52,7 +52,7 @@ ViewHelper::loadAdminHeader($page_title);
         <dd> <?= $product["name"] ?></dd>
         </p>
         <p>
-            <dt>Product Category:</dt> <?= $product["category_id"] ?>
+            <dt>Product Category:</dt> <?= $product["category_id"] ?? "{ deleted category }" ?>
         </p>
         <p>
             <dt>Product Price:</dt> $<?= $product["price"] ?>

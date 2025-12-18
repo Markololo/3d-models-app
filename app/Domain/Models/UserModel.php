@@ -136,4 +136,11 @@ class UserModel extends BaseModel
         }
         return null;
     }
+
+    public function getAllCustomers() : array
+    {
+        $sql = "SELECT * FROM users WHERE role = :role";
+        return $this->selectAll($sql, ["role" => 'customer']) ?? [];
+    }
+
 }

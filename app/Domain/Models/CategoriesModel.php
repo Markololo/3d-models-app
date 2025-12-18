@@ -60,10 +60,12 @@ class CategoriesModel extends BaseModel
 
     public function deleteCategory(int $id): int
     {
-        $sql = "UPDATE products SET category_id = NULL
-        WHERE category_id = :id;
-        DELETE FROM categories WHERE id = :id";
-        return $this->execute($sql, ['id' => $id]);
+        $sql1 = "UPDATE products SET category_id = NULL
+        WHERE category_id = :id";
+        $sql2 = "DELETE FROM categories WHERE id = :id";
+        // DELETE FROM categories WHERE id = :id
+        $this->execute($sql1, ['id' => $id]);
+        return $this->execute($sql2, ['id' => $id]);
     }
 
     public function createAndGetId(array $data): string
@@ -98,4 +100,7 @@ class CategoriesModel extends BaseModel
         $sql .= " GROUP BY c.id ORDER BY c.name ASC";
         return $this->selectAll($sql, $params);
     }
+
+
+
 }
