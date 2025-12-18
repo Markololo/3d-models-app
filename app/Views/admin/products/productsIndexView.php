@@ -89,7 +89,6 @@ ViewHelper::loadAdminHeader($page_title);
 
                     ?>
                         <tr>
-                            <!-- <td><img src="/3d-models-app/assets/imageAssets/imagePlaceholder.jpg" class="img-fluid"></td> -->
                             <td><img src=<?= $filePath ?> class="img-fluid" style="max-width: 15vw"></td>
                             <td><?= htmlspecialchars($prod["id"]) ?></td>
                             <td><?= htmlspecialchars($prod["name"]) ?></td>

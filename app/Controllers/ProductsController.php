@@ -58,15 +58,15 @@ class ProductsController extends BaseController
     public function show(Request $request, Response $response, array $args): Response
     {
         $product_id = $args["product_id"];
-        // dd("Editing product: " . $product_id["id"]);
-
-        // $product = $this->products_model->fetchProductById($product_id);
-        $product = $this->products_model->getAllProductInfo($product_id);
+        $product = $this->products_model->fetchProductById($product_id);
+        $product_images = $this->products_model->getProductImages($product_id);
         $categories = $this->categories_model->getAll();
+
         $data = [
-            'page_title' => 'Edit Page',
+            'page_title' => 'Show Page',
             'product' => $product,
-            'categories' => $categories
+            'categories' => $categories,
+            'product_images' => $product_images
 
         ];
         return $this->render($response, 'admin/products/productsShowView.php', $data);
@@ -134,8 +134,6 @@ class ProductsController extends BaseController
             FlashMessage::error($errors[0]);
             return $this->redirect($request, $response, 'products.create');
         }
-        // echo dd($data);
-
     }
 
     /**
@@ -144,18 +142,16 @@ class ProductsController extends BaseController
      */
     public function edit(Request $request, Response $response, array $args): Response
     {
-        //* 1) Get the id of the product from the query string params of the URI
         $product_id = $args["product_id"];
-        // dd("Editing product: " . $product_id["id"]);
-
-        //* 2)  Pull the existing item identified by the received ID from the db.
         $product = $this->products_model->fetchProductById($product_id);
+        $product_images = $this->products_model->getProductImages($product_id);
         // dd($product);
         $categories = $this->categories_model->getAll();        //* 3) Pass it to the view where the update/editing form filled with the item info will be rendered
         $data = [
             'page_title' => 'Edit Page',
             'product' => $product,
-            'categories' => $categories
+            'categories' => $categories,
+            'product_images' => $product_images
 
         ];
         return $this->render($response, 'admin/products/productsEditView.php', $data);
@@ -179,16 +175,9 @@ class ProductsController extends BaseController
      */
     public function delete(Request $request, Response $response, array $args): Response
     {
-        // TODO: Validate the ID (optional but recommended)
-
         $productId = (int) $args['product_id'];
-        // $product_info = $request->getParsedBody();
-        // dd($product_info);
-        $this->products_model->deleteProduct($productId);
 
-        // add flash messages to be shown to the user in master list
-        // <?= App\Helpers\FlashMessage::render()
-        // return $this->redirect($request, $response, 'products.index');
+        $this->products_model->deleteProduct($productId);
 
         return $this->redirect($request, $response, 'product.index', ['id' => $productId]);
     }
@@ -201,11 +190,6 @@ class ProductsController extends BaseController
 
     public function search(Request $request, Response $response, array $args): Response
     {
-        // TODO: Extract query parameters using $request->getQueryParams()
-        // - Get 'q' parameter, trim it, default to empty string if not set
-        // - Get 'category' parameter, convert to int if set, otherwise null
-
-
         $queryParams = $request->getQueryParams();
 
         $searchTerm = trim($queryParams['q'] ?? '');
@@ -217,16 +201,7 @@ class ProductsController extends BaseController
             $searchTerm = substr($searchTerm, 0, 100);
         }
 
-        // TODO: Call $this->model->searchProducts() with search term and category ID
         $products =  $this->products_model->searchProducts($searchTerm, $categoryId);
-
-        // TODO: Create response data array with these keys:
-        // - 'success' => true
-        // - 'count' => count of products
-        // - 'query' => the search term
-        // - 'category_id' => the category ID
-        // - 'products' => the products array
-
         $responseData = [
             'success' =>  true,
             'count' => count($products),
@@ -317,8 +292,7 @@ class ProductsController extends BaseController
             FlashMessage::error($result->getMessage());
         }
 
-        echo "HIIIIII";
-        // Redirect back to the upload form using BaseController method.
+        // echo "HIIIIII";
         return $this->redirect($request, $response, 'products.show', ['product_id'=>$productId]);
     }
 }

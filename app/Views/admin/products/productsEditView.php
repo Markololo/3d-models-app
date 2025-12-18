@@ -7,6 +7,7 @@ use App\Helpers\ViewHelper;
 // $page_title = 'Products list';
 $page_title = $data["page_title"];
 $product = $data["product"];
+$images = $data["product_images"];
 $categories = $data["categories"];
 
 $options = ViewHelper::renderSelectOptions($categories, (string)$product["category_id"], 'id', 'name');
@@ -16,29 +17,6 @@ ViewHelper::loadAdminHeader($page_title);
 ?>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <h2><?= hs(trans('products.editing'))  ?></h2>
-
-    <div class="card mb-4">
-            <div class="card-header">
-                <h5>Upload Product Image</h5>
-            </div>
-            <div class="card-body">
-                <!-- <form method="POST" action="upload" enctype="multipart/form-data"> -->
-                <form method="POST" action="<?= APP_ADMIN_URL ?>/products/<?= $product['id'] ?>/upload" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="myfile" class="form-label">Choose a file:</label>
-                        <input
-                            type="file"
-                            class="form-control"
-                            id="myfile"
-                            name="myfile"
-                            accept="image/*"
-                            required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Upload File</button>
-                </form>
-            </div>
-        </div>
-
     <form method="POST" action="<?= APP_ADMIN_URL ?>/products/update/<?= $product["id"] ?>">
         <div>
             <input type="hidden" name="id" value="<?= $product["id"] ?>">
@@ -63,7 +41,7 @@ ViewHelper::loadAdminHeader($page_title);
 
             <div>
                 <label for="inputPrice" class="form-label">Price</label>
-                <input type="number" name="price" class="form-control" id="inputPrice"
+                <input type="number" name="price" class="form-control" id="inputPrice" step="0.01"
                     value="<?= $product["price"] ?>">
             </div>
         </div>
@@ -74,12 +52,52 @@ ViewHelper::loadAdminHeader($page_title);
         </div>
 
         <br>
-        <div><button type="submit" class="btn btn-success">Save</button></div>
-
-        <br>
-        <a href="<?= APP_ADMIN_URL ?>/products" class="btn btn-danger">Cancel</a>
+        <div><button type="submit" class="btn btn-success">Save</button>
+            <a href="<?= APP_ADMIN_URL ?>/products" class="btn btn-danger">Cancel</a>
+        </div>
 
     </form>
+
+    <br><br>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Upload Product Image</h5>
+        </div>
+        <div class="card-body">
+            <!-- <form method="POST" action="upload" enctype="multipart/form-data"> -->
+            <form method="POST" action="<?= APP_ADMIN_URL ?>/products/<?= $product['id'] ?>/upload" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="myfile" class="form-label">Choose a file:</label>
+                    <input
+                        type="file"
+                        class="form-control"
+                        id="myfile"
+                        name="myfile"
+                        accept="image/*"
+                        required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload File</button>
+            </form>
+        </div>
+    </div>
+
+    <div>
+
+
+        <?php foreach ($images as $key => $prod):
+            if (!isset($prod['file_path']) || empty($prod['file_path']))
+                $filePath = "/3d-models-app/assets/imageAssets/imagePlaceholder.jpg";
+            else {
+                $filename = $prod['file_path'];
+                $filePath = "/3d-models-app/uploads/images/$filename";
+            }
+
+        ?>
+            <img src=<?= $filePath ?> class="img-fluid" style="max-width: 15vw">
+         <?php endforeach; ?>
+    </div>
+    <br>
+    <br>
 </main>
 
 <?php

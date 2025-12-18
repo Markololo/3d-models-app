@@ -166,14 +166,7 @@ class ProductsModel extends BaseModel
 
     public function getAllProducts(): array
     {
-        // TODO: Select id and name from categories table
         $sql = "SELECT id, name FROM products ORDER BY name ASC";
-
-        // - Order by name ASC
-
-
-        // - Use $this->selectAll() with SQL query
-
         return $this->selectAll($sql);
     }
 
@@ -186,16 +179,16 @@ class ProductsModel extends BaseModel
         return $this->execute($sql, ["productId"=>$productId, "filePath"=>$filePath, "isPrimary"=>$isPrimary]);
     }
 
-    public function getAllProductInfo($product_id)
-    {
-        $sql = "SELECT p.*, pi.file_path, pi.is_primary, c.name
-        FROM products p
-        JOIN categories c ON c.id = p.category_id
-        JOIN product_images pi ON pi.product_id = p.id
-        WHERE p.id = :pId";
+    // public function getAllProductInfo($product_id)
+    // {
+    //     $sql = "SELECT p.*, pi.file_path, pi.is_primary, c.name
+    //     FROM products p
+    //     JOIN categories c ON c.id = p.category_id
+    //     JOIN product_images pi ON pi.product_id = p.id
+    //     WHERE p.id = :pId";
 
-        return $this->selectOne($sql, ["pId"=>$product_id]);
-    }
+    //     return $this->selectOne($sql, ["pId"=>$product_id]);
+    // }
 
     public function getFullProducts()
     {
@@ -205,5 +198,14 @@ class ProductsModel extends BaseModel
         LEFT JOIN product_images pi ON pi.product_id = p.id";
 
         return $this->selectAll($sql);
+    }
+
+     public function getProductImages($product_id)
+    {
+        $sql = "SELECT *
+        FROM product_images
+        WHERE product_id = :pId";
+
+        return $this->selectAll($sql, ["pId"=>$product_id]);
     }
 }
