@@ -78,9 +78,9 @@ ViewHelper::loadAdminHeader($page_title);
             ?>
             <table class="table">
                 <thead>
+                    <th>Image</th>
                     <th>ID</th>
                     <th>Name</th>
-
                     <th>Description</th>
                     <th>Price</th>
                     <th>Stock</th>
@@ -88,6 +88,7 @@ ViewHelper::loadAdminHeader($page_title);
                 <tbody id="productsTbody">
                     <?php foreach ($data["products"] as $key => $prod): ?>
                         <tr>
+                            <td><img src="/3d-models-app/assets/imageAssets/imagePlaceholder.jpg" class="img-fluid"></td>
                             <td><?= htmlspecialchars($prod["id"]) ?></td>
                             <td><?= htmlspecialchars($prod["name"]) ?></td>
                             <td><?= htmlspecialchars($prod["description"]) ?></td>
