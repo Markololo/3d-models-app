@@ -160,40 +160,26 @@ class AuthController extends BaseController
         // TODO: If $user is null (authentication failed):
 
         if (!$user) {
-            // $errors[] = "Invalid credentials. Please try again.";
             FlashMessage::error("Invalid credentials. Please try again.");
             return $this->redirect($request, $response, 'auth.login');
         }
 
-        // Authentication successful - create session
-        // pass?
-        // TODO: Store user data in session using SessionManager:
         SessionManager::set('user_id', $user['id']);
         SessionManager::set('user_email', $user['email']);
         SessionManager::set('user_name', $user['first_name'] . ' ' . $user['last_name']);
         SessionManager::set('user_role', $user['role']);
         SessionManager::set('is_authenticated', true);
 
-        //------------- Start FROM 2FA -----------------------
-        // Check if user has 2FA enabled
-        // $twoFactorModel = $this->container->get(TwoFactorAuth::class);
         $has2FA = $this->twoFactorAuthModel->isEnabled($user['id']);
-        // Set session data using SessionManager (same pattern as Auth Part 2)
-        // SessionManager::set('user_id', $user['id']);
-        // SessionManager::set('user_email', $user['email']);
-        // SessionManager::set('user_first_name', $user['first_name']);
-        // SessionManager::set('user_last_name', $user['last_name']);
-        // SessionManager::set('is_authenticated', true);
+
         SessionManager::set('requires_2fa', $has2FA);
         SessionManager::set('two_factor_verified', !$has2FA);
-        // Auto-verified if no 2FA
-        //------------- End FROM 2FA -------------------------
+
 
         FlashMessage::success("Welcome back, {$user['first_name']}!");
-        //       If role is 'admin', redirect to 'admin.dashboard'
-        //       If role is 'customer', redirect to 'user.dashboard'
+
         if ($user['role'] === 'admin') {
-            $customers = $this->user_model->getAllCustomers();
+            $customers = $this->userModel->getAllCustomers();
             $data = [
                 'page_title' => 'Admin Dashboard',
                 'customers' => $customers
