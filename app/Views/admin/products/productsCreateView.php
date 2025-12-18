@@ -35,7 +35,6 @@ ViewHelper::loadAdminHeader($page_title);
             <input type="number" name="stock_quantity" class="form-control" id="stock_quantity">
         </div>
 
-
         <br>
         <button type="submit" class="btn btn-success">Save</button>
         <a href="<?= APP_ADMIN_URL ?>/products" class="btn btn-danger">Cancel</a>

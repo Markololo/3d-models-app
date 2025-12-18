@@ -17,6 +17,27 @@ ViewHelper::loadAdminHeader($page_title);
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <h2><?= hs(trans('products.editing'))  ?></h2>
 
+    <div class="card mb-4">
+            <div class="card-header">
+                <h5>Upload Product Image</h5>
+            </div>
+            <div class="card-body">
+                <!-- <form method="POST" action="upload" enctype="multipart/form-data"> -->
+                <form method="POST" action="<?= APP_ADMIN_URL ?>/products/<?= $product['id'] ?>/upload" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="myfile" class="form-label">Choose a file:</label>
+                        <input
+                            type="file"
+                            class="form-control"
+                            id="myfile"
+                            name="myfile"
+                            accept="image/*"
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                </form>
+            </div>
+        </div>
 
     <form method="POST" action="<?= APP_ADMIN_URL ?>/products/update/<?= $product["id"] ?>">
         <div>
@@ -51,7 +72,6 @@ ViewHelper::loadAdminHeader($page_title);
             <input type="number" name="quantity" class="form-control" id="InputQuantity"
                 value="<?= $product["stock_quantity"] ?>">
         </div>
-
 
         <br>
         <div><button type="submit" class="btn btn-success">Save</button></div>

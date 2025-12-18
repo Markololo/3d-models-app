@@ -75,6 +75,4 @@ class FileUploadHelper
 
         return Result::success('File uploaded successfully', ['filename' => $filename]);
     }
-
-
 }

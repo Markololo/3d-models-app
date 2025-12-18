@@ -176,4 +176,18 @@ class ProductsModel extends BaseModel
 
         return $this->selectAll($sql);
     }
+
+
+    public function saveProductImage($filePath, $productId, $isPrimary = 1) //default is_primary true
+    {
+
+        $sql = "INSERT INTO product_images (product_id, file_path, is_primary) VALUES (:productId, :filePath, :isPrimary)";
+
+        return $this->execute($sql, ["productId"=>$productId, "filePath"=>$filePath, "isPrimary"=>$isPrimary]);
+    }
+
+    public function getAllProductInfo($product_id)
+    {
+        $sql
+    }
 }

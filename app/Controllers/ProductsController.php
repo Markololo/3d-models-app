@@ -15,6 +15,7 @@ use App\Helpers\FlashMessage;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Helpers\FileUploadHelper;
 
 
 class ProductsController extends BaseController
@@ -268,7 +269,54 @@ class ProductsController extends BaseController
             'categories' => $categories
         ];
 
-                return $this->render($response, 'products/userProductIndexView.php', $data);
+        return $this->render($response, 'products/userProductIndexView.php', $data);
+    }
 
+
+
+    /**
+     * Process file upload.
+     */
+    public function upload(Request $request, Response $response, array $args): Response
+    {
+        // Get the uploaded file from the request.
+        $uploadedFiles = $request->getUploadedFiles();
+        // $productId = (int)$request->getParsedBody()['product_id'];
+        $productId = (int)$args['product_id'];
+        $uploadedFile = $uploadedFiles['myfile'];
+
+        // Configure upload settings.
+        $config = [
+            'directory' => __DIR__ . '/../../public/uploads/images',
+            'allowedTypes' => ['image/jpeg', 'image/png', 'image/gif'],
+            'maxSize' => 2 * 1024 * 1024, // 2MB in bytes
+            'filenamePrefix' => 'upload_'
+        ];
+
+        // Use the helper to handle the upload.
+        $result = FileUploadHelper::upload($uploadedFile, $config);
+
+        // Handle the result.
+        if ($result->isSuccess()) {
+            // Get the filename from the result data.
+            $filename = $result->getData()['filename'];
+
+            // Store filename in session for display.
+            if (!isset($_SESSION['uploaded_files'])) {
+                $_SESSION['uploaded_files'] = [];
+            }
+            $_SESSION['uploaded_files'][] = $filename;
+
+            $this->products_model->saveProductImage($filename, $productId);
+            // Show success message.
+            FlashMessage::success($result->getMessage() . ": {$filename}");
+        } else {
+            // Show error message.
+            FlashMessage::error($result->getMessage());
+        }
+
+        echo "HIIIIII";
+        // Redirect back to the upload form using BaseController method.
+        return $this->redirect($request, $response, 'products.show', ['product_id'=>$productId]);
     }
 }

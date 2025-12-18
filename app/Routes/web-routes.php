@@ -50,6 +50,11 @@ return static function (Slim\App $app): void {
                 [ProductsController::class, 'create']
             )->setName('products.create');
 
+            // $group->get('/products/upload', [ProductsController::class, 'create'])->setName('product.upload.index');
+            // $group->post('/products/upload', [ProductsController::class, 'upload'])->setName('product.upload.process');
+            $group->post('/products/{product_id}/upload', [ProductsController::class, 'upload'])->setName('products.upload');
+
+
             $group->get(
                 '/products/edit/{product_id}',
                 [ProductsController::class, 'edit']
@@ -135,10 +140,10 @@ return static function (Slim\App $app): void {
         throw new \Slim\Exception\HttpNotFoundException($request, "Something went wrong");
     });
 
-    //? File Uploads:
+    //TODO File Uploads:
     // File upload routes
-    $app->get('/upload', [UploadController::class, 'index'])->setName('upload.index');
-    $app->post('/upload', [UploadController::class, 'upload'])->setName('upload.process');
+    // $app->get('/upload', [UploadController::class, 'index'])->setName('upload.index');
+    // $app->post('/upload', [UploadController::class, 'upload'])->setName('upload.process');
 
     // $app->group('/auth', function ($group) {
     //     $group->get('/register', [AuthController::class, 'register'])->setName('auth.register');
