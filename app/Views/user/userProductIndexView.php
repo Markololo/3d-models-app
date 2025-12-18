@@ -1,4 +1,5 @@
 <?php
+
 use App\Helpers\ViewHelper;
 use App\Controllers\DashboardController;
 use App\Helpers\SessionManager;
@@ -30,16 +31,15 @@ ViewHelper::loadHeader($page_title);
                     class="form-control"
                     id="searchInput"
                     placeholder="Search products by name or description..."
-                    aria-label="Search products"
-                >
+                    aria-label="Search products">
             </div>
         </div>
         <div class="col-md-3">
             <select class="form-select" id="categoryFilter" aria-label="Filter by category">
                 <option value="">All Categories</option>
                 <?php foreach ($categories as $category): ?>
-                    <option value="<?= hs($category['id']) ?>">
-                        <?= hs($category['name']) ?>
+                    <option value="<?= hs((string)$category['id']) ?>">
+                        <?= hs((string)$category['name']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -66,8 +66,7 @@ ViewHelper::loadHeader($page_title);
                         src="<?= hs($product['image_path'] ?? '/images/placeholder.jpg') ?>"
                         class="card-img-top"
                         alt="<?= hs($product['name']) ?>"
-                        style="height: 200px; object-fit: cover;"
-                    >
+                        style="height: 200px; object-fit: cover;">
                     <div class="card-body">
                         <h5 class="card-title"><?= hs($product['name']) ?></h5>
                         <p class="card-text"><?= hs(substr($product['description'], 0, 100)) ?>...</p>
@@ -75,7 +74,7 @@ ViewHelper::loadHeader($page_title);
                         <span class="badge bg-secondary"><?= hs($product['category_name'] ?? 'Uncategorized') ?></span>
                     </div>
                     <div class="card-footer">
-                        <a href="/products/<?= hs($product['id']) ?>" class="btn btn-primary btn-sm">View Details</a>
+                        <a href="/products/<?= hs((string)$product['id']) ?>" class="btn btn-primary btn-sm">View Details</a>
                     </div>
                 </div>
             </div>
@@ -90,6 +89,6 @@ ViewHelper::loadHeader($page_title);
 </script>
 
 <!-- Load JavaScript for live search -->
-<script src="<?=APP_BASE_URL?>/public/js/product-search.js"></script>
+<script src="<?= APP_ASSETS_DIR_URL ?>/js/user-product-search.js"></script>
 
 <?php ViewHelper::loadFooter(); ?>

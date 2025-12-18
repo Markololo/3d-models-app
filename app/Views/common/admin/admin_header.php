@@ -462,14 +462,20 @@
                                      Settings
                                  </a>
                              </li>
-                             <li class="nav-item">
-                                 <a class="nav-link d-flex align-items-center gap-2" href="<?= APP_BASE_URL ?>/logout">
-                                     <svg class="bi" aria-hidden="true">
-                                         <use xlink:href="#door-closed"></use>
-                                     </svg>
-                                     Sign out
-                                 </a>
-                             </li>
+
+
+                             <div class="actions">
+                                 <form method="POST" action="<?= '/' . APP_ROOT_DIR_NAME . '/logout' ?>">
+                                     <button type="submit" class="btn btn-secondary">Sign Out</button>
+                                 </form>
+
+
+
+
+
+
+                                 </form>
+                                 </li>
                          </ul>
                      </div>
                  </div>
