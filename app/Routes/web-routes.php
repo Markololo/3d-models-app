@@ -115,6 +115,11 @@ return static function (Slim\App $app): void {
                 [UsersController::class, 'adminIndex']
             )->setName('categories.index');
 
+            $group->get(
+                '/orders',
+                [UsersController::class, 'adminOrdersIndex']
+            )->setName('orders.index');
+
         }
     );
 

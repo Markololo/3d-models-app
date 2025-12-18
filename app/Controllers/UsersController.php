@@ -43,6 +43,18 @@ class UsersController extends BaseController
 
         return $this->render($response, 'admin/usersView.php', $data);
     }
+
+    public function adminOrdersIndex(Request $request, Response $response, array $args): Response
+    {
+        $customers = $this->user_model->getAllCustomers();
+        $data = [
+            'page_title' => 'User Home',
+            'customers' => $customers
+        ];
+
+        return $this->render($response, 'admin/orders/orderIndexView.php', $data);
+    }
+
     public function products(Request $request, Response $response, array $args): Response
     {
         $products = $this->products_model->getFullProducts();

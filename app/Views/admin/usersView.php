@@ -34,7 +34,7 @@ ViewHelper::loadAdminHeader($page_title);
                     <?php endforeach;?>
             </tbody>
         </table>
-        <a href="products/create" class="btn btn-secondary"> Add New Product </a>
+        <a href="#" class="btn btn-secondary"> View Orders </a>
     </div>
 </main>
 <script>
