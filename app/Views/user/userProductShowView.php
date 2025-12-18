@@ -12,9 +12,10 @@ $images = $data['product_images'];
 ViewHelper::loadHeader($page_title);
 
 ?>
-
+<br>
+<a href="<?= '/' . APP_ROOT_DIR_NAME . '/user/products' ?>" class="btn btn-primary">Back to products view</a>
 <main class="col-md-9 px-md-4">
-
+    <br>
     <h1>Product View:</h1>
     <br>
 
@@ -65,7 +66,11 @@ ViewHelper::loadHeader($page_title);
         </p>
     </dl>
 
-    <a href="<?= '/' . APP_ROOT_DIR_NAME . '/user/products' ?>" class="btn btn-primary">Back to products view</a>
+    <form method="POST" action="<?= APP_BASE_URL ?>/user/cart/add/<?= $product['id'] ?>">
+        <button class="btn btn-primary">Add To Cart</button>
+    </form>
+
+
 </main>
 
 <?php

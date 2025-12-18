@@ -208,4 +208,12 @@ class ProductsModel extends BaseModel
 
         return $this->selectAll($sql, ["pId" => $product_id]);
     }
+
+    public function reduceStock($productId, $quantity)
+    {
+        $this->execute(
+            "UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ?",
+            [$quantity, $productId]
+        );
+    }
 }
