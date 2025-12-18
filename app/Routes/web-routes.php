@@ -10,6 +10,7 @@ use App\Controllers\AuthController;
 use App\Controllers\CategoriesController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
+use App\Controllers\OrdersController;
 use App\Controllers\ProductsController;
 use App\Controllers\UploadController;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -117,7 +118,7 @@ return static function (Slim\App $app): void {
 
             $group->get(
                 '/orders',
-                [UsersController::class, 'adminOrdersIndex']
+                [OrdersController::class, 'adminIndex']
             )->setName('orders.index');
 
         }
