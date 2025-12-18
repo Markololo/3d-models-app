@@ -19,16 +19,18 @@ class OrdersController extends BaseController
         parent::__construct($container);
     }
 
-    public function index(Request $request, Response $response, array $args): Response
+    public function adminIndex(Request $request, Response $response, array $args): Response
     {
-        $customers = $this->user_model->getAllCustomers();
-        $orders;
+        //Order ID, Customer Name or ID, Total Amount, Status, and Date Created
+        $customers = $this->orders_model->getAllCustomers();
+        $orders = $this->orders_model->getAllOrders();
         $data = [
             'page_title' => 'Admin Dashboard',
-            'customers' => $customers
+            'customers' => $customers,
+            'orders' => $orders
         ];
 
-        return $this->render($response, '#', $data);
+        return $this->render($response, 'admin/orders/orderIndexView.php', $data);
     }
 
 

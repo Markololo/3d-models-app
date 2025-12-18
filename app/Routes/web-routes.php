@@ -118,7 +118,7 @@ return static function (Slim\App $app): void {
 
             $group->get(
                 '/orders',
-                [UsersController::class, 'adminOrdersIndex']
+                [OrdersController::class, 'adminIndex']
             )->setName('orders.index');
         }
     );

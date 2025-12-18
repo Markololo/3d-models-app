@@ -1,12 +1,11 @@
 <?php
 
 use App\Helpers\ViewHelper;
+
 $page_title = 'Admin Dashboard';
 
 ViewHelper::loadAdminHeader($page_title);
-$customers = $data['customers'];
 $orders = $data['orders'];
-//Order ID, Customer Name or ID, Total Amount, Status, and Date Created
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -23,15 +22,17 @@ $orders = $data['orders'];
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ($data["customers"] as $key => $customer):?>
-                <tr>
-                        <td><?= htmlspecialchars($customer["id"]) ?></td>
-                        <td><?= htmlspecialchars($customer["first_name"].' '.$customer["last_name"]) ?></td>
-                        <td><?= htmlspecialchars($customer["email"]) ?></td>
+                <?php foreach ($data["orders"] as $key => $order): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($order["id"]) ?></td>
+                        <td><?= htmlspecialchars($order["username"]) ?></td>
+                        <td><?= htmlspecialchars($order["total"]) ?></td>
+                        <td><?= htmlspecialchars($order["status"]) ?></td>
+                        <td><?= htmlspecialchars($order["created_at"]) ?></td>
                         <td>
                             <a href="#" class="btn btn-info">View</a>
                         </td>
-                </tr>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
