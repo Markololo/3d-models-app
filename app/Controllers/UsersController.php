@@ -15,7 +15,7 @@ use App\Helpers\SessionManager;
 
 class UsersController extends BaseController
 {
-    public function __construct(Container $container, private ProductsModel $products_model,)
+    public function __construct(Container $container, private ProductsModel $products_model, private CategoriesModel $categories_model)
     {
         parent::__construct($container);
     }
@@ -48,17 +48,19 @@ class UsersController extends BaseController
 
     public function show(Request $request, Response $response, array $args): Response
     {
-        $product_id = $args["product_id"];
+        $product_id = $args["id"];
         // dd("Editing product: " . $product_id["id"]);
+        $product_images = $this->products_model->getProductImages($product_id);
 
-        // $product = $this->products_model->fetchProductById($product_id);
-        // $categories = $this->categories_model->getAll();
+        $product = $this->products_model->fetchProductById($product_id);
+        $categories = $this->categories_model->getAll();
         $data = [
             'page_title' => 'Details Page',
-            // 'product' => $product,
-            // 'categories' => $categories
+            'product' => $product,
+            'categories' => $categories,
+            'product_images' => $product_images ?? [],
 
         ];
-        return $this->render($response, 'user/products/productsShowView.php', $data);
+        return $this->render($response, 'user/userProductShowView.php', $data);
     }
 }

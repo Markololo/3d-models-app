@@ -81,7 +81,8 @@ ViewHelper::loadHeader($page_title);
                         <span class="badge bg-secondary"><?= hs($product['category_name'] ?? 'Uncategorized') ?></span>
                     </div>
                     <div class="card-footer">
-                        <a href="/products/<?= hs((string)$product['id']) ?>" class="btn btn-primary btn-sm">View Details</a>
+                        <a href="<?= APP_BASE_URL ?>/user/products/<?= hs((string)$product['id']) ?>" class="btn btn-primary btn-sm">View Details</a>
+
                     </div>
                 </div>
             </div>
