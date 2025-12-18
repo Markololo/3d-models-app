@@ -21,7 +21,7 @@ use App\Helpers\Core\PDOService;
  */
 class CategoriesModel extends BaseModel
 {
-    private $categories_table = " categories";
+    private $categories_table = "categories";
     public function __construct(PDOService $pdo)
     {
         parent::__construct($pdo); //pass it to the parent class
@@ -77,9 +77,9 @@ class CategoriesModel extends BaseModel
          VALUES (:name, :description, current_timestamp())";
 
         $insert = $this->execute($sql, [
-            "name"=>$name,
-            "description"=>$description,
-            ]);
+            "name" => $name,
+            "description" => $description,
+        ]);
         return $this->lastInsertId();
     }
 

@@ -41,7 +41,12 @@ class ProductsModel extends BaseModel
         //WRITE THE UPDATE QUERY
         return $this->execute(
             'UPDATE products
-         SET name = :name, description = :description, price = :price, stock_quantity = :stock_quantity
+         SET
+         name = :name,
+          description = :description,
+          price = :price,
+          stock_quantity = :stock_quantity,
+         category_id = :category_id
          WHERE id = :id',
             [
                 'id' => $id,
@@ -49,7 +54,7 @@ class ProductsModel extends BaseModel
                 'description' => $product_info['description'],
                 'price' => $product_info['price'],
                 'stock_quantity' => $product_info['quantity'],
-                // 'category_id' => $product_info['category_id']
+                'category_id' => $product_info['category_id']
 
             ]
         );
@@ -64,8 +69,8 @@ class ProductsModel extends BaseModel
 
     public function deleteProduct(int $id): int
     {
-        $sql = "DELETE FROM products WHERE id = :id";
-        return $this->execute($sql, ['id' => $id]);
+        $this->execute("DELETE FROM product_images WHERE product_id = :id", ['id' => $id]);
+        return $this->execute("DELETE FROM products WHERE id = :id", ['id' => $id]);
     }
 
     public function createAndGetId(array $data): string
@@ -195,12 +200,12 @@ class ProductsModel extends BaseModel
         return $this->selectAll($sql);
     }
 
-     public function getProductImages($product_id)
+    public function getProductImages($product_id)
     {
         $sql = "SELECT *
         FROM product_images
         WHERE product_id = :pId";
 
-        return $this->selectAll($sql, ["pId"=>$product_id]);
+        return $this->selectAll($sql, ["pId" => $product_id]);
     }
 }

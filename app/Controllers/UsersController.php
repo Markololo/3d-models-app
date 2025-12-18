@@ -45,7 +45,7 @@ class UsersController extends BaseController
     }
     public function products(Request $request, Response $response, array $args): Response
     {
-        $products = $this->products_model->fetchProducts();
+        $products = $this->products_model->getFullProducts();
 
         $data = [
             'page_title' => 'List of products',
