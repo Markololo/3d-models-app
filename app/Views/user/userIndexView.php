@@ -16,7 +16,11 @@
                 <span class="navbar-text me-3">
                     Welcome, <?= htmlspecialchars($_SESSION['user_name'] ?? 'Guest') ?>!
                 </span>
-                <a class="btn btn-outline-light btn-sm" href="logout">Logout</a>
+                <div class="actions">
+                    <form method="POST" action="<?= '/' . APP_ROOT_DIR_NAME . '/logout' ?>">
+                        <button class="btn btn-outline-light btn-sm" href="logout">Logout</button>
+                    </form>
+                </div>
             </div>
         </div>
     </nav>

@@ -1,6 +1,10 @@
 <?php require __DIR__ . '/common/header.php'; ?>
 
+<a href="<?= '/' . APP_ROOT_DIR_NAME . '/user' . '/' ?>" class="btn btn-primary">Back to Dashboard</a>
 <div class="container" style="max-width: 800px; margin: 50px auto;">
+
+    <br>
+
     <h1>Dashboard</h1>
 
     <div class="welcome-section">
