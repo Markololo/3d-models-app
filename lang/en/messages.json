@@ -24,5 +24,9 @@
     "products": {
         "listing": "Product Listing",
         "editing": "Edit Product"
+    },
+      "categories": {
+        "listing": "Categories Listing",
+        "editing": "Edit Category"
     }
 }

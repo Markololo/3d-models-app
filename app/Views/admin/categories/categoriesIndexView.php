@@ -18,8 +18,8 @@ ViewHelper::loadAdminHeader($page_title);
 ?>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
+    <h1><?= hs(trans('categories.listing'))  ?></h1>
 
-    <h2>Categories Listing</h2>
     <div class="table-responsive small">
         <h4> <?php echo SessionManager::get('username') ?> </h4>
         <table class="table">
@@ -33,7 +33,6 @@ ViewHelper::loadAdminHeader($page_title);
                 <?php foreach ($data["categories"] as $key => $categorie): ?>
                     <tr>
                         <td><?= ($categorie['id']) ?></td>
-
                         <td><?= $categorie["name"] ?></td>
                         <td><?= $categorie["description"] ?></td>
                         <td><?= $categorie["created_at"] ?></td>
