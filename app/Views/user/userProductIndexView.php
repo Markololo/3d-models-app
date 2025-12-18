@@ -59,14 +59,20 @@ ViewHelper::loadHeader($page_title);
 
     <!-- Default Products Display (shown when no search active) -->
     <div id="defaultProducts" class="row">
-        <?php foreach ($products as $product): ?>
+        <?php foreach ($data["products"] as $key => $product):
+            if (!isset($product['file_path']) || empty($product['file_path']))
+                $filePath = "/3d-models-app/assets/imageAssets/imagePlaceholder.jpg";
+            else {
+                $filename = $product['file_path'];
+                $filePath = "/3d-models-app/uploads/images/$filename";
+            }
+
+        ?>
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
-                    <img
-                        src="<?= hs($product['image_path'] ?? '/images/placeholder.jpg') ?>"
-                        class="card-img-top"
-                        alt="<?= hs($product['name']) ?>"
-                        style="height: 200px; object-fit: cover;">
+
+                    <img src=<?= $filePath ?> class="img-fluid" style="max-width: 15vw">
+
                     <div class="card-body">
                         <h5 class="card-title"><?= hs($product['name']) ?></h5>
                         <p class="card-text"><?= hs(substr($product['description'], 0, 100)) ?>...</p>

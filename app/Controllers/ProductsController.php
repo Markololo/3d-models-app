@@ -107,29 +107,28 @@ class ProductsController extends BaseController
         $stock_quantity = $data["stock_quantity"];
         $product_description = $data['product_description'];
 
-        if(empty($name)){
+        if (empty($name)) {
             $errors[] = "Please enter the product name.";
         }
 
-        if(empty($price)){
+        if (empty($price)) {
             $errors[] = "Please enter the product price.";
         }
-        if(empty($category_id)){
+        if (empty($category_id)) {
             $errors[] = "Please enter the product category.";
         }
-        if(empty($product_description)){
+        if (empty($product_description)) {
             $errors[] = "Please enter the product description.";
         }
-        if(!isset($stock_quantity) || $stock_quantity === '' || $stock_quantity < 0){
+        if (!isset($stock_quantity) || $stock_quantity === '' || $stock_quantity < 0) {
             $errors[] = "Please enter the product's stock quantity.";
         }
 
-        if(empty($errors)) {
+        if (empty($errors)) {
             $product_id = $this->products_model->createAndGetId($data);
             FlashMessage::success("Product Created Successfully!");
             // return $this->redirect($request, $response, 'products/show'.$product_id);
-        return $this->redirect($request, $response, 'products.show', ['product_id' => $product_id]);
-
+            return $this->redirect($request, $response, 'products.show', ['product_id' => $product_id]);
         } else {
             FlashMessage::error($errors[0]);
             return $this->redirect($request, $response, 'products.create');
@@ -259,9 +258,9 @@ class ProductsController extends BaseController
     {
         // TODO: Get all products using $this->model->getAllProducts()
 
-        $products = $this->products_model->getAllProducts();
+        $products = $this->products_model->getFullProducts();
         // TODO: Get all categories using $this->model->getAllCategories()
-        $categories = $this->products_model->getAllCategories();
+        $categories = $this->categories_model->getAll();
         // TODO: Render the view 'products/userProductIndexView.php'
         // - Pass products, categories, and page_title in the data array
 
@@ -319,6 +318,6 @@ class ProductsController extends BaseController
 
         echo "HIIIIII";
         // Redirect back to the upload form using BaseController method.
-        return $this->redirect($request, $response, 'products.show', ['product_id'=>$productId]);
+        return $this->redirect($request, $response, 'products.show', ['product_id' => $productId]);
     }
 }

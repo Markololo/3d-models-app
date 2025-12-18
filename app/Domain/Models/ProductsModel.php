@@ -83,12 +83,12 @@ class ProductsModel extends BaseModel
          VALUES (:category_id, :name, :description, :price, :stock_quantity, current_timestamp())";
 
         $insert = $this->execute($sql, [
-            "category_id"=>$category_id,
-            "name"=>$name,
-            "description"=>$description,
-             "price"=>$price,
-             "stock_quantity"=>$stock_quantity
-            ]);
+            "category_id" => $category_id,
+            "name" => $name,
+            "description" => $description,
+            "price" => $price,
+            "stock_quantity" => $stock_quantity
+        ]);
         //? 2. Return the last inserted ID using $this->lastInsertId()
         return $this->lastInsertId();
     }
@@ -150,18 +150,6 @@ class ProductsModel extends BaseModel
     }
 
 
-    public function getAllCategories(): array
-    {
-        // TODO: Select id and name from categories table
-        $sql = "SELECT id, name FROM categories ORDER BY name ASC";
-
-        // - Order by name ASC
-
-
-        // - Use $this->selectAll() with SQL query
-
-        return $this->selectAll($sql);
-    }
 
 
     public function getAllProducts(): array
@@ -183,26 +171,33 @@ class ProductsModel extends BaseModel
 
         $sql = "INSERT INTO product_images (product_id, file_path, is_primary) VALUES (:productId, :filePath, :isPrimary)";
 
-        return $this->execute($sql, ["productId"=>$productId, "filePath"=>$filePath, "isPrimary"=>$isPrimary]);
+        return $this->execute($sql, ["productId" => $productId, "filePath" => $filePath, "isPrimary" => $isPrimary]);
     }
 
     public function getAllProductInfo($product_id)
     {
-        $sql = "SELECT p.*, pi.file_path, pi.is_primary, c.name
+        $sql = "SELECT p.*, pi.file_path, pi.is_primary, c.name AS category_name
         FROM products p
-        JOIN categories c ON c.id = p.category_id
+        LEFT JOIN categories c ON c.id = p.category_id
         JOIN product_images pi ON pi.product_id = p.id
         WHERE p.id = :pId";
 
-        return $this->selectOne($sql, ["pId"=>$product_id]);
+        return $this->selectOne($sql, ["pId" => $product_id]);
     }
 
     public function getFullProducts()
     {
-        $sql = "SELECT p.*, pi.file_path, pi.is_primary, c.name
+        $sql = "SELECT
+            p.*,
+            c.name AS category_name,
+            pi.file_path,
+            pi.is_primary
         FROM products p
-        JOIN categories c ON c.id = p.category_id
-        LEFT JOIN product_images pi ON pi.product_id = p.id";
+        LEFT JOIN categories c ON c.id = p.category_id
+        LEFT JOIN product_images pi
+            ON pi.product_id = p.id AND pi.is_primary = 1
+        ORDER BY p.name ASC
+    ";
 
         return $this->selectAll($sql);
     }

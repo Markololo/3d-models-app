@@ -98,4 +98,7 @@ class CategoriesModel extends BaseModel
         $sql .= " GROUP BY c.id ORDER BY c.name ASC";
         return $this->selectAll($sql, $params);
     }
+
+
+    
 }
