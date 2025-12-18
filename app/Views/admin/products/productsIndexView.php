@@ -68,19 +68,7 @@ ViewHelper::loadAdminHeader($page_title);
             <!-- Results will be dynamically inserted here by JavaScript -->
         </div>
 
-
-        <!-- Default Products Display (shown when no search active) -->
-
-
-
         <div id="defaultProducts" class="table-responsive small">
-            <?php //$filename = "upload_6944312bd959b.png";
-            ?>
-            <img
-                src="/3d-models-app/uploads/images/<?= htmlspecialchars($filename) ?>"
-                class="card-img-top"
-                alt="Uploaded image"
-                style="height: 200px; object-fit: cover;">
             <table class="table">
                 <thead>
                     <th>Image</th>
@@ -102,7 +90,7 @@ ViewHelper::loadAdminHeader($page_title);
                     ?>
                         <tr>
                             <!-- <td><img src="/3d-models-app/assets/imageAssets/imagePlaceholder.jpg" class="img-fluid"></td> -->
-                            <td><img src=<?= $filePath ?> class="img-fluid"></td>
+                            <td><img src=<?= $filePath ?> class="img-fluid" style="max-width: 15vw"></td>
                             <td><?= htmlspecialchars($prod["id"]) ?></td>
                             <td><?= htmlspecialchars($prod["name"]) ?></td>
                             <td><?= htmlspecialchars($prod["description"]) ?></td>
