@@ -193,15 +193,12 @@ return static function (Slim\App $app): void {
     $app->post('/login', [AuthController::class, 'authenticate']);
     $app->post('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
 
-    // TODO: Create a POST route for '/login' that maps to AuthController::class 'authenticate' method
-
-    // TODO: Create a GET route for '/logout' that maps to AuthController::class 'logout' method
     // $app->get('/dashboard', [AuthController::class, 'dashboard'])
     //     ->setName('user.dashboard')
     //     ->add(AuthMiddleware::class);
     $app->get('/dashboard', [AuthController::class, 'dashboard'])
         ->setName('dashboard')
-        ->add(TwoFactorMiddleware::class)  // Add this line
+        ->add(TwoFactorMiddleware::class)
         ->add(AuthMiddleware::class);
 
 

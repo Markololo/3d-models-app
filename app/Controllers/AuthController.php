@@ -189,17 +189,16 @@ class AuthController extends BaseController
         // Auto-verified if no 2FA
         //------------- End FROM 2FA -------------------------
 
-        // TODO: Display success message using FlashMessage::success()
         FlashMessage::success("Welcome back, {$user['first_name']}!");
-        // TODO: Redirect based on role:
         //       If role is 'admin', redirect to 'admin.dashboard'
         //       If role is 'customer', redirect to 'user.dashboard'
         if ($user['role'] === 'admin') {
-            // return $this->redirect($request, $response, 'admin.dashboard');
-            // return $this->redirect($request, $response, 'dashboard.index');
+            $customers = $this->user_model->getAllCustomers();
             $data = [
-
+                'page_title' => 'Admin Dashboard',
+                'customers' => $customers
             ];
+
             return $this->render($response, 'admin/dashboardView.php', $data);
         } else {
             return $this->redirect($request, $response, 'user.index');
@@ -207,40 +206,25 @@ class AuthController extends BaseController
     }
 
 
-
-
     /**
      * Logout the current user (GET request).
      */
     public function logout(Request $request, Response $response, array $args): Response
     {
-        // TODO: Destroy the session using SessionManager::destroy()
         SessionManager::destroy();
-        // TODO: Display success message: "You have been logged out successfully."
         FlashMessage::success("You have been logged out successfully.");
 
-        // TODO: Redirect to 'auth.login' route
         return $this->redirect($request, $response, 'auth.login');
     }
+
 
     /**
      * Display user dashboard (protected route).
      */
     public function dashboard(Request $request, Response $response, array $args): Response
     {
-        // // TODO: Create a $data array with 'title' => 'Dashboard'
-        // $data =
-        //     [
-        //         'page_title' => 'Dashboard'
-        //     ];
-
-        // // TODO: Render 'user/dashboard.php' view and pass $data
-        // return $this->render($response, 'user/dashboard.php', $data);
-
         $userId = SessionManager::get('user_id');
-        // $twoFactorModel = $this->container->get(TwoFactorAuthModel::class);
 
-        // $twoFactorModel = new TwoFactorAuthModel();
         $has2FA = $this->twoFactorAuthModel->isEnabled($userId);
 
         return $this->render($response, 'dashboard.php', [
