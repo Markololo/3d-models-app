@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -45,9 +47,10 @@
                     <div class="card-body">
                         <h5 class="card-title">Quick Actions</h5>
                         <div class="d-grid gap-2">
-                            <a href="#" class="btn btn-primary">Browse Products</a>
+                            <a href="<?= '/' . APP_ROOT_DIR_NAME . '/user/products' ?>" class="btn btn-primary">Browse Products</a>
                             <a href="#" class="btn btn-secondary">My Orders</a>
-                            <a href="#" class="btn btn-info">Update Profile</a>
+                            <a href="<?= '/' . APP_ROOT_DIR_NAME . '/dashboard' ?>" class="btn btn-info">Update Profile</a>
+
                         </div>
                     </div>
                 </div>
@@ -57,4 +60,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

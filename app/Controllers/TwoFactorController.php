@@ -172,7 +172,7 @@ class TwoFactorController extends BaseController
         SessionManager::remove('2fa_setup_secret');
 
         FlashMessage::success('2FA has been enabled successfully!');
-        return $this->redirect($request, $response, 'dashboard');
+        return $this->redirect($request, $response, 'user.index');
     }
 
     /**
@@ -295,7 +295,7 @@ class TwoFactorController extends BaseController
         session_regenerate_id(true);
 
         // Redirect to dashboard
-        return $this->redirect($request, $response, 'dashboard');
+        return $this->redirect($request, $response, 'user.index');
     }
 
     /**

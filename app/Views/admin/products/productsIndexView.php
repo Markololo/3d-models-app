@@ -85,7 +85,7 @@ ViewHelper::loadAdminHeader($page_title);
                     <th>Price</th>
                     <th>Stock</th>
                 </thead>
-                <tbody>
+                <tbody id="productsTbody">
                     <?php foreach ($data["products"] as $key => $prod): ?>
                         <tr>
                             <td><?= htmlspecialchars($prod["id"]) ?></td>

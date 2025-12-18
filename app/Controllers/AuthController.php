@@ -198,11 +198,11 @@ class AuthController extends BaseController
             // return $this->redirect($request, $response, 'admin.dashboard');
             // return $this->redirect($request, $response, 'dashboard.index');
             $data = [
-                
+
             ];
             return $this->render($response, 'admin/dashboardView.php', $data);
         } else {
-            return $this->redirect($request, $response, 'dashboard');
+            return $this->redirect($request, $response, 'user.index');
         }
     }
 

@@ -17,6 +17,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\AdminAuthMiddleware;
 use App\Controllers\TwoFactorController;
+use App\Controllers\SettingsController;
+
+use App\Controllers\UsersController;
 use App\Middleware\TwoFactorMiddleware;
 
 return static function (Slim\App $app): void {
@@ -84,8 +87,37 @@ return static function (Slim\App $app): void {
     );
 
 
+    // clients group
+    $app->group(
+        '/user',
+        function ($group) {
+            //Add/register admin routes
+            $group->get(
+                '/products',
+                [UsersController::class, 'index']
+            )->setName('user.index');
+
+
+            $group->get(
+                '/products/{id}',
+                [UsersController::class, 'show']
+            )->setName('user.products.show');
+
+            $group->get(
+                '/settings',
+                [SettingsController::class, 'index']
+            )->setName('user.settings');
+        }
+    )
+        ->add(TwoFactorMiddleware::class)
+        ->add(AuthMiddleware::class);
+
+
+
+
+
     //* NOTE: Route naming pattern: [controller_name].[method_name]
-        $app->get('/', [AuthController::class, 'login'])->setName('auth.login');
+    $app->get('/', [AuthController::class, 'login'])->setName('auth.login');
 
 
     // $app->get('/home', [HomeController::class, 'index'])
@@ -131,6 +163,7 @@ return static function (Slim\App $app): void {
         ->setName('dashboard')
         ->add(TwoFactorMiddleware::class)  // Add this line
         ->add(AuthMiddleware::class);
+
 
     /*
     GET /login → Displays the login form

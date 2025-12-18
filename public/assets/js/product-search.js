@@ -70,25 +70,36 @@ function showError(message) {
 }
 
 function renderProducts(products) {
-    const resultsContainer = document.getElementById("searchResults");
-    const defaultContainer = document.getElementById("defaultProducts");
+    const tbody = document.getElementById("productsTbody");
 
-    if (defaultContainer) defaultContainer.style.display = "none";
-    resultsContainer.innerHTML = "";
+    // clear table rows
+    tbody.innerHTML = "";
 
-    if (products.length === 0) {
-        resultsContainer.innerHTML = `
-            <div class="col-12">
-                <div class="alert alert-info" role="alert">
-                    <i class="bi bi-info-circle"></i> No products found matching your search.
-                </div>
-            </div>
-        `;
+    if (!products.length) {
+        tbody.innerHTML = `<tr><td colspan="6">No products found</td></tr>`;
         return;
     }
 
-    products.forEach((product) => {
-        resultsContainer.appendChild(createProductCard(product));
+    products.forEach((p) => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${p.id}</td>
+                <td>${escapeHtml(p.name || "")}</td>
+                <td>${escapeHtml(p.description || "")}</td>
+                <td>${escapeHtml(String(p.price ?? ""))}</td>
+                <td>${escapeHtml(String(p.stock_quantity ?? ""))}</td>
+                <td>
+                    <a href="products/edit/${
+                        p.id
+                    }" class="btn btn-success">Edit</a>
+                    <a href="products/delete/${p.id}" class="btn btn-danger"
+                       onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                    <a href="products/show/${
+                        p.id
+                    }" class="btn btn-info">View</a>
+                </td>
+            </tr>
+        `;
     });
 }
 
