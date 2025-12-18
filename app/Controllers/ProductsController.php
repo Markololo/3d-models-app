@@ -39,7 +39,8 @@ class ProductsController extends BaseController
      */
     public function index(Request $request, Response $response, array $args): Response
     {
-        $products = $this->products_model->fetchProducts();
+        // $products = $this->products_model->fetchProducts();
+        $products = $this->products_model->getFullProducts();
         $data['data'] = [
             'page_title' => 'List of products',
             'message' => 'Welcome to the home page',
@@ -59,7 +60,8 @@ class ProductsController extends BaseController
         $product_id = $args["product_id"];
         // dd("Editing product: " . $product_id["id"]);
 
-        $product = $this->products_model->fetchProductById($product_id);
+        // $product = $this->products_model->fetchProductById($product_id);
+        $product = $this->products_model->getAllProductInfo($product_id);
         $categories = $this->categories_model->getAll();
         $data = [
             'page_title' => 'Edit Page',

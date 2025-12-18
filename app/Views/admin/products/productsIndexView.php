@@ -74,8 +74,13 @@ ViewHelper::loadAdminHeader($page_title);
 
 
         <div id="defaultProducts" class="table-responsive small">
-            <?php //echo SessionManager::get('username')
+            <?php //$filename = "upload_6944312bd959b.png";
             ?>
+            <img
+                src="/3d-models-app/uploads/images/<?= htmlspecialchars($filename) ?>"
+                class="card-img-top"
+                alt="Uploaded image"
+                style="height: 200px; object-fit: cover;">
             <table class="table">
                 <thead>
                     <th>Image</th>
@@ -86,9 +91,18 @@ ViewHelper::loadAdminHeader($page_title);
                     <th>Stock</th>
                 </thead>
                 <tbody id="productsTbody">
-                    <?php foreach ($data["products"] as $key => $prod): ?>
+                    <?php foreach ($data["products"] as $key => $prod):
+                        if (!isset($prod['file_path']) || empty($prod['file_path']))
+                            $filePath = "/3d-models-app/assets/imageAssets/imagePlaceholder.jpg";
+                        else {
+                            $filename = $prod['file_path'];
+                            $filePath = "/3d-models-app/uploads/images/$filename";
+                        }
+
+                    ?>
                         <tr>
-                            <td><img src="/3d-models-app/assets/imageAssets/imagePlaceholder.jpg" class="img-fluid"></td>
+                            <!-- <td><img src="/3d-models-app/assets/imageAssets/imagePlaceholder.jpg" class="img-fluid"></td> -->
+                            <td><img src=<?= $filePath ?> class="img-fluid"></td>
                             <td><?= htmlspecialchars($prod["id"]) ?></td>
                             <td><?= htmlspecialchars($prod["name"]) ?></td>
                             <td><?= htmlspecialchars($prod["description"]) ?></td>

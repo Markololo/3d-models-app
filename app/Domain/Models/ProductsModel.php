@@ -188,6 +188,22 @@ class ProductsModel extends BaseModel
 
     public function getAllProductInfo($product_id)
     {
-        $sql
+        $sql = "SELECT p.*, pi.file_path, pi.is_primary, c.name
+        FROM products p
+        JOIN categories c ON c.id = p.category_id
+        JOIN product_images pi ON pi.product_id = p.id
+        WHERE p.id = :pId";
+
+        return $this->selectOne($sql, ["pId"=>$product_id]);
+    }
+
+    public function getFullProducts()
+    {
+        $sql = "SELECT p.*, pi.file_path, pi.is_primary, c.name
+        FROM products p
+        JOIN categories c ON c.id = p.category_id
+        LEFT JOIN product_images pi ON pi.product_id = p.id";
+
+        return $this->selectAll($sql);
     }
 }
