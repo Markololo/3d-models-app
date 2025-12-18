@@ -21,7 +21,7 @@ use App\Helpers\Core\PDOService;
  */
 class CategoriesModel extends BaseModel
 {
-    private $categories_table = " categories";
+    private $categories_table = "categories";
     public function __construct(PDOService $pdo)
     {
         parent::__construct($pdo); //pass it to the parent class
@@ -60,7 +60,7 @@ class CategoriesModel extends BaseModel
 
     public function deleteCategory(int $id): int
     {
-        $sql = "UPDATE products SET category_id = 0
+        $sql = "UPDATE products SET category_id = NULL
         WHERE category_id = :id;
         DELETE FROM categories WHERE id = :id";
         return $this->execute($sql, ['id' => $id]);
@@ -75,9 +75,9 @@ class CategoriesModel extends BaseModel
          VALUES (:name, :description, current_timestamp())";
 
         $insert = $this->execute($sql, [
-            "name"=>$name,
-            "description"=>$description,
-            ]);
+            "name" => $name,
+            "description" => $description,
+        ]);
         return $this->lastInsertId();
     }
 
@@ -98,7 +98,4 @@ class CategoriesModel extends BaseModel
         $sql .= " GROUP BY c.id ORDER BY c.name ASC";
         return $this->selectAll($sql, $params);
     }
-
-
-    
 }

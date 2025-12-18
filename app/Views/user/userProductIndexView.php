@@ -77,6 +77,7 @@ ViewHelper::loadHeader($page_title);
                         <h5 class="card-title"><?= hs($product['name']) ?></h5>
                         <p class="card-text"><?= hs(substr($product['description'], 0, 100)) ?>...</p>
                         <p class="fw-bold text-success">$<?= hs(number_format($product['price'], 2)) ?></p>
+
                         <span class="badge bg-secondary"><?= hs($product['category_name'] ?? 'Uncategorized') ?></span>
                     </div>
                     <div class="card-footer">
