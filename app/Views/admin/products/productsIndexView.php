@@ -26,7 +26,6 @@ ViewHelper::loadAdminHeader($page_title);
     <!-- Search Container -->
 
 
-<<<<<<< HEAD
     <!-- Search and Filter Section -->
     <div class="row mb-4">
         <div class="col-md-8">
@@ -41,45 +40,6 @@ ViewHelper::loadAdminHeader($page_title);
                     placeholder="Search products by name or description..."
                     aria-label="Search products">
             </div>
-=======
-        <div id="defaultProducts" class="table-responsive small">
-            <table class="table">
-                <thead>
-                    <th>Image</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                </thead>
-                <tbody id="productsTbody">
-                    <?php foreach ($data["products"] as $key => $prod):
-                        if (!isset($prod['file_path']) || empty($prod['file_path']))
-                            $filePath = "/3d-models-app/assets/imageAssets/imagePlaceholder.jpg";
-                        else {
-                            $filename = $prod['file_path'];
-                            $filePath = "/3d-models-app/uploads/images/$filename";
-                        }
-
-                    ?>
-                        <tr>
-                            <td><img src=<?= $filePath ?> class="img-fluid" style="max-width: 15vw"></td>
-                            <td><?= htmlspecialchars($prod["id"]) ?></td>
-                            <td><?= htmlspecialchars($prod["name"]) ?></td>
-                            <td><?= htmlspecialchars($prod["description"]) ?></td>
-                            <td><?= htmlspecialchars($prod["price"]) ?></td>
-                            <td><?= htmlspecialchars($prod["stock_quantity"]) ?></td>
-                            <td>
-                                <a href="products/edit/<?php echo $prod["id"] ?>" class="btn btn-success">Edit</a>
-                                <a href="products/delete/<?php echo $prod["id"] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
-                                <a href="products/show/<?php echo $prod["id"] ?>" class="btn btn-info">View</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-            <a href="products/create" class="btn btn-secondary"> Add New Product </a>
->>>>>>> 9d766d488fba825add20ef90a20380f2de2a72e8
         </div>
         <div class="col-md-3">
             <select class="form-select" id="categoryFilter" aria-label="Filter by category">

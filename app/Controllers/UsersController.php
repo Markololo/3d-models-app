@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-namespace App\Controllers;
-
 use App\Helpers\FileUploadHelper;
 use App\Helpers\FlashMessage;
 use DI\Container;
@@ -11,11 +9,12 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\CategoriesModel;
 use App\Domain\Models\ProductsModel;
+use App\Domain\Models\UserModel;
 use App\Helpers\SessionManager;
 
 class UsersController extends BaseController
 {
-    public function __construct(Container $container, private ProductsModel $products_model,)
+    public function __construct(Container $container, private ProductsModel $products_model, private UserModel $user_model)
     {
         parent::__construct($container);
     }
@@ -31,6 +30,18 @@ class UsersController extends BaseController
 
 
         return $this->render($response, 'user/userIndexView.php', $data);
+    }
+
+    public function adminIndex(Request $request, Response $response, array $args): Response
+    {
+        $customers = $this->user_model->getAllCustomers();
+        $data = [
+            'page_title' => 'User Home',
+            'customers' => $customers
+        ];
+
+
+        return $this->render($response, 'admin/usersView.php', $data);
     }
     public function products(Request $request, Response $response, array $args): Response
     {

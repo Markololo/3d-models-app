@@ -31,7 +31,7 @@ return static function (Slim\App $app): void {
     $app->group(
         '/admin',
         function ($group) {
-            //Add/register admin routes
+
             $group->get(
                 '/dashboard',
                 [DashboardController::class, 'index']
@@ -79,15 +79,42 @@ return static function (Slim\App $app): void {
                 '/products',
                 [ProductsController::class, 'store']
             );
-            // handle saving edit product info
-            // $group->post(
-            //     '/products/update',
-            //     [ProductsController::class, 'update']
-            // );
+
             $group->get(
                 '/categories',
                 [CategoriesController::class, 'index']
             )->setName('categories.index');
+
+            $group->get(
+                '/categories/create',
+                [CategoriesController::class, 'create']
+            )->setName('categories.create');
+
+            $group->get(
+                '/categories/edit/{category_id}',
+                [CategoriesController::class, 'edit']
+            );
+
+            $group->get(
+                '/categories/delete/{category_id}',
+                [CategoriesController::class, 'delete']
+            );
+
+            $group->post(
+                '/categories/update/{product_id}',
+                [CategoriesController::class, 'update']
+            );
+
+            $group->post(
+                '/categories',
+                [CategoriesController::class, 'store']
+            );
+
+            $group->get(
+                '/customers',
+                [UsersController::class, 'adminIndex']
+            )->setName('categories.index');
+
         }
     );
 

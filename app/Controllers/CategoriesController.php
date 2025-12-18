@@ -71,6 +71,10 @@ class CategoriesController extends BaseController
     }
     public function delete(Request $request, Response $response, array $args): Response
     {
-        return $response;
+        $category_id = (int) $args['category_id'];
+
+        $this->categories_model->deleteCategory($category_id);
+
+        return $this->redirect($request, $response, 'categories.index', ['id' => $category_id]);
     }
 }
