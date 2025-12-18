@@ -39,8 +39,63 @@ class CategoriesModel extends BaseModel
     public function fetchCategoryById(int $id): mixed
     {
         $sql = "SELECT * FROM categories WHERE id = :id";
-        $category = $this->selectOne($sql, ["id" => $id]); //this = current object; this calls on this class and its parent
+        $category = $this->selectOne($sql, ["id" => $id]);
 
         return $category;
+    }
+
+    public function updateCategoryArray(int $id, array $category_info): int
+    {
+        return $this->execute(
+            'UPDATE categories
+         SET name = :name, description = :description
+         WHERE id = :id',
+            [
+                'id' => $id,
+                'name' => $category_info['category_name'],
+                'description' => $category_info['description'],
+            ]
+        );
+    }
+
+    public function deleteCategory(int $id): int
+    {
+        $sql = "UPDATE products SET category_id = 0
+        WHERE category_id = :id;
+        DELETE FROM categories WHERE id = :id";
+        return $this->execute($sql, ['id' => $id]);
+    }
+
+    public function createAndGetId(array $data): string
+    {
+        $name = $data['product_name'];
+        $description = $data['product_description'] ?? "";
+
+        $sql = "INSERT INTO categories (name, description, created_at)
+         VALUES (:name, :description, current_timestamp())";
+
+        $insert = $this->execute($sql, [
+            "name"=>$name,
+            "description"=>$description,
+            ]);
+        return $this->lastInsertId();
+    }
+
+
+    public function searchCategories(string $searchTerm = ''): array
+    {
+        $sql = "SELECT c.name, c.description
+        FROM categories c WHERE 1 = 1";
+
+        $params = [];
+
+        if (!empty($searchTerm)) {
+            $sql .= " AND (c.name LIKE :searchName OR p.description LIKE :searchDesc)";
+            $params['searchName'] = "%$searchTerm%";
+            $params['searchDesc'] = "%$searchTerm%";
+        }
+
+        $sql .= " GROUP BY c.id ORDER BY c.name ASC";
+        return $this->selectAll($sql, $params);
     }
 }
