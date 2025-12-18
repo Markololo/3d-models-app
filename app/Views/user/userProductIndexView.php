@@ -10,11 +10,13 @@ use App\MiddleWare\SessionMiddleware;
 $page_title = 'Products';
 ViewHelper::loadHeader($page_title);
 ?>
-
+<br>
+<a href="<?= '/' . APP_ROOT_DIR_NAME . '/user' . '/' ?>" class="btn btn-primary">Back to Dashboard</a>
 <!-- Search Container -->
 <div class="container my-4">
     <div class="row mb-4">
         <div class="col-md-12">
+
             <h1>Browse Products</h1>
         </div>
     </div>
@@ -71,7 +73,7 @@ ViewHelper::loadHeader($page_title);
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
 
-                    <img src=<?= $filePath ?> class="img-fluid" style="max-width: 15vw">
+                    <img src=<?= $filePath ?> class="card-img-top" style="max-width: 15vw object-fit: cover;">
 
                     <div class="card-body">
                         <h5 class="card-title"><?= hs($product['name']) ?></h5>
@@ -85,8 +87,11 @@ ViewHelper::loadHeader($page_title);
 
                     </div>
                 </div>
+
             </div>
+
         <?php endforeach; ?>
+
     </div>
 </div>
 
