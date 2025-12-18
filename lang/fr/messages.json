@@ -23,5 +23,9 @@
     "products": {
         "listing": "Liste des Produits",
         "editing": "Modifier le Produit"
+    },
+      "categories": {
+        "listing": "Liste de Catégories",
+        "editing": "Modifier la Categorie"
     }
 }
