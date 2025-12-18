@@ -15,7 +15,7 @@ use App\Helpers\SessionManager;
 
 class UsersController extends BaseController
 {
-    public function __construct(Container $container)
+    public function __construct(Container $container, private ProductsModel $products_model,)
     {
         parent::__construct($container);
     }
@@ -31,6 +31,18 @@ class UsersController extends BaseController
 
 
         return $this->render($response, 'user/userIndexView.php', $data);
+    }
+    public function products(Request $request, Response $response, array $args): Response
+    {
+        $products = $this->products_model->fetchProducts();
+
+        $data = [
+            'page_title' => 'List of products',
+            'products' => $products
+        ];
+
+
+        return $this->render($response, 'user/userProductIndexView.php', $data);
     }
 
 

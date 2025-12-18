@@ -93,11 +93,14 @@ return static function (Slim\App $app): void {
         function ($group) {
             //Add/register admin routes
             $group->get(
-                '/products',
+                '/',
                 [UsersController::class, 'index']
             )->setName('user.index');
 
-
+            $group->get(
+                '/products',
+                [UsersController::class, 'products']
+            )->setName('user.products');
             $group->get(
                 '/products/{id}',
                 [UsersController::class, 'show']
