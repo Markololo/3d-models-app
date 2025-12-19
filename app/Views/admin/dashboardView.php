@@ -1,10 +1,8 @@
 <?php
 
 use App\Helpers\ViewHelper;
-//TODO: set the page title dynamically based on the view being rendered in the controller.
 $page_title = 'Admin Dashboard';
 
-//TODO: We need to load an admin-specific header.
 ViewHelper::loadAdminHeader($page_title);
 $customers = $data['customers'];
 

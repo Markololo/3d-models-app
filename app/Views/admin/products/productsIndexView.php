@@ -13,6 +13,7 @@ $products = $data["products"];
 
 //TODO: We need to load an admin-specific header.
 ViewHelper::loadAdminHeader($page_title);
+
 ?>
 
 

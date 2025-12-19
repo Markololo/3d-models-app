@@ -194,8 +194,27 @@ class ProductsModel extends BaseModel
         LEFT JOIN categories c ON c.id = p.category_id
         LEFT JOIN product_images pi
             ON pi.product_id = p.id AND pi.is_primary = 1
-        ORDER BY p.name ASC
-    ";
+        ORDER BY p.name ASC";
+
+        return $this->selectAll($sql);
+    }
+
+    public function getFullProductsWithOneImg()
+    {
+        $sql = "SELECT
+            p.*,
+            c.name AS category_name,
+            pi.file_path,
+            pi.is_primary
+        FROM products p
+        LEFT JOIN categories c ON c.id = p.category_id
+        LEFT JOIN product_images pi
+            ON pi.id = (
+            SELECT prod_img.id FROM product_images prod_img WHERE p.id = prod_img.product_id
+            ORDER BY prod_img.is_primary DESC
+            LIMIT 1
+            )
+        ORDER BY p.name ASC";
 
         return $this->selectAll($sql);
     }

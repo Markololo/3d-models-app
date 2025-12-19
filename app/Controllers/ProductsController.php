@@ -29,7 +29,6 @@ class ProductsController extends BaseController
         parent::__construct($container); //pass the container to the parent
     }
 
-    //*GET admin/products
     /**
      *  Display a list of items.
      * @param \Psr\Http\Message\ServerRequestInterface $request HTTP request
@@ -40,7 +39,18 @@ class ProductsController extends BaseController
     public function index(Request $request, Response $response, array $args): Response
     {
         // $products = $this->products_model->fetchProducts();
-        $products = $this->products_model->getFullProducts();
+        // $products = $this->products_model->getFullProducts();
+        $products = $this->products_model->getFullProductsWithOneImg();
+
+        // $filteredImagesProducts = [];
+        // foreach ($products as $key => $product) {
+        //     if($product['is_primary'] == 1)
+        //     {
+        //         $filteredImagesProducts[] = $product;
+        //     }
+        // }
+
+
         $data['data'] = [
             'page_title' => 'List of products',
             'message' => 'Welcome to the home page',

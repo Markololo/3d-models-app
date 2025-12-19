@@ -292,7 +292,7 @@
          data-bs-theme="dark">
          <a
              class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white"
-             href="#">Company name</a>
+             href="#">3D Models Shop</a>
          <ul class="navbar-nav flex-row d-md-none">
              <li class="nav-item text-nowrap">
                  <button
@@ -389,15 +389,8 @@
                                      Customers
                                  </a>
                              </li>
-                             <li class="nav-item">
-                                 <a class="nav-link d-flex align-items-center gap-2" href="#">
-                                     <svg class="bi" aria-hidden="true">
-                                         <use xlink:href="#graph-up"></use>
-                                     </svg>
-                                     Reports
-                                 </a>
-                             </li>
-                             <li class="nav-item">
+
+                         <li class="nav-item">
                                  <a class="nav-link d-flex align-items-center gap-2" href="<?= APP_ADMIN_URL ?>/orders">
                                      <svg class="bi" aria-hidden="true">
                                          <use xlink:href="#puzzle"></use>
@@ -406,7 +399,7 @@
                                  </a>
                              </li>
                          </ul>
-                         <h6
+                         <!-- <h6
                              class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
                              <span>Saved reports</span>
                              <a
@@ -451,7 +444,7 @@
                                      Year-end sale
                                  </a>
                              </li>
-                         </ul>
+                         </ul> -->
                          <hr class="my-3" />
                          <ul class="nav flex-column mb-auto">
                              <li class="nav-item">
