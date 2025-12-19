@@ -24,8 +24,13 @@
         "listing": "Liste des Produits",
         "editing": "Modifier le Produit"
     },
-      "categories": {
+    "categories": {
         "listing": "Liste de Catégories",
         "editing": "Modifier la Categorie"
+    },
+    "user": {
+        "dashboard": "Tableau de bord Utilisateur",
+        "quickactions": "Actions rapides",
+        "browseproduct": "Parcourir les Produits"
     }
 }

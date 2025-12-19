@@ -17,7 +17,7 @@ ViewHelper::loadHeader($page_title);
     <div class="row mb-4">
         <div class="col-md-12">
 
-            <h1>Browse Products</h1>
+            <h1><?= hs(trans('user.browseproduct'))  ?></h1>
         </div>
     </div>
 

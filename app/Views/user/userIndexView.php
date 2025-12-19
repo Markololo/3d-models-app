@@ -29,7 +29,7 @@ ViewHelper::loadHeader($page_title);
     </nav>
 
     <div class="container mt-5">
-        <h1>User Dashboard</h1>
+        <h1><?= hs(trans('user.dashboard'))  ?></h1>
 
         <div class="mb-4">
             <?= App\Helpers\FlashMessage::render() ?>
@@ -52,9 +52,11 @@ ViewHelper::loadHeader($page_title);
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Quick Actions</h5>
+
+
+                        <h5 class="card-title"><?= hs(trans('user.quickactions'))  ?></h5>
                         <div class="d-grid gap-2">
-                            <a href="<?= '/' . APP_ROOT_DIR_NAME . '/user/products' ?>" class="btn btn-primary">Browse Products</a>
+                            <a href="<?= '/' . APP_ROOT_DIR_NAME . '/user/products' ?>" class="btn btn-primary"><?= hs(trans('user.browseproduct'))  ?></a>
                             <a href="<?= APP_BASE_URL ?>/user/cart" class="btn btn-secondary">My Orders</a>
                             <a href="<?= '/' . APP_ROOT_DIR_NAME . '/dashboard' ?>" class="btn btn-info">Update Profile</a>
 

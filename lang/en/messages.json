@@ -28,5 +28,11 @@
       "categories": {
         "listing": "Categories Listing",
         "editing": "Edit Category"
+    },
+    "user":
+    {
+        "dashboard": "User Dashboard",
+        "quickactions": "Quick Actions",
+        "browseproduct": "Browse Products"
     }
 }

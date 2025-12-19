@@ -68,7 +68,6 @@ function showError(message) {
         </div>
     `;
 }
-
 function renderProducts(products) {
     const tbody = document.getElementById("productsTbody");
 
@@ -76,13 +75,26 @@ function renderProducts(products) {
     tbody.innerHTML = "";
 
     if (!products.length) {
-        tbody.innerHTML = `<tr><td colspan="6">No products found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7">No products found</td></tr>`;
         return;
     }
 
     products.forEach((p) => {
+        //  correct image path
+        let imgSrc = "";
+        if (p.file_path && p.file_path.trim() !== "") {
+            imgSrc = `${window.APP_BASE_URL}/uploads/images/${p.file_path}`;
+        } else if (p.image_path && p.image_path.trim() !== "") {
+            imgSrc = `${window.APP_BASE_URL}/uploads/images/${p.image_path}`;
+        } else {
+            imgSrc = `${window.APP_BASE_URL}/assets/imageAssets/imagePlaceholder.jpg`;
+        }
+
         tbody.innerHTML += `
             <tr>
+                <td><img src="${escapeHtml(
+                    imgSrc
+                )}" class="img-fluid" style="max-width: 10vw; object-fit: cover;"></td>
                 <td>${p.id}</td>
                 <td>${escapeHtml(p.name || "")}</td>
                 <td>${escapeHtml(p.description || "")}</td>
