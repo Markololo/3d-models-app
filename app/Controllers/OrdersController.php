@@ -52,10 +52,9 @@ class OrdersController extends BaseController
         // fetch product details
         $product = $this->products_model->fetchProductById($productId);
         if (!$product || $product['stock_quantity'] < $quantity) {
-
-            FlashMessage::error("Product out of stock.");
-            return $this->redirect($request, $response, '/user/products');
+            FlashMessage::error("Out of stock.");
         }
+
 
         // get or create active order
         $order = $this->orders_model->getActiveOrder($userId);
