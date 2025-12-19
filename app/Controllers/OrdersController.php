@@ -45,56 +45,62 @@ class OrdersController extends BaseController
 
     public function addToCart(Request $request, Response $response, array $args): Response
     {
-        $userId = SessionManager::get('user_id'); // logged-in user
-        $productId = (int)$args['product_id'];
-        $quantity = 1; // default
+        $userId = SessionManager::get('user_id');
+        $productId = (int) $args['product_id'];
 
         $product = $this->products_model->fetchProductById($productId);
 
-        // fetch product details
         if (!$product || $product['stock_quantity'] < 1) {
-            FlashMessage::error("Out of stock.");
+            FlashMessage::error('Out of stock.');
+            // stay on the same product details page
             return $response
                 ->withHeader('Location', APP_BASE_URL . '/user/products/' . $productId)
                 ->withStatus(302);
         }
 
-
-        // get or create active order
+        // get active order
         $order = $this->orders_model->getActiveOrder($userId);
-        $orderId = $order ? (int)$order['id'] : $this->orders_model->createOrder($userId);
+        $orderId = $order
+            ? (int) $order['id']
+            : $this->orders_model->createOrder($userId);
 
-        //get item ]
+        // Check if item already exists
+        $existingItem = $this->orders_model->getOrderItem($orderId, $productId);
 
-        $items = $order
-            ? $this->orders_model->getOrderItemsWithProduct($order['id'])
-            : [];
-        if ($items) {
+        if ($existingItem) {
             $this->orders_model->increaseItemQty($orderId, $productId);
         } else {
-            $this->orders_model->addOrderItem($orderId, $productId, 1, $product['price']);
+            $this->orders_model->addOrderItem(
+                $orderId,
+                $productId,
+                1,
+                $product['price']
+            );
         }
-        // add item and reduce stock
+
         $this->orders_model->reduceProductStock($productId, 1);
         $this->orders_model->updateOrderTotal($orderId);
 
-        // update order total
-        $this->orders_model->updateOrderTotal($orderId);
-
+        // stay on product details page
         return $response
-            ->withHeader('Location', APP_BASE_URL . '/user/products' . '/' . $productId)
+            ->withHeader('Location', APP_BASE_URL . '/user/products/' . $productId)
             ->withStatus(302);
     }
+
 
     public function cartView(Request $request, Response $response): Response
     {
         $userId = SessionManager::get('user_id');
 
-        $order = $this->orders_model->getActiveOrderItems($userId);
+        $order = $this->orders_model->getActiveOrder($userId);
+        $items = $order
+            ? $this->orders_model->getOrderItemsWithProduct($order['id'])
+            : [];
 
         return $this->render($response, 'user/userMyOrderView.php', [
             'page_title' => 'My Order',
-            'order' => $order
+            'order' => $order,
+            'items' => $items
         ]);
     }
 
@@ -117,7 +123,7 @@ class OrdersController extends BaseController
         $this->orders_model->reduceProductStock($productId, 1);
         $this->orders_model->updateOrderTotal($order['id']);
 
-        return $this->redirect($request, $response, '/user/cart');
+        return $this->redirect($request, $response, 'user.cart');
     }
 
     public function decreaseQty(Request $request, Response $response, array $args): Response
@@ -131,6 +137,6 @@ class OrdersController extends BaseController
         $this->products_model->increaseProductStock($productId, 1);
         $this->orders_model->updateOrderTotal($order['id']);
 
-        return $this->redirect($request, $response, '/user/cart');
+        return $this->redirect($request, $response, 'user.cart');
     }
 }

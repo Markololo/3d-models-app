@@ -141,7 +141,7 @@ class OrdersModel extends BaseModel
     {
         return $this->selectAll(
             "SELECT
-            oi.product_id,
+             oi.product_id,
             oi.quantity,
             oi.unit_price,
             p.name,

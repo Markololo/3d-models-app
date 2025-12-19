@@ -136,14 +136,15 @@ return static function (Slim\App $app): void {
             // $group->get('/cart', [OrdersController::class, 'cartView'])
             //     ->setName('user.cart');
 
-
             $group->post('/cart/increase/{product_id}', [OrdersController::class, 'increaseQty'])
                 ->setName('user.cart.increase');
+
 
             $group->post('/cart/decrease/{product_id}', [OrdersController::class, 'decreaseQty'])
                 ->setName('user.cart.decrease');
 
             $group->post('/cart/add/{product_id}', [OrdersController::class, 'addToCart'])->setName('user.cart.add');
+
             $group->get('/cart', [OrdersController::class, 'cartView'])->setName('user.cart');
 
             $group->get(
