@@ -70,8 +70,8 @@ class CategoriesModel extends BaseModel
 
     public function createAndGetId(array $data): string
     {
-        $name = $data['product_name'];
-        $description = $data['product_description'] ?? "";
+        $name = $data['category_name'];
+        $description = $data['category_description'] ?? "";
 
         $sql = "INSERT INTO categories (name, description, created_at)
          VALUES (:name, :description, current_timestamp())";
@@ -81,6 +81,21 @@ class CategoriesModel extends BaseModel
             "description" => $description,
         ]);
         return $this->lastInsertId();
+    }
+
+    public function updateCategory(array $data)
+    {
+        $id = $data['category_id'];
+        $name = $data['category_name'];
+        $description = $data['category_description'] ?? "";
+
+        $sql = "UPDATE categories SET name = :name, description = :description WHERE id = :id";
+
+        return $this->execute($sql, [
+            "name" => $name,
+            "description" => $description,
+            "id" =>$id
+        ]);
     }
 
 
@@ -100,7 +115,4 @@ class CategoriesModel extends BaseModel
         $sql .= " GROUP BY c.id ORDER BY c.name ASC";
         return $this->selectAll($sql, $params);
     }
-
-
-
 }

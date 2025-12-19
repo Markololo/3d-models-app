@@ -102,7 +102,7 @@ return static function (Slim\App $app): void {
             );
 
             $group->post(
-                '/categories/update/{product_id}',
+                '/categories/update/{category_id}',
                 [CategoriesController::class, 'update']
             );
 

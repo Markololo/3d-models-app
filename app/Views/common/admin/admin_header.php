@@ -342,7 +342,7 @@
                      aria-labelledby="sidebarMenuLabel">
                      <div class="offcanvas-header">
                          <h5 class="offcanvas-title" id="sidebarMenuLabel">
-                             Company name
+                             3D Models Shop
                          </h5>
                          <button
                              type="button"

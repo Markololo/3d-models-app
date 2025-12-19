@@ -3,18 +3,20 @@
 use App\Helpers\ViewHelper;
 
 $page_title = $data["page_title"];
+$category = $data['category'];
 
 ViewHelper::loadAdminHeader($page_title);
+dd($category)
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <h2>Create New Category:</h2>
+    <h2>Edit Category:</h2>
 
-    <form method="POST" action="<?= APP_ADMIN_URL ?>/categories">
+    <form method="POST" action="<?= APP_ADMIN_URL ?>/categories/update/<?= $category["id"] ?>">
         <br>
         <div>
             <label for="inputName" class="form-label">*Name:</label>
-            <input type="text" name="category_name" class="form-control" id="inputName">
+            <input type="text" name="category_name" class="form-control" id="inputName" value="<?= $category["name"] ?>">
         </div>
         <br>
         <div>
