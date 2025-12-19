@@ -120,7 +120,6 @@ return static function (Slim\App $app): void {
                 '/orders',
                 [OrdersController::class, 'adminIndex']
             )->setName('orders.index');
-
         }
     );
 
@@ -129,11 +128,14 @@ return static function (Slim\App $app): void {
     $app->group(
         '/user',
         function ($group) {
-            //Add/register admin routes
             $group->get(
                 '/',
                 [UsersController::class, 'index']
             )->setName('user.index');
+
+
+            $group->post('/cart/add/{product_id}', [OrdersController::class, 'addToCart'])->setName('user.cart.add');
+            $group->get('/cart', [OrdersController::class, 'cartView'])->setName('user.cart');
 
             $group->get(
                 '/products',
