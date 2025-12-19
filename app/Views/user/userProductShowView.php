@@ -66,10 +66,18 @@ ViewHelper::loadHeader($page_title);
         </p>
     </dl>
 
-    <form method="POST" action="<?= APP_BASE_URL ?>/user/cart/add/<?= $product['id'] ?>">
-        <button class="btn btn-primary">Add To Cart</button>
-    </form>
 
+
+
+<!-- if stock is less than 1 than display badge otherwise display add to cart  -->
+    <?php if ($product['stock_quantity'] < 1): ?>
+        <!-- bootstrap badge out of stock danger=red-->
+        <span class="badge bg-danger">Out of Stock</span>
+    <?php else: ?>
+        <form method="post" action="<?= APP_BASE_URL ?>/user/cart/add/<?= $product['id'] ?>">
+            <button class="btn btn-primary">Add to Cart</button>
+        </form>
+    <?php endif; ?>
 
 </main>
 

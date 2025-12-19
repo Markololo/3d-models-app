@@ -46,6 +46,7 @@ ViewHelper::loadHeader($page_title); ?>
                             </form>
 
                             <form method="post" action="<?= APP_BASE_URL ?>/user/cart/decrease/<?= $item['product_id'] ?>" class="d-inline">
+                                <!-- btn-sm to have it small btn -->
                                 <button class="btn btn-sm btn-danger">−</button>
                             </form>
                         </td>
@@ -54,6 +55,7 @@ ViewHelper::loadHeader($page_title); ?>
             </tbody>
         </table>
 
+        <!-- align in end bold fontweight fs5 -->
         <div class="text-end fw-bold fs-5">
             Total: $<?= number_format($data['order']['total'], 2) ?>
         </div>
