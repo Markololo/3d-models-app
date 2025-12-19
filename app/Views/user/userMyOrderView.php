@@ -56,11 +56,23 @@ ViewHelper::loadHeader($page_title); ?>
         </table>
 
         <!-- align in end bold fontweight fs5 -->
-        <div class="text-end fw-bold fs-5">
-            Total: $<?= number_format($data['order']['total'], 2) ?>
-        </div>
+        <?php if (!empty($data['items'])): ?>
+            <div class="text-end fw-bold fs-5">
+                Total: $<?= number_format($data['order']['total'], 2) ?>
+            </div>
+
+            <!-- Checkout Button -->
+            <div class="text-end mt-3">
+                <a href="<?= APP_BASE_URL ?>/user/checkout" class="btn btn-primary btn-lg">
+                    Proceed to Checkout
+                </a>
+            </div>
+        <?php endif; ?>
 
     <?php endif; ?>
 </div>
+
+
+
 
 <?php ViewHelper::loadFooter(); ?>

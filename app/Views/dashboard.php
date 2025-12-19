@@ -9,7 +9,7 @@
 
     <div class="welcome-section">
         <h2>Welcome, <?= htmlspecialchars($user['first_name'] ?? 'User') ?>!</h2>
-        <p>Email: <?= htmlspecialchars($user['email'] ?? '') ?></p>
+
     </div>
 
     <hr>
