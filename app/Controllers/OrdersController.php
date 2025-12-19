@@ -133,10 +133,29 @@ class OrdersController extends BaseController
 
         $order = $this->orders_model->getActiveOrder($userId);
 
-        $this->orders_model->decreaseItemQty($order['id'], $productId);
-        $this->products_model->increaseProductStock($productId, 1);
-        $this->orders_model->updateOrderTotal($order['id']);
+        if (!$order) {
+            return $response
+                ->withHeader('Location', APP_BASE_URL . '/user/cart')
+                ->withStatus(302);
+        }
+        $item = $this->orders_model->getOrderItem($order['id'], $productId);
+        if ($item) {
+            if ($item['quantity'] <= 1) {
+                // remove the item from order completely
+                $this->orders_model->removeOrderItem($order['id'], $productId);
+            } else {
+                // decrease quantity by 1
+                $this->orders_model->decreaseItemQty($order['id'], $productId);
+            }
 
-        return $this->redirect($request, $response, 'user.cart');
+            $this->products_model->increaseProductStock($productId, 1);
+            //update the total order
+            $this->orders_model->updateOrderTotal($order['id']);
+
+            return $this->redirect($request, $response, 'user.cart');
+        }
+        return $response
+            ->withHeader('Location', APP_BASE_URL . '/user/cart/')
+            ->withStatus(302);
     }
 }

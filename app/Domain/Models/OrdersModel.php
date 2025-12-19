@@ -40,11 +40,19 @@ class OrdersModel extends BaseModel
 
     public function updateOrderTotal(int $orderId): void
     {
+        // calculate total from order_items
+        $total = $this->selectOne(
+            "SELECT SUM(quantity * unit_price) AS total FROM order_items WHERE order_id = ?",
+            [$orderId]
+        );
+
+        // if no items, set 0
+        $orderTotal = $total['total'] ?? 0;
+
+        // update the orders table
         $this->execute(
-            "UPDATE orders
-             SET total = (SELECT SUM(quantity * unit_price) FROM order_items WHERE order_id = ?)
-             WHERE id = ?",
-            [$orderId, $orderId]
+            "UPDATE orders SET total = ? WHERE id = ?",
+            [$orderTotal, $orderId]
         );
     }
 
@@ -64,7 +72,7 @@ class OrdersModel extends BaseModel
 
     public function getAllOrders(): array
     {
-        //Order ID, Customer Name or ID, Total Amount, Status, and Date Created
+        //order ID, Customer Name or ID, Total Amount, Status, and Date Created
         $sql = "SELECT o.id, total, status, o.created_at, CONCAT(first_name,' ', last_name) AS username
         FROM orders o
         JOIN users u ON o.user_id = u.id
