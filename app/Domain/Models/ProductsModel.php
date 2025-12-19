@@ -216,4 +216,15 @@ class ProductsModel extends BaseModel
             [$quantity, $productId]
         );
     }
+
+
+    public function increaseProductStock(int $productId, int $quantity): void
+    {
+        $this->execute(
+            "UPDATE products
+         SET stock_quantity = stock_quantity + ?
+         WHERE id = ?",
+            [$quantity, $productId]
+        );
+    }
 }

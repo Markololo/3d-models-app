@@ -133,6 +133,15 @@ return static function (Slim\App $app): void {
                 [UsersController::class, 'index']
             )->setName('user.index');
 
+            // $group->get('/cart', [OrdersController::class, 'cartView'])
+            //     ->setName('user.cart');
+
+
+            $group->post('/cart/increase/{product_id}', [OrdersController::class, 'increaseQty'])
+                ->setName('user.cart.increase');
+
+            $group->post('/cart/decrease/{product_id}', [OrdersController::class, 'decreaseQty'])
+                ->setName('user.cart.decrease');
 
             $group->post('/cart/add/{product_id}', [OrdersController::class, 'addToCart'])->setName('user.cart.add');
             $group->get('/cart', [OrdersController::class, 'cartView'])->setName('user.cart');
@@ -145,15 +154,11 @@ return static function (Slim\App $app): void {
                 '/products/{id}',
                 [UsersController::class, 'show']
             )->setName('user.products.show');
-
-            $group->get(
-                '/settings',
-                [SettingsController::class, 'index']
-            )->setName('user.settings');
         }
     )
         ->add(TwoFactorMiddleware::class)
         ->add(AuthMiddleware::class);
+
 
 
 
