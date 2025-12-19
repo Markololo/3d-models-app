@@ -6,7 +6,6 @@ $page_title = $data["page_title"];
 $category = $data['category'];
 
 ViewHelper::loadAdminHeader($page_title);
-dd($category)
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
