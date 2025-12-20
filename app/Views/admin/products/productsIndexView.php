@@ -44,6 +44,12 @@ ViewHelper::loadAdminHeader($page_title);
                 <?php endforeach; ?>
             </select>
         </div>
+
+        <div>
+            <br>
+            <a href="products/create" class="btn btn-secondary"> Add New Product </a>
+        </div>
+
         <div class="col-md-1">
             <!-- Loading Spinner -->
             <div id="loadingSpinner" class="spinner-border text-primary" role="status" style="display: none;">
@@ -93,7 +99,6 @@ ViewHelper::loadAdminHeader($page_title);
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <a href="products/create" class="btn btn-secondary"> Add New Product </a>
     </div>
 </main>
 <!-- Pass base URL to JavaScript -->
