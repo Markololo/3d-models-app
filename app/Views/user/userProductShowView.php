@@ -20,7 +20,7 @@ ViewHelper::loadHeader($page_title);
     <br>
 
 
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+ <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <?php foreach ($images as $key => $prod):
                 if (!isset($prod['file_path']) || empty($prod['file_path']))
@@ -53,7 +53,7 @@ ViewHelper::loadHeader($page_title);
         <dd> <?= $product["name"] ?></dd>
         </p>
         <p>
-            <dt>Product Category:</dt> <?= $product["category_id"] ?>
+            <dt>Product Category:</dt> <?= $product["category_name"] ?>
         </p>
         <p>
             <dt>Product Price:</dt> $<?= $product["price"] ?>
@@ -84,4 +84,5 @@ ViewHelper::loadHeader($page_title);
 <?php
 
 ViewHelper::loadJsScripts();
+ViewHelper::loadAdminFooter();
 ?>

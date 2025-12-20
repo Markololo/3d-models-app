@@ -31,7 +31,10 @@ class ProductsModel extends BaseModel
 
     public function fetchProductById(int $id): mixed
     {
-        $sql = "SELECT * FROM products WHERE id = :id";
+        $sql = "SELECT p.*, c.name as category_name FROM products p
+        JOIN categories c
+        ON p.category_id = c.id
+        WHERE p.id = :id";
         $product = $this->selectOne($sql, ["id" => $id]); //this = current object; this calls on this class and its parent
 
         return $product;
