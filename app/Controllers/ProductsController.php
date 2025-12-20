@@ -176,19 +176,24 @@ class ProductsController extends BaseController
         $input = $request->getParsedBody();
         $primaryImgId = $input['primary_img_id'];
         $productId = (int) $args['product_id'];
+        $imagesToDelete = $input['delete_images'] ?? [];
 
-        if(empty($input["product_name"]))
-        {
+        if (empty($input["product_name"])) {
             FlashMessage::error("Enter product name!");
-            return $this->redirect($request, $response, 'product.edit',['product_id' => $productId]);
+            return $this->redirect($request, $response, 'product.edit', ['product_id' => $productId]);
+        }
 
+        if (!empty($imagesToDelete)) {
+            foreach ($imagesToDelete as $key => $imgId) {
+                $this->products_model->deleteImage($imgId);
+            }
         }
 
         $this->products_model->markPrimaryImage($productId, $primaryImgId);
 
         $this->products_model->updateProductArray($productId, $input);
 
-        return $this->redirect($request, $response, 'product.index', );
+        return $this->redirect($request, $response, 'product.index',);
     }
 
     /**
@@ -315,6 +320,6 @@ class ProductsController extends BaseController
         }
 
         // echo "HIIIIII";
-        return $this->redirect($request, $response, 'products.show', ['product_id'=>$productId]);
+        return $this->redirect($request, $response, 'products.show', ['product_id' => $productId]);
     }
 }

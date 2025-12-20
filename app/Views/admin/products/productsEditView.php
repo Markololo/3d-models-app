@@ -63,10 +63,17 @@ ViewHelper::loadAdminHeader($page_title);
                 }
 
             ?>
-                <div>
-                    <img src=<?= $filePath ?> class="img-fluid" style="max-width: 7vw">
-                    <input type="radio" value="<?= $prod['id'] ?>" name="primary_img_id" <?= $prod['is_primary'] == 1 ?  "checked" : "" ?>>
-                    <label for="is_primary">Primary image</label>
+                <div style="display:flex; flex-direction:row">
+                    <img src=<?= $filePath ?> class="img-fluid" style="max-width: 8vw;">
+                    <div style="display:flex; flex-direction:column">
+                        <input type="radio" value="<?= $prod['id'] ?>" name="primary_img_id" <?= $prod['is_primary'] == 1 ?  "checked" : "" ?>>
+                        <label for="is_primary">Primary image</label>
+
+                        <br>
+
+                        <input type="checkbox" name="delete_images[]" value="<?= $prod['id'] ?>">
+                        <label for="delete_image">Delete Image</label>
+                    </div>
                     <!-- <a style="display: block;" href="#">Mark as primary image</a> -->
                 </div>
             <?php endforeach; ?>
