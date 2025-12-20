@@ -8,6 +8,7 @@ use App\Domain\Models\UserModel;
 use App\Helpers\FlashMessage;
 use App\Helpers\SessionManager;
 use DI\Container;
+use Exception;
 use LDAP\Result;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -127,21 +128,27 @@ class OrdersController extends BaseController
 
     public function increaseQty(Request $request, Response $response, array $args): Response
     {
-        $userId = SessionManager::get('user_id');
-        $productId = (int)$args['product_id'];
+        try {
+            $userId = SessionManager::get('user_id');
+            $productId = (int)$args['product_id'];
 
-        $product = $this->products_model->fetchProductById($productId);
+            $product = $this->products_model->fetchProductById($productId);
 
-        if ($product['stock_quantity'] <= 0) {
-            FlashMessage::error("No more stock available.");
-            return $this->redirect($request, $response, '/user/cart');
+            if ($product['stock_quantity'] <= 0) {
+                FlashMessage::error("No more stock available.");
+                return $this->redirect($request, $response, '/user/cart');
+            }
+
+            $order = $this->orders_model->getActiveOrder($userId);
+
+            $this->orders_model->increaseItemQty($order['id'], $productId);
+            $this->orders_model->reduceProductStock($productId, 1);
+            $this->orders_model->updateOrderTotal($order['id']);
+
+        } catch (Exception $e) {
+            FlashMessage::error("Product's maximum stock reached!");
+            return $this->redirect($request, $response, 'user.cart');
         }
-
-        $order = $this->orders_model->getActiveOrder($userId);
-
-        $this->orders_model->increaseItemQty($order['id'], $productId);
-        $this->orders_model->reduceProductStock($productId, 1);
-        $this->orders_model->updateOrderTotal($order['id']);
 
         return $this->redirect($request, $response, 'user.cart');
     }

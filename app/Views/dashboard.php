@@ -1,14 +1,29 @@
-<?php require __DIR__ . '/common/header.php'; ?>
+<?php require __DIR__ . '/common/header.php';
 
+// $user = $_SESSION['user_name'];
+
+$currentUserRole=$_SESSION['user_role'];
+
+if($currentUserRole=='admin')
+{
+?>
+<a href="<?= '/' . APP_ROOT_DIR_NAME . '/admin' . '/dashboard' ?>" class="btn btn-primary">Back to Dashboard</a>
+<div class="container" style="max-width: 800px; margin: 50px auto;">
+
+<?php
+} else{
+?>
 <a href="<?= '/' . APP_ROOT_DIR_NAME . '/user' . '/' ?>" class="btn btn-primary">Back to Dashboard</a>
 <div class="container" style="max-width: 800px; margin: 50px auto;">
+
+<?php } ?>
 
     <br>
 
     <h1>Dashboard</h1>
 
     <div class="welcome-section">
-        <h2>Welcome, <?= htmlspecialchars($user['first_name'] ?? 'User') ?>!</h2>
+        <h2>Welcome, <?= htmlspecialchars($_SESSION['user_name'] ?? 'User') ?>!</h2>
 
     </div>
 

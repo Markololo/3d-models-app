@@ -1,3 +1,9 @@
+ <?php
+ //FINALLYYYYY This line makes sure the flash messages render directly
+use App\Helpers\FlashMessage; ?>
+<?= FlashMessage::render();
+// FlashMessage::clear();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
