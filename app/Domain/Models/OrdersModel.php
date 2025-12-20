@@ -100,6 +100,15 @@ class OrdersModel extends BaseModel
         );
     }
 
+    public function confirmOrder(int $orderId): void
+    {
+        $this->execute(
+            "UPDATE orders
+         SET status = 'completed'
+         WHERE id = ?",
+            [$orderId]
+        );
+    }
 
     //check if product already exists in order
     public function getOrderItem(int $orderId, int $productId): array|false

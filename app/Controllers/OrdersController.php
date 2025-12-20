@@ -39,6 +39,26 @@ class OrdersController extends BaseController
         return $this->render($response, 'errorView.php');
     }
 
+    public function confirmCheckout(Request $request, Response $response): Response
+    {
+        $userId = SessionManager::get('user_id');
+
+        $order = $this->orders_model->getActiveOrder($userId);
+
+        if (!$order) {
+            FlashMessage::error('No active order.');
+            return $response
+                ->withHeader('Location', APP_BASE_URL . '/user/cart')
+                ->withStatus(302);
+        }
+
+        // Mark order as completed (example)
+        $this->orders_model->confirmOrder($order['id']);
+
+        return $response
+            ->withHeader('Location', APP_BASE_URL . '/user/checkout/success')
+            ->withStatus(302);
+    }
 
 
 
@@ -157,5 +177,39 @@ class OrdersController extends BaseController
         return $response
             ->withHeader('Location', APP_BASE_URL . '/user/cart/')
             ->withStatus(302);
+    }
+
+
+    public function showCheckout(Request $request, Response $response): Response
+    {
+        $userId = SessionManager::get('user_id');
+
+        $order = $this->orders_model->getActiveOrder($userId);
+
+        if (!$order) {
+            FlashMessage::info('Your cart is empty.');
+            return $response
+                ->withHeader('Location', APP_BASE_URL . '/user/cart')
+                ->withStatus(302);
+        }
+
+        $items = $this->orders_model->getOrderItemsWithProduct($order['id']);
+
+        $data = [
+            'page_title' => 'Checkout',
+            'order' => $order,
+            'items' => $items
+        ];
+
+        return $this->render($response, 'user/userProductCheckoutView.php', $data);
+    }
+
+    public function checkoutSuccess(Request $request, Response $response): Response
+    {
+        $data = [
+            'page_title' => 'Order Success'
+        ];
+
+        return $this->render($response, 'user/userCheckoutSuccessView.php', $data);
     }
 }

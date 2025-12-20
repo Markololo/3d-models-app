@@ -155,6 +155,16 @@ return static function (Slim\App $app): void {
                 '/products/{id}',
                 [UsersController::class, 'show']
             )->setName('user.products.show');
+
+            // Inside the '/user' group in your routes file
+            $group->get('/checkout', [OrdersController::class, 'showCheckout'])
+                ->setName('user.checkout');
+
+            $group->post('/checkout/confirm', [OrdersController::class, 'confirmCheckout'])
+                ->setName('user.checkout.confirm');
+
+            $group->get('/checkout/success', [OrdersController::class, 'checkoutSuccess'])
+                ->setName('user.checkout.success');
         }
     )
         ->add(TwoFactorMiddleware::class)
