@@ -24,7 +24,6 @@ $orders = $data['orders'];
             <tbody>
                 <?php foreach ($data["orders"] as $key => $order): ?>
                     <tr>
-                        <td><?= htmlspecialchars($order["id"]) ?></td>
                         <td><?= htmlspecialchars($order["user_id"]) ?></td>
                         <td><?= htmlspecialchars($order["username"]) ?></td>
                         <td><?= htmlspecialchars($order["total"]) ?></td>

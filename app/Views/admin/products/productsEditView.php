@@ -64,7 +64,9 @@ ViewHelper::loadAdminHeader($page_title);
 
             ?>
                 <div style="display:flex; flex-direction:row">
-                    <img src=<?= $filePath ?> class="img-fluid" style="max-width: 8vw;">
+                    <div>
+                        <img src=<?= $filePath ?> class="img-fluid" style="max-width: 12vw;">
+                    </div>
                     <div style="display:flex; flex-direction:column">
                         <input type="radio" value="<?= $prod['id'] ?>" name="primary_img_id" <?= $prod['is_primary'] == 1 ?  "checked" : "" ?>>
                         <label for="is_primary">Primary image</label>
