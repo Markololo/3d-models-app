@@ -43,7 +43,7 @@ ViewHelper::loadHeader($page_title); ?>
                         <td>
                             <form method="post" action="<?= APP_BASE_URL ?>/user/cart/increase/<?= $item['product_id'] ?>" class="d-inline">
                                 <button class="btn btn-sm btn-success">+</button>
-                            </form>
+                        </form>
 
                             <form method="post" action="<?= APP_BASE_URL ?>/user/cart/decrease/<?= $item['product_id'] ?>" class="d-inline">
                                 <!-- btn-sm to have it small btn -->
