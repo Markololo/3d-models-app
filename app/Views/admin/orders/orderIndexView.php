@@ -30,7 +30,7 @@ $orders = $data['orders'];
                         <td><?= htmlspecialchars($order["status"]) ?></td>
                         <td><?= htmlspecialchars($order["created_at"]) ?></td>
                         <td>
-                            <a href="customers/<?php echo $oder["user_id"] ?>" class="btn btn-info">View</a>
+                            <a href="customers/<?php echo $order["user_id"] ?>" class="btn btn-info">View</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

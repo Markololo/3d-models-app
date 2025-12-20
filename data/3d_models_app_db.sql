@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 19, 2025 at 06:32 PM
+-- Generation Time: Dec 20, 2025 at 08:54 AM
 -- Server version: 11.8.3-MariaDB-log
 -- PHP Version: 8.4.10
 
@@ -39,11 +39,12 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `description`, `created_at`) VALUES
-(1, 'Carbon Fiber', 'This is a category for the 3d models that need to be made (preferably) with carbon fiber filaments.', '2025-11-05 09:29:47'),
+(1, 'Carbon Fiber', 'This a category for the 3d models that need to be made (preferably) with carbon fiber filament.', '2025-11-05 09:29:47'),
 (2, 'Handy kitchen tools', 'Find a variety of 3d printable kitchen tools and gadgets to make your life easier.', '2025-11-05 09:40:10'),
 (3, 'Kids gadgets', '3d printable mini toys and gadgets for kids.', '2025-11-05 09:40:10'),
 (6, 'School gadgets', 'A collection of amazing 3D designs that will make school life much more interesting and fun!', '2025-12-18 18:56:05'),
-(10, 'Tech tools', 'A collection of handy tech tools and gadgets to make your workspace more organized.', '2025-12-19 11:51:30');
+(10, 'Tech tools', 'A collection of handy tech tools and gadgets to make your workspace more organized.', '2025-12-19 11:51:30'),
+(11, 'Tester', 'asda', '2025-12-19 19:15:43');
 
 -- --------------------------------------------------------
 
@@ -82,7 +83,9 @@ INSERT INTO `orders` (`id`, `user_id`, `total`, `status`, `created_at`) VALUES
 (2, 5, 150.25, 'Completed', '2025-12-18 18:13:06'),
 (3, 2, 100.00, 'Pending', '2025-12-18 18:14:07'),
 (4, 5, 25.50, 'Pending', '2025-12-18 18:14:07'),
-(5, 9, 331.46, 'pending', '2025-12-18 19:33:48');
+(5, 9, 20.97, 'completed', '2025-12-18 19:33:48'),
+(6, 9, 93.49, 'completed', '2025-12-20 00:22:13'),
+(7, 9, 83.60, 'completed', '2025-12-20 02:52:21');
 
 -- --------------------------------------------------------
 
@@ -103,26 +106,13 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `unit_price`) VALUES
-(1, 5, 2, 1, 2.15),
-(2, 5, 2, 1, 2.15),
-(3, 5, 2, 1, 2.15),
-(4, 5, 1, 1, 123.13),
-(5, 5, 1, 1, 123.13),
-(6, 5, 2, 1, 5.25),
-(7, 5, 2, 1, 5.25),
-(8, 5, 2, 1, 5.25),
-(9, 5, 2, 1, 5.25),
-(10, 5, 2, 1, 5.25),
-(11, 5, 2, 1, 5.25),
-(12, 5, 2, 1, 5.25),
-(13, 5, 2, 1, 5.25),
-(14, 5, 2, 1, 5.25),
-(15, 5, 2, 1, 5.25),
-(16, 5, 2, 1, 5.25),
-(17, 5, 2, 1, 5.25),
-(18, 5, 2, 1, 5.25),
-(19, 5, 2, 1, 5.25),
-(20, 5, 2, 1, 5.25);
+(24, 5, 8, 2, 7.99),
+(26, 5, 9, 1, 4.99),
+(28, 6, 2, 13, 5.25),
+(30, 6, 10, 3, 7.75),
+(31, 6, 12, 1, 1.99),
+(32, 7, 10, 9, 7.75),
+(33, 7, 11, 1, 13.85);
 
 -- --------------------------------------------------------
 
@@ -146,15 +136,16 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `price`, `stock_quantity`, `created_at`, `updated_at`) VALUES
-(1, 1, 'iPhone 10 - Gyroid cover', 'Get yourself a super powerful iPhone 10 protector', 123.13, 2, '2025-11-05 09:35:46', '2025-12-18 19:34:13'),
-(2, 2, 'Bag Closing Clip', 'A nice plastic clip to close any bag in your house.', 5.25, 12, '2025-11-05 09:41:49', '2025-12-19 11:46:44'),
+(1, 1, 'iPhone 10 - Gyroid cover', 'Get yourself a super powerful iPhone 10 protector', 123.13, 3, '2025-11-05 09:35:46', '2025-12-19 23:54:38'),
+(2, 2, 'Bag Closing Clip', 'A nice plastic clip to close any bag in your house.', 5.25, 0, '2025-11-05 09:41:49', '2025-12-20 00:31:12'),
 (3, 2, 'kitchen towel hanger', 'A small hanger to stick on your wall to hang your kitchen towels.', 4.99, 5, '2025-11-05 09:43:43', NULL),
 (5, 3, 'Moving Octopus', 'A small octopus with many joints to make it move a lot.', 5.75, 12, '2025-12-17 18:10:35', NULL),
 (7, 3, 'NewTest', 'abcdef', 12.00, 9, '2025-12-18 19:39:58', NULL),
-(8, 10, ' Open Air ITX Case (no screws)', 'The idea was a small footprint, easy to move, no major assembly required and durability.', 13.25, 3, '2025-12-19 11:54:54', NULL),
-(9, 2, 'kitchen scale slider', 'These are mounts for a kitchen scale.', 4.99, 7, '2025-12-19 13:23:10', NULL),
-(10, 3, '3D Mini Lantern', '3D printed lantern for desk. Put a small LED inside and done!', 7.75, 12, '2025-12-19 13:25:45', NULL),
-(11, 3, 'Boy Figurine with Axe', 'Plastic figurine of a boy with an axe.', 13.85, 2, '2025-12-19 13:30:18', NULL);
+(8, 10, ' Open Air ITX Case (no screws)', 'The idea was a small footprint, easy to move, no major assembly required and durability.', 7.99, 0, '2025-12-19 11:54:54', '2025-12-19 23:56:01'),
+(9, 2, 'kitchen scale slider', 'These are mounts for a kitchen scale.', 4.99, 6, '2025-12-19 13:23:10', '2025-12-19 23:55:35'),
+(10, 3, '3D Mini Lantern', '3D printed lantern for desk. Put a small LED inside and done!', 7.75, 0, '2025-12-19 13:25:45', '2025-12-20 02:53:30'),
+(11, 3, 'Boy Figurine with Axe', 'Plastic figurine of a boy with an axe.', 13.85, 1, '2025-12-19 13:30:18', '2025-12-20 02:52:26'),
+(12, 11, 'Mama', 'abcdef', 1.99, 0, '2025-12-19 19:17:17', '2025-12-20 00:30:58');
 
 -- --------------------------------------------------------
 
@@ -179,16 +170,17 @@ INSERT INTO `product_images` (`id`, `product_id`, `file_path`, `is_primary`) VAL
 (3, 1, 'upload_6944312bd959b.png', 0),
 (4, 1, 'upload_694455f185af6.png', 0),
 (5, 2, 'upload_69449e922e24b.jpg', 0),
-(7, 8, 'upload_694583956e561.jpg', 0),
+(7, 8, 'upload_694583956e561.jpg', 1),
 (8, 8, 'upload_694583aa6c521.jpg', 0),
 (9, 8, 'upload_69458604d3c08.jpg', 0),
 (10, 9, 'upload_69459829cb7c8.jpg', 1),
 (11, 9, 'upload_6945983ae7ac5.jpg', 1),
 (12, 10, 'upload_694598c58d15c.jpg', 1),
-(13, 10, 'upload_694598df5d95e.jpg', 1),
-(14, 10, 'upload_694598eccd025.jpg', 1),
+(13, 10, 'upload_694598df5d95e.jpg', 0),
+(14, 10, 'upload_694598eccd025.jpg', 0),
 (15, 5, 'upload_6945990d1d715.jpg', 1),
-(16, 11, 'upload_694599cb1867d.jpg', 1);
+(16, 11, 'upload_694599cb1867d.jpg', 1),
+(18, 12, 'upload_6945eb245aa5b.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -213,7 +205,7 @@ CREATE TABLE `trusted_devices` (
 --
 
 INSERT INTO `trusted_devices` (`id`, `user_id`, `device_token`, `device_name`, `user_agent`, `ip_address`, `last_used_at`, `expires_at`, `created_at`) VALUES
-(1, 9, 'c1b43872ae56018b7f24d3776a2101e85c909b7929bb6cf776d44fa7c8f251b7', 'Windows PC', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '127.0.0.1', '2025-12-19 16:38:26', '2026-01-18 00:42:54', '2025-12-18 12:42:54');
+(1, 9, 'c1b43872ae56018b7f24d3776a2101e85c909b7929bb6cf776d44fa7c8f251b7', 'Windows PC', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '127.0.0.1', '2025-12-20 07:44:00', '2026-01-18 00:42:54', '2025-12-18 12:42:54');
 
 -- --------------------------------------------------------
 
@@ -237,7 +229,7 @@ CREATE TABLE `two_factor_auth` (
 
 INSERT INTO `two_factor_auth` (`id`, `user_id`, `secret`, `enabled`, `enabled_at`, `created_at`, `updated_at`) VALUES
 (1, 7, '7PV7QEUF7WFLVFCXBLSJCERYHUV2VBS3', 0, '2025-12-17 20:48:16', '2025-12-17 20:48:16', '2025-12-17 21:03:36'),
-(2, 9, 'YHDFYOA5SJYANJQML7PYE4GFPSZDZWJN', 1, '2025-12-19 00:35:56', '2025-12-19 00:35:56', '2025-12-19 00:35:56');
+(2, 9, 'HMGCBAQ4NCKK7BZSNV5MC74CVIUQXOZF', 1, '2025-12-20 00:12:39', '2025-12-19 00:35:56', '2025-12-20 00:12:39');
 
 -- --------------------------------------------------------
 
@@ -351,7 +343,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
@@ -363,25 +355,25 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `trusted_devices`

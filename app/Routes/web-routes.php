@@ -94,7 +94,7 @@ return static function (Slim\App $app): void {
             $group->get(
                 '/categories/edit/{category_id}',
                 [CategoriesController::class, 'edit']
-            );
+            )->setName('categories.edit');
 
             $group->get(
                 '/categories/delete/{category_id}',

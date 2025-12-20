@@ -17,7 +17,6 @@ class CategoriesController extends BaseController
     public function __construct(Container $container, private CategoriesModel $categories_model)
     {
         parent::__construct($container);
-
     }
 
 
@@ -83,12 +82,11 @@ class CategoriesController extends BaseController
 
         if (empty($errors)) {
             try {
-            $category_id = $this->categories_model->createAndGetId($data);
-
-        } catch (Exception $e) {
-            FlashMessage::error("This category already exists. Choose another name.");
-            return $this->redirect($request, $response, 'categories.create');
-        }
+                $category_id = $this->categories_model->createAndGetId($data);
+            } catch (Exception $e) {
+                FlashMessage::error("This category already exists. Choose another name.");
+                return $this->redirect($request, $response, 'categories.create');
+            }
             FlashMessage::success("Category Created Successfully!");
             // return $this->redirect($request, $response, 'products/show'.$product_id);
             return $this->redirect($request, $response, 'categories.index', ['category_id' => $category_id]);
@@ -116,6 +114,20 @@ class CategoriesController extends BaseController
         $category_id = (int) $args['category_id'];
         $data = $request->getParsedBody();
         $data['category_id'] = $category_id;
+
+        $category = $this->categories_model->fetchCategoryById($category_id);
+
+        if (empty($data["category_name"])) {
+            FlashMessage::error("Enter category name!");
+            return $this->redirect($request, $response, 'categories.edit', ['category_id' => $category_id]);
+        }
+
+        if (empty($data["category_description"])) {
+            // FlashMessage::error("Enter category description!");
+            // return $this->redirect($request, $response, 'categories.edit', ['category_id' => $category_id]);
+            $data["category_description"] = $category["description"];
+        }
+
         $this->categories_model->updateCategory($data);
 
         return $this->redirect($request, $response, 'categories.index', ['id' => $category_id]);
