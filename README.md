@@ -22,4 +22,4 @@ This is the second assignment for the e-commerce course, completed as a team pro
 4. **Launch the App**  
    - Reload the **localhost** in your browser.  
    - Click on the app link to start using it.
-5. **files: ERD, UserGuide, and README are in project root folder**
+5. **files: ERD, UserGuide, and README are in project root folder and reference.md are in Implementation Resources in project board**
