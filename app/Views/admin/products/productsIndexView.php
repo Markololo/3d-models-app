@@ -10,6 +10,7 @@ use App\MiddleWare\SessionMiddleware;
 // $page_title = 'Products list';
 $page_title = 'Products';
 $products = $data["products"];
+$categories = $data["categories"];
 
 //TODO: We need to load an admin-specific header.
 ViewHelper::loadAdminHeader($page_title);
@@ -37,7 +38,7 @@ ViewHelper::loadAdminHeader($page_title);
             <select class="form-select" id="categoryFilter" aria-label="Filter by category">
                 <option value="">All Categories</option>
                 <?php foreach ($categories as $category): ?>
-                    <option value="<?= hs($category['id']) ?>">
+                    <option value="<?= htmlspecialchars($category['id']) ?>">
                         <?= hs($category['name']) ?>
                     </option>
                 <?php endforeach; ?>

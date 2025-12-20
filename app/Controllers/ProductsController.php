@@ -41,20 +41,13 @@ class ProductsController extends BaseController
         // $products = $this->products_model->fetchProducts();
         // $products = $this->products_model->getFullProducts();
         $products = $this->products_model->getFullProductsWithOneImg();
-
-        // $filteredImagesProducts = [];
-        // foreach ($products as $key => $product) {
-        //     if($product['is_primary'] == 1)
-        //     {
-        //         $filteredImagesProducts[] = $product;
-        //     }
-        // }
-
+        $categories = $this->categories_model->getAll();
 
         $data['data'] = [
             'page_title' => 'List of products',
             'message' => 'Welcome to the home page',
-            'products' => $products
+            'products' => $products,
+            'categories' => $categories
         ];
         // $data["page_title"] = "Browse Products";
         // $data["products"] = $products;
@@ -259,7 +252,7 @@ class ProductsController extends BaseController
 
     public function userIndex(Request $request, Response $response, array $args): Response
     {
-        // TODO: Get all products using $this->model->getAllProducts()
+        // TODO Get all products using $this->model->getAllProducts()
 
         $products = $this->products_model->getFullProducts();
         // TODO: Get all categories using $this->model->getAllCategories()

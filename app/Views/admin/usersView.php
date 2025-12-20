@@ -1,10 +1,6 @@
 <?php
 
 use App\Helpers\ViewHelper;
-use App\Controllers\DashboardController;
-use App\Helpers\SessionManager;
-use App\Middleware\ExceptionMiddleware;
-use App\MiddleWare\SessionMiddleware;
 
 $page_title = 'Products';
 $customers = $data["customers"];
