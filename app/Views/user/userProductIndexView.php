@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 use App\Helpers\ViewHelper;
 use App\Controllers\DashboardController;
@@ -108,4 +108,4 @@ ViewHelper::loadHeader($page_title);
 <!-- Load JavaScript for live search -->
 <script src="<?= APP_ASSETS_DIR_URL ?>/js/user-product-search.js"></script>
 
-<?php ViewHelper::loadFooter(); ?>
+<?php ViewHelper::loadFooter(); ?> -->
