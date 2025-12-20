@@ -73,7 +73,7 @@ class OrdersModel extends BaseModel
     public function getAllOrders(): array
     {
         //order ID, Customer Name or ID, Total Amount, Status, and Date Created
-        $sql = "SELECT o.id, total, status, o.created_at, CONCAT(first_name,' ', last_name) AS username
+        $sql = "SELECT o.id, u.id AS user_id, total, status, o.created_at, CONCAT(first_name,' ', last_name) AS username
         FROM orders o
         JOIN users u ON o.user_id = u.id
         ORDER BY o.created_at DESC";

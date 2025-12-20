@@ -25,12 +25,13 @@ $orders = $data['orders'];
                 <?php foreach ($data["orders"] as $key => $order): ?>
                     <tr>
                         <td><?= htmlspecialchars($order["id"]) ?></td>
+                        <td><?= htmlspecialchars($order["user_id"]) ?></td>
                         <td><?= htmlspecialchars($order["username"]) ?></td>
                         <td><?= htmlspecialchars($order["total"]) ?></td>
                         <td><?= htmlspecialchars($order["status"]) ?></td>
                         <td><?= htmlspecialchars($order["created_at"]) ?></td>
                         <td>
-                            <a href="#" class="btn btn-info">View</a>
+                            <a href="customers/<?php echo $oder["user_id"] ?>" class="btn btn-info">View</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
