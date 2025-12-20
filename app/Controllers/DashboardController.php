@@ -27,6 +27,20 @@ class DashboardController extends BaseController
         return $this->render($response, 'admin/dashboardView.php', $data);
     }
 
+     public function customerShow(Request $request, Response $response, array $args): Response
+    {
+        $customerId = (int)$args['customer_id'];
+        $customer = $this->user_model->getUserById($customerId);
+        $orders = $this->user_model->getCustomerOrderHistory($customerId);
+
+        $data = [
+            'page_title' => 'Admin Dashboard',
+            'customer' => $customer,
+            'orders' => $orders
+        ];
+
+        return $this->render($response, 'admin/customerShow.php', $data);
+    }
 
     public function error(Request $request, Response $response, array $args): Response
     {

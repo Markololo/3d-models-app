@@ -15,24 +15,15 @@ $products = $data["products"];
 ViewHelper::loadAdminHeader($page_title);
 
 ?>
-
-
-
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-
-
     <h1><?= hs(trans('products.listing'))  ?></h1>
-
-
     <!-- Search Container -->
-
-
     <!-- Search and Filter Section -->
     <div class="row mb-4">
         <div class="col-md-8">
             <div class="input-group">
                 <span class="input-group-text">
-                    <i class="bi bi-search"></i> <!-- Bootstrap Icons -->
+                    <i class="bi bi-search"></i>
                 </span>
                 <input
                     type="text"

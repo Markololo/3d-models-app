@@ -11,6 +11,24 @@ class UserModel extends BaseModel
         parent::__construct($pdoService);
     }
 
+    public function getUserById($user_id)
+    {
+        $sql = "SELECT * from users where id = :id";
+
+        $user = $this->selectOne($sql, ['id' => $user_id]);
+
+        return $user;
+    }
+
+    public function getCustomerOrderHistory($user_id)
+    {
+        $sql = "SELECT * from orders where user_id = :id
+        ORDER BY created_at DESC";
+
+        $orders = $this->selectAll($sql, ['id' => $user_id]);
+
+        return $orders;
+    }
     /**
      * Create a new user account.
      *

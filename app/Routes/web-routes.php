@@ -117,6 +117,11 @@ return static function (Slim\App $app): void {
             )->setName('categories.index');
 
             $group->get(
+                '/customers/{customer_id}',
+                [DashboardController::class, 'customerShow']
+            )->setName('customer.show');
+
+            $group->get(
                 '/orders',
                 [OrdersController::class, 'adminIndex']
             )->setName('orders.index');

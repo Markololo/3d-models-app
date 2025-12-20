@@ -28,13 +28,13 @@ ViewHelper::loadAdminHeader($page_title);
                         <td><?= htmlspecialchars($customer["first_name"].' '.$customer["last_name"]) ?></td>
                         <td><?= htmlspecialchars($customer["email"]) ?></td>
                         <td>
-                            <a href="#" class="btn btn-info">View</a>
+                            <a href="customers/<?php echo $customer["id"] ?>" class="btn btn-info">View</a>
                         </td>
                     </tr>
                     <?php endforeach;?>
             </tbody>
         </table>
-        <a href="#" class="btn btn-secondary"> View Orders </a>
+        <!-- <a href="#" class="btn btn-secondary"> View Orders </a> -->
     </div>
 </main>
 <script>
