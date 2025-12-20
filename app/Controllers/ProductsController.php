@@ -166,16 +166,29 @@ class ProductsController extends BaseController
         return $this->render($response, 'admin/products/productsEditView.php', $data);
     }
 
+
     /**
      * Save changes to an item.
      * @return void
      */
     public function update(Request $request, Response $response, array $args): Response
     {
+        $input = $request->getParsedBody();
+        $primaryImgId = $input['primary_img_id'];
         $productId = (int) $args['product_id'];
-        $this->products_model->updateProductArray($productId, $request->getParsedBody());
 
-        return $this->redirect($request, $response, 'product.index', ['id' => $productId]);
+        if(empty($input["product_name"]))
+        {
+            FlashMessage::error("Enter product name!");
+            return $this->redirect($request, $response, 'product.edit',['product_id' => $productId]);
+
+        }
+
+        $this->products_model->markPrimaryImage($productId, $primaryImgId);
+
+        $this->products_model->updateProductArray($productId, $input);
+
+        return $this->redirect($request, $response, 'product.index', );
     }
 
     /**

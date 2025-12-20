@@ -41,16 +41,37 @@ ViewHelper::loadAdminHeader($page_title);
 
             <div>
                 <label for="inputPrice" class="form-label">Price</label>
-                <input type="number" name="price" class="form-control" id="inputPrice" step="0.01"
+                <input type="number" min="0" name="price" class="form-control" id="inputPrice" step="0.01"
                     value="<?= $product["price"] ?>">
             </div>
         </div>
         <div>
             <label for="inputQuantity" class="form-label">Quantity</label>
-            <input type="number" name="quantity" class="form-control" id="InputQuantity"
+            <input type="number" min="0" name="quantity" class="form-control" id="InputQuantity"
                 value="<?= $product["stock_quantity"] ?>">
         </div>
 
+        <br>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 10px">
+            <?php foreach ($images as $key => $prod):
+                if (!isset($prod['file_path']) || empty($prod['file_path']))
+                    $filePath = "/3d-models-app/assets/imageAssets/imagePlaceholder.jpg";
+                else {
+                    $filename = $prod['file_path'];
+                    $filePath = "/3d-models-app/uploads/images/$filename";
+                }
+
+            ?>
+                <div>
+                    <img src=<?= $filePath ?> class="img-fluid" style="max-width: 7vw">
+                    <input type="radio" value="<?= $prod['id'] ?>" name="primary_img_id" <?= $prod['is_primary'] == 1 ?  "checked" : "" ?>>
+                    <label for="is_primary">Primary image</label>
+                    <!-- <a style="display: block;" href="#">Mark as primary image</a> -->
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <br>
         <br>
         <div><button type="submit" class="btn btn-success">Save</button>
             <a href="<?= APP_ADMIN_URL ?>/products" class="btn btn-danger">Cancel</a>
@@ -79,22 +100,6 @@ ViewHelper::loadAdminHeader($page_title);
                 <button type="submit" class="btn btn-primary">Upload File</button>
             </form>
         </div>
-    </div>
-
-    <div>
-
-
-        <?php foreach ($images as $key => $prod):
-            if (!isset($prod['file_path']) || empty($prod['file_path']))
-                $filePath = "/3d-models-app/assets/imageAssets/imagePlaceholder.jpg";
-            else {
-                $filename = $prod['file_path'];
-                $filePath = "/3d-models-app/uploads/images/$filename";
-            }
-
-        ?>
-            <img src=<?= $filePath ?> class="img-fluid" style="max-width: 15vw">
-         <?php endforeach; ?>
     </div>
     <br>
     <br>

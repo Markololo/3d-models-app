@@ -249,4 +249,31 @@ class ProductsModel extends BaseModel
             [$quantity, $productId]
         );
     }
+
+    public function markPrimaryImage($product_id, $img_id)
+    {
+        $this->unsetPrimaryImage($product_id);
+
+        $sql = "UPDATE product_images pi SET pi.is_primary = 1
+        WHERE pi.id = :img_id";
+
+        return $this->selectAll($sql, ["img_id"=> $img_id]);
+    }
+
+    private function unsetPrimaryImage($product_id)
+    {
+        $sql = "UPDATE product_images pi
+        SET pi.is_primary = 0
+        WHERE pi.product_id = :pId";
+
+        return $this->selectAll($sql, ["pId" => $product_id]);
+    }
+
+    public function deleteImage($img_id)
+    {
+        $sql = "DELETE FROM product_images
+        WHERE id = :img_id";
+
+        return $this->selectAll($sql, ["img_id"=> $img_id]);
+    }
 }

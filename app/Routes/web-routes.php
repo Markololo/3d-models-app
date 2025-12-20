@@ -59,7 +59,7 @@ return static function (Slim\App $app): void {
             $group->get(
                 '/products/edit/{product_id}',
                 [ProductsController::class, 'edit']
-            );
+            )->setName('product.edit');
 
             $group->get(
                 '/products/delete/{product_id}',
