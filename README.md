@@ -23,3 +23,6 @@ This is the second assignment for the e-commerce course, completed as a team pro
    - Reload the **localhost** in your browser.  
    - Click on the app link to start using it.
 5. **files: ERD, UserGuide, and README are in project root folder and reference.md is Implementation Resources in project board**
+
+6. for bootstrap.php issues run `composer update --ignore-platform-req=php`
+
